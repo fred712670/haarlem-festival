@@ -1,9 +1,14 @@
-<nav class="navbar bg-body-tertiary bg-dark" data-bs-theme="dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/">My Site</a>
-        <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
-        <div>
-            <a type="button" class="btn btn-primary" href="#">Login/Register</a>
-        </div>
+<nav class="sidebar">
+    <div class="logo">
+        <img class="logo" src="/assets/img/logo.png" alt="HF">
     </div>
+    <ul class="nav-links">
+        <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li> <!-- Shopping Cart -->
+        <li><a href="#"><i class="fas fa-home"></i></a></li> <!-- Home -->
+        <li><a href="#"><i class="fas fa-utensils"></i></a></li> <!-- Yummy/Food -->
+        <li><a href="#"><i class="fas fa-running"></i></a></li> <!-- Dance -->
+        <li><a href="#"><i class="fas fa-music"></i></a></li> <!-- Music -->
+        <li><a href="#"><i class="fas fa-history"></i></a></li> <!-- History -->
+        <li><a href="#"><i class="fas fa-magic"></i></a></li> <!-- Magic -->
+    </ul>
 </nav>

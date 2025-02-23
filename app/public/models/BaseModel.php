@@ -30,4 +30,9 @@ class BaseModel
             self::$pdo = new PDO($dsn, $user, $pass, $options);
         }
     }
+
+    public static function getConnection()
+    {
+        return self::$pdo;
+    }
 }
