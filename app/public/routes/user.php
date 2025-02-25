@@ -17,3 +17,10 @@ Route::add('/user/([a-z-0-9-]*)', function ($userId) {
     $user = $userController->get($userId); // get data for the view
     require_once(__DIR__ . "/../views/pages/user.php"); // load the view
 });
+
+// Route to display profile edit
+Route::add('/profile/edit', function()  {
+    //$userController = new UserController();
+    //$user = $userController->get($_SESSION['userId']);
+    require_once(__DIR__ . '/../views/pages/profileEdit.php');
+}, 'get');

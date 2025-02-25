@@ -19,4 +19,12 @@ class UserController
     {
         return $this->userModel->get($id);
     }
+
+    public function updateName($username, $newFullName) {
+        return $this->userModel->updateName($username, $newFullName);
+    }
+
+    public function changePassword($username, $currentPswd, $newPswd, $repeatNewPsw ) {
+        return $this->userModel->updatePassword($username, $currentPswd, $newPswd, $repeatNewPsw);
+    }
 }
