@@ -1,0 +1,88 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #FDF0D5;
+    margin: 0;
+    padding: 0;
+}
+
+.registration-container {
+    width: 300px;
+    margin: 60px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.registration-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+.captcha-code {
+    font-size: 24px;
+    background-color: yellow;
+    padding: 10px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #FBBE49;
+}
+
+button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background: #FFD700;
+    border: none;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background: #FBBE49;
+}
+
+.login-links {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.login-links a {
+    display: inline-block;
+    margin: 0 5px;
+    color: #FBBE49;
+    font-size: 14px;
+}
+
+.login-links a:hover {
+    text-decoration: underline;
+}
+
+p {
+    color: red;
+    font-size: 14px;
+}
