@@ -21,6 +21,7 @@
 						</div>
 					</div>
 				</div>
+
 				<div class="col-lg-8">
 					<div class="card">
 						<form action="/profile/update/name" method="post">
@@ -71,6 +72,65 @@
 							</div>
 						</form>
 					</div>
+
+					<div class="col-lg-8">
+						<div class="card">
+							<form action="/profile/update/email" method="post">
+								<div class="card-body">
+									<div class="row mb-3">
+										<div class="col-sm-3">
+											<h6 class="mb-0">Current Email</h6>
+										</div>
+										<div class="col-sm-9 text-secondary">
+											<input type="email" class="form-control editForm" id="currentEmail" name="currentEmail" value="<?php echo $user['Email'];?>" required>
+										</div>
+									</div>
+									<div class="row mb-3">
+										<div class="col-sm-3">
+											<h6 class="mb-0">New Email</h6>
+										</div>
+										<div class="col-sm-9 text-secondary">
+											<input type="email" class="form-control editForm" id="newEmail" name="newEmail" required>
+										</div>
+									</div>
+									<div class="row mb-3">
+										<div class="col-sm-3">
+											<h6 class="mb-0">Confirm Email</h6>
+										</div>
+										<div class="col-sm-9 text-secondary">
+											<input type="email" class="form-control editForm" id="confirmEmail" name="confirmEmail" required>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-3"></div>
+										<div class="col-sm-9 text-secondary">
+											<input type="button" class="btn btn-primary px-4" data-bs-toggle="modal" data-bs-target="#modal-email" value="Save Changes">
+										</div>
+									</div>
+									<!-- Modal Email Change-->
+									<div class="modal fade" tabindex="-1" id="modal-email">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title">Email Change</h5>
+													<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+												</div>
+												<div class="modal-body">
+													<p id="email-change">You are about to change your email.</p>
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+													<input type="submit" class="btn btn-primary" value="Confirm Change"></input>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+
+
 					<div class="col-lg-8">
                         <div class="card">
 							<form action="/profile/update/password" method="post">
@@ -136,7 +196,8 @@
 								</div>
 							</form>
                         </div>
-				</div>
+					</div>
+
 			</div>
 			<!-- Modal for profile picture selection -->
 			<div class="modal fade" id="profilePictureModal" tabindex="-1" aria-labelledby="profilePictureModalLabel" aria-hidden="true">
