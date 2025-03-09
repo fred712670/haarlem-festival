@@ -1,18 +1,21 @@
 /*hero section not covered by the nav */
 .hero {
-    margin-top: 0;
+    margin: 0 auto;
     padding-top: 0;
     text-align: left;
     position: relative;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 /* Hero Image */
 .hero img {
+    height: 90dvh;
     width: 100%;
-    height: 100dvh;
+    object-fit: cover;
     display: block;
     margin-top: 0;
-    padding-top: 0;
+    padding-top: 0; 
 }
 
 /* Yummy Title */
@@ -30,7 +33,7 @@
 .food-section {
     margin-top: 70px;
     padding: 40px;
-    text-align: center;
+    text-align: center; 
 }
 
 /* Food Cards Container */
@@ -38,9 +41,9 @@
     display: flex;
     justify-content: center;
     gap: 10px; 
-    width: 100%;
+    width: 82%;
     margin: 0 auto;
-    max-width: 1240px; 
+    max-width: 100%; 
 }
 
 /* Food Card - Default Size */
@@ -113,12 +116,13 @@
 .expand-btn {
     background: black;
     color: white;
+    font-weight: 800;
     border: none;
-    padding: 10px;
+    padding: 1px 12px;
     border-radius: 50%;
     cursor: pointer;
     position: absolute;
-    bottom: 20px;
+    bottom: 25px;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -135,9 +139,10 @@
 
 /* Image Styling */
 .food-card-content img {
-    width: 28px; 
+    width: 27px; 
     height: 260px;
     flex-shrink: 0; 
+    margin-left: -18px;
 }
 
 /* Grid Layout for Restaurants */
@@ -153,7 +158,7 @@
     padding: 20px;
     justify-content: center;
     margin: 0 auto;
-    width: 75%;
+    width: 80%;
 }
 
 /* Style for Each Restaurant Card */
@@ -342,4 +347,48 @@
     height: 100%;
     object-fit: cover;
     object-position: center;
+}
+
+/* Responsive Styles for Smaller Screens */
+@media (max-width: 1100px) {
+    .food-cards {
+        flex-direction: column; 
+        align-items: center; 
+        width: 84%;
+        height: 700px;
+    }
+
+    .food-card {
+        width: 90%; 
+        margin: 0 auto;
+        height: auto; 
+        flex: unset; 
+    }
+
+    .food-card h3{
+        font-size: 15px;
+    }
+
+    .food-card:hover h3 {
+        top: 58px;
+    }
+
+    .food-card p{
+        font-size: 11px;
+    }
+
+    .food-card-content {
+        flex-direction: row; 
+        justify-content: center; 
+        text-align: left;
+    }
+
+    .food-card-content img {
+        width: 30px; 
+        height: 175px;
+    }
+
+    .expand-btn { 
+        margin-bottom: 17px;
+    }
 }

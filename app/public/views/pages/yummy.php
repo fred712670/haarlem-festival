@@ -6,10 +6,11 @@ $controller = new YummyController();
 $restaurants = $controller->index();
 ?>
 
+<body>
 <!-- Hero Section -->
 <section class="hero">
-    <img src="/assets/img/banner.png" alt="Food Festival">
-    <h1>Yummy!</h1>
+  <img src="/assets/img/banner.png" alt="Food Festival">
+  <h1>Yummy!</h1>
 </section>
 
 <!-- Food Festival Section -->
@@ -54,7 +55,6 @@ $restaurants = $controller->index();
         </div>
     </div>
 </div>
-
 </section>
 
 <section class="restaurant-section">
@@ -74,6 +74,7 @@ $restaurants = $controller->index();
         <?php endforeach; ?>
     </div>
 </section>
+</body>
 
 
 <?php require_once __DIR__ . "/../partials/footer.php"; ?>
