@@ -40,6 +40,7 @@ class UserController
         exit();
     }
 
+<<<<<<< Updated upstream
     // Attempt to register the new user
     $result = $this->userModel->register($username, $email, $password, $role);
     if ($result['success']) {
@@ -50,6 +51,14 @@ class UserController
         header('Location: /registration');
         exit();
     }
+=======
+    public function updateEmail($userId, $newEmail) {
+        return $this->userModel->updateEmail($userId, $newEmail);
+    }
+
+    public function changePassword($username, $currentPswd, $newPswd, $repeatNewPsw ) {
+        return $this->userModel->updatePassword($username, $currentPswd, $newPswd, $repeatNewPsw);
+>>>>>>> Stashed changes
     }
 }
 ?>
