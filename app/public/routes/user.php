@@ -108,3 +108,24 @@ Route::add('/profile/update/password', function() {
     $userController->updateProfileImage();
     header('Location: /profile/edit');
 }, 'post');*/
+
+
+// Forgot Password Routes
+Route::get('/forgot-password', function() {
+    require_once __DIR__ . '/../views/pages/forgot-password.php';
+});
+
+Route::post('/send-password-reset', function() {
+    $controller = new UserController();
+    echo $controller->sendResetLink($_POST["email"]);  // Keep parameters
+});
+
+Route::get('/reset-password', function() {
+    require_once __DIR__ . '/../views/pages/reset-password.php';
+});
+
+Route::post('/process-reset-password', function() {
+    $controller = new UserController();
+    echo $controller->processResetPassword($_POST["token"], $_POST["password"]); // Keep parameters
+});
+

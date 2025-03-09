@@ -174,6 +174,35 @@ class UserModel extends BaseModel
             return false;
         }
     }
+
+    public function getUserByEmail($email) {
+        $sql = "SELECT * FROM User WHERE Email = ?";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->execute([$email]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function storeResetToken($email, $token_hash, $expiry) {
+        $sql = "UPDATE User SET ResetToken = ?, ResetTokenExpires = ? WHERE Email = ?";
+        $stmt = self::$pdo->prepare($sql);
+        return $stmt->execute([$token_hash, $expiry, $email]);
+    }
+    
+    public function getUserByResetToken($token_hash)
+    {
+        $sql = "SELECT * FROM User WHERE ResetToken = ? AND ResetTokenExpires > NOW()";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->execute([$token_hash]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function updateResetPassword($userId, $newPassword)
+    {
+        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+        $sql = "UPDATE User SET password = ?, ResetToken = NULL, ResetTokenExpires = NULL WHERE UserId = ?";
+        $stmt = self::$pdo->prepare($sql);
+        return $stmt->execute([$hashedPassword, $userId]);
+    }
 }
 
 ?>

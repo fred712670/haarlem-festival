@@ -67,5 +67,56 @@ class UserController
         return $this->userModel->updatePassword($username, $currentPswd, $newPswd, $repeatNewPsw);
     }
 
+    public static function sendResetLink($email) {
+        $userModel = new UserModel();
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return "❌ Invalid email format!";
+        }
+
+        $user = $userModel->getUserByEmail($email);
+        if (!$user) {
+            return "❌ No user found with this email.";
+        }
+
+        // ✅ Generate a secure token
+        $token = bin2hex(random_bytes(16));
+        $token_hash = hash("sha256", $token);
+        $expiry = date("Y-m-d H:i:s", time() + 3600); 
+
+        // ✅ Store reset token in DB
+        if (!$userModel->storeResetToken($email, $token_hash, $expiry)) {
+            return "❌ Failed to store reset token.";
+        }
+
+        // ✅ Send reset email
+        $baseUrl = $_ENV["APP_URL"] ?? "http://localhost"; 
+        $resetLink = "$baseUrl/reset-password?token=" . urlencode($token);
+        $mail = require __DIR__ . "/../views/pages/mailer.php";
+        $mail->addAddress($email);
+        $mail->Subject = "Password Reset Request";
+        $mail->Body = "Click <a href=\"$resetLink\">here</a> to reset your password.<br><br>This link expires in 1 hour.";
+
+        try {
+            $mail->send();
+            return "✅ Reset link sent! Check your inbox.";
+        } catch (Exception $e) {
+            return "❌ Email error: " . $mail->ErrorInfo;
+        }
+    }
+
+    public static function processResetPassword($token, $newPassword) {
+        $userModel = new UserModel();
+
+        $token_hash = hash("sha256", $token);
+        $user = $userModel->getUserByResetToken($token_hash);
+
+        if (!$user) return "❌ Token not found or expired.";
+        if (strtotime($user["ResetTokenExpires"]) <= time()) return "❌ Token expired.";
+
+        return $userModel->updateResetPassword($user["UserId"], $newPassword) 
+            ? "✅ Password updated successfully! <a href='/login'>Login</a>."
+            : "❌ Something went wrong.";
+    }
 }
 
