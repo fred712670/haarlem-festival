@@ -10,4 +10,5 @@ Route::add('/verify-email', function () {
         echo "No token provided.";
     }
 }, 'get');
-?>
+
+
