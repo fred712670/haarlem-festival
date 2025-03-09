@@ -33,58 +33,83 @@
     text-align: center;
 }
 
-/* Food Cards */
+/* Food Cards Container */
 .food-cards {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 10px; 
+    width: 100%;
+    margin: 0 auto;
+    max-width: 1240px; 
 }
 
-/* Food Card */
+/* Food Card - Default Size */
 .food-card {
-    width: 400px;
+    flex: 1;
     height: 300px;
-    background: #8B0000;
+    background: #5D1B1B;
     color: white;
     padding: 20px;
     border-radius: 10px;
     text-align: center;
     position: relative;
     overflow: hidden;
-    transition: width 0.3s ease-in-out;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    transition: flex 0.3s ease-in-out;
 }
 
-/* Food Card Content */
-.food-card-content {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+/* Hover Effect: Expand One Card, Shrink Others */
+.food-card:hover {
+    flex: 2; 
 }
 
-/* Always Visible Title */
+/* Shrink non-hovered cards */
+.food-cards .food-card:not(:hover) {
+    flex: 1.1; 
+}
+
+/* Ensure Title is Centered Initially */
 .food-card h3 {
     font-size: 20px;
     font-weight: bold;
-    margin-bottom: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    white-space: nowrap;
+    z-index: 2;
+    width: 100%;
+    transition: top 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
-/* Initially Hidden Description */
+/* Move Title to the Top When Expanded */
+.food-card:hover h3 {
+    top: 28px;
+    transform: translateX(-50%);
+}
+
+/* Fix Description to Appear Without Shrinking */
 .food-description {
     opacity: 0;
-    white-space: normal;
-    max-width: 0;
+    max-height: 0;
     overflow: hidden;
-    transition: opacity 0.3s, max-width 0.3s ease-in-out;
+    transition: opacity 0.3s ease-in-out, max-height 0.3s ease-in-out;
     text-align: center;
+    padding: 0;
+}
+
+/* Show Description on Hover */
+.food-card:hover .food-description {
+    opacity: 1;
+    max-height: 200px;
     padding: 10px 0;
 }
 
-/* Expand Button */
+/* Ensure Expand Button is Always Visible */
 .expand-btn {
     background: black;
     color: white;
@@ -98,14 +123,21 @@
     transform: translateX(-50%);
 }
 
-/* Expanded State */
-.food-card.expanded {
-    width: 400px;
+/* Ensure the image stays inside the container, aligned left */
+.food-card-content {
+    display: flex;
+    align-items: center; 
+    justify-content: flex-start; 
+    gap: 15px; 
+    padding: 10px;
+    width: 100%;
 }
 
-.food-card.expanded .food-description {
-    opacity: 1;
-    max-width: 350px;
+/* Image Styling */
+.food-card-content img {
+    width: 28px; 
+    height: 260px;
+    flex-shrink: 0; 
 }
 
 /* Grid Layout for Restaurants */
@@ -135,7 +167,7 @@
 }
 
 .restaurant-card h3{
- margin-top: 16px;
+    margin-top: 16px;
 }
 
 .restaurant-card:hover {

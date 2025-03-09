@@ -4,6 +4,9 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f8f1e3;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 /* Sidebar */
@@ -51,5 +54,95 @@ nav {
 
 /* Add custom styles here */
 .logo{
-    width: 120%;
+    width: 110%;
+}
+
+/* Footer Styling */
+footer {
+    margin: 0;
+    width: 100%;
+    left: 0;
+    margin-top: 30%;  /* maybe change later*/
+    background-color: rgb(96, 187, 212);
+}
+
+.footer-container {
+    max-width: 100%;
+    margin: 20px 140px ;
+    margin-left: 5%;
+}
+
+/* Top Section */
+.footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-top p {
+    font-weight: bold;
+}
+
+.social-icons a {
+    color: black;
+    font-size: 20px;
+}
+
+/* Divider */
+hr {
+    border: none;
+    border-top: 1px solid black;
+    margin: 2px 0;
+}
+
+/* Main Footer Content */
+.footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+}
+
+.footer-logo img {
+    width: 150px;
+}
+
+/* Footer Links */
+.footer-links {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding-left: 50px;
+}
+
+.footer-section h3 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 5px;
+}
+
+.footer-section ul li a {
+    text-decoration: none;
+    color: black;
+}
+
+/* Bottom Footer */
+.footer-bottom {
+    font-weight: bold;
+    padding-top: 30px;
+    font-size: 14px;
+}
+
+/* Contact Section */
+.footer-section ul li i {
+    margin-right: 8px;
 }

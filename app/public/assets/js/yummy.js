@@ -1,24 +1,28 @@
-
-    document.addEventListener("DOMContentLoaded", function () {
-    function expandCard(card) {
-        card.classList.add("expanded");
-    }
-
-    function collapseCard(card) {
-        card.classList.remove("expanded");
-    }
-
+document.addEventListener("DOMContentLoaded", function () {
+    // Handle Food Card Hover Effects
     document.querySelectorAll(".food-card").forEach(card => {
-        card.addEventListener("mouseover", function () {
-            expandCard(this);
+        let button = card.querySelector(".expand-btn");
+        
+        card.addEventListener("mouseenter", function () {
+            // Expand description
+            this.querySelector(".food-description").style.opacity = "1";
+            this.querySelector(".food-description").style.maxHeight = "200px";
+
+            // Change button text
+            button.textContent = "-";
         });
+
         card.addEventListener("mouseleave", function () {
-            collapseCard(this);
+            // Collapse description
+            this.querySelector(".food-description").style.opacity = "0";
+            this.querySelector(".food-description").style.maxHeight = "0";
+
+            // Reset button text
+            button.textContent = "+";
         });
     });
-});
 
-document.addEventListener("DOMContentLoaded", function () {
+    // Slideshow for Restaurant Detail Page
     let slides = document.querySelectorAll(".slide");
     let index = 0;
 
@@ -29,7 +33,8 @@ document.addEventListener("DOMContentLoaded", function () {
         index = (index + 1) % slides.length;
     }
 
-    showSlide();
-    setInterval(showSlide, 3000); // Change image every 3 seconds
+    if (slides.length > 0) { // Only run slideshow if slides exist
+        showSlide();
+        setInterval(showSlide, 3000); // Change image every 3 seconds
+    }
 });
-

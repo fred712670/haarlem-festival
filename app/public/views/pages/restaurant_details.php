@@ -1,6 +1,5 @@
 <?php 
 require_once __DIR__ . "/../partials/header.php"; 
-require_once __DIR__ . "/../partials/header_nav.php"; 
 ?>
 
 <link rel="stylesheet" href="/assets/css/yummy.css">
