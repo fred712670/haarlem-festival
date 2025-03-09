@@ -19,7 +19,6 @@ class UserModel extends BaseModel
        return $stmt->fetch(PDO::FETCH_ASSOC);
    }
 
-<<<<<<< Updated upstream
    // Verify password
    public function verifyPassword($inputPassword, $storedPassword)
    {
@@ -68,10 +67,11 @@ class UserModel extends BaseModel
         return ['success' => true];
     } else {
         return ['success' => false, 'message' => 'Registration failed'];
-=======
+    }
+}
     public function get($id)
     {
-        $pdo = BaseModel::getPdo(); 
+        $pdo = self::$pdo; 
 
         if (empty($id) || !is_numeric($id)) {
             return false; // Return false if userID is not valid
@@ -90,12 +90,12 @@ class UserModel extends BaseModel
             // Return user data if found, else return false
             return $user ? $user : false;
         } else {
-            return false; // Return false if the statement execution fails
+            return false; 
         }
     }
 
     public function updateName($username, $newFullName): bool {
-        $pdo = BaseModel::getPdo(); 
+        $pdo = self::$pdo; 
 
         if (empty($newFullName) || strlen($newFullName) < 5 || strlen($newFullName) > 20) {
             return false;
@@ -114,7 +114,7 @@ class UserModel extends BaseModel
 
 
     public function updateEmail($userId, $newEmail): bool {
-        $pdo = BaseModel::getPdo();
+        $pdo = self::$pdo;
     
         // Validate the newEmail input
         if (empty($newEmail) || !filter_var($newEmail, FILTER_VALIDATE_EMAIL) || strlen($newEmail) > 255) {
@@ -134,7 +134,7 @@ class UserModel extends BaseModel
     
 
     public function updatePassword($userId, $currentPswd, $newPswd, $repeatNewPswd): bool {
-        $pdo = BaseModel::getPdo();
+        $pdo = self::$pdo;
     
         if (empty($currentPswd) || empty($newPswd) || empty($repeatNewPswd)) {
             return false;
@@ -173,9 +173,8 @@ class UserModel extends BaseModel
         } else {
             return false;
         }
->>>>>>> Stashed changes
     }
 }
-}
+
 ?>
 

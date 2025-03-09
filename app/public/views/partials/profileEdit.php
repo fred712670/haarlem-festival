@@ -1,3 +1,6 @@
+<?php
+	print_r($user);
+?>
 <div class="container">
 		<h1 class="mb-4" id="h1-editProfile">Edit Profile</h1>
 		<div class="main-body">
