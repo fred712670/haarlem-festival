@@ -10,7 +10,7 @@ body {
     max-width: 100%;
 }
 
-/* Sidebar */
+/* Sidebar - Fixed to the Right */
 .sidebar {
     width: 60px;
     height: 100vh;
@@ -21,41 +21,117 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+    transition: width 0.3s ease-in-out;
+    overflow-x: hidden;
 }
 
-/* Navigation - Fixed to the Right */
-nav {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: auto; 
-    height: 100vh; 
-    background-color: rgba(0, 0, 0, 0.8); 
-    z-index: 1000;
+/* Expanded Sidebar */
+.sidebar.expanded {
+    width: 250px;
+}
+
+/* Top Section */
+.top-section {
     display: flex;
     flex-direction: column; 
-    align-items: center; 
-    padding: 20px 10px;
+    align-items: center;
+    width: 100%;
+    padding-top: 20px;
 }
 
+/* Align logo and toggle button */
+.sidebar.expanded .top-section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; 
+    width: 100%;
+    padding-left: 25px;
+    padding-top: 20px;
+}
+
+/* Logo */
+#logo {
+    width: 40px;
+    transition: width 0.3s ease-in-out;
+}
+
+/* Expand logo size */
+.sidebar.expanded #logo {
+    width: 140px;
+    margin-right: 15px;
+}
+
+/* Toggle Button (Arrow) */
+.toggle-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+/* Navigation Links */
 .nav-links {
     list-style: none;
     padding: 0;
+    width: 100%;
+    margin-top: 20px;
 }
 
 .nav-links li {
-    padding: 10px;
-    margin: 20px auto;
+    padding: 15px;
+    text-align: right;
+    transition: background 0.3s;
 }
 
-.nav-links i {
-    font-size: 24px;
-    color: #2c3e50;
+.nav-links a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    padding: 3px;
+    width: 100%;
+    justify-content: flex-end;
 }
 
-/* Add custom styles here */
+/* Icons */
+.nav-links i, .language-switcher i {
+    font-size: 22px;
+}
+
+.language-switcher {
+    margin: 57px auto;
+}
+
+/* Hide Text Initially */
+.link-text {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Show Text When Sidebar is Expanded */
+.sidebar.expanded .link-text {
+    display: inline;
+    opacity: 1;
+    margin-left: 17px;
+}
+
+.sidebar.expanded .nav-links a{
+    justify-content: flex-start;
+    align-items: flex-start;
+    left: 0;
+    margin-left: 30px;
+    font-size: 16px;
+}
+
+.sidebar.expanded .top-section {
+    display: inline;
+}
+
 .logo{
-    width: 110%;
+    width: 100%;
 }
 
 /* Footer Styling */
@@ -86,7 +162,19 @@ footer {
 
 .social-icons a {
     color: black;
-    font-size: 20px;
+    font-size: 12px;
+}
+
+/* Language Switcher */
+.language-switcher {
+    bottom: 20px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.language-switcher i {
+    margin-right: 5px;
 }
 
 /* Divider */

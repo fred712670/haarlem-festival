@@ -23,17 +23,28 @@
 
 <body>
 <nav class="sidebar">
-    <div class="logo">
-        <img class="logo" src="/assets/img/logo.png" alt="HF">
+    <div class="top-section">
+        <img id="logo" src="/assets/img/logo-not-extended.png" alt="Logo">
+        <button class="toggle-btn">
+            <i class="fas fa-angle-double-left"></i> <!-- Initial Arrow -->
+        </button>
     </div>
     <ul class="nav-links">
-        <li><a href="#"><i class="fas fa-shopping-cart"></i></a></li> <!-- Shopping Cart -->
-        <li><a href="#"><i class="fas fa-home"></i></a></li> <!-- Home -->
-        <li><a href="#"><i class="fas fa-utensils"></i></a></li> <!-- Yummy/Food -->
-        <li><a href="#"><i class="fas fa-running"></i></a></li> <!-- Dance -->
-        <li><a href="#"><i class="fas fa-music"></i></a></li> <!-- Music -->
-        <li><a href="#"><i class="fas fa-history"></i></a></li> <!-- History -->
-        <li><a href="#"><i class="fas fa-magic"></i></a></li> <!-- Magic -->
+        <li><a href="#"><i class="fas fa-shopping-cart"></i> <span class="link-text">Cart</span></a></li>
+        <li><a href="#"><i class="fas fa-home"></i> <span class="link-text">Home</span></a></li>
+        <li><a href="#"><i class="fas fa-utensils"></i> <span class="link-text">Yummy!</span></a></li>
+        <li><a href="#"><i class="fas fa-running"></i> <span class="link-text">Dance!</span></a></li>
+        <li><a href="#"><i class="fas fa-music"></i> <span class="link-text">Jazz</span></a></li>
+        <li><a href="#"><i class="fas fa-history"></i> <span class="link-text">History</span></a></li>
+        <li><a href="#"><i class="fas fa-magic"></i> <span class="link-text">Magic@Teylers</span></a></li>
     </ul>
+    <div class="language-switcher">
+        <i class="fas fa-globe"></i>
+        <select class="link-text">
+            <option>English</option>
+            <option>Deutsch</option>
+            <option>Nederlands</option>
+        </select>
+    </div>
 </nav>
 </body>
