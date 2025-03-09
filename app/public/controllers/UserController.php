@@ -12,7 +12,7 @@ class UserController
     }
 
     public function get($id){
-       $this->userModel->get($id);
+       return $this->userModel->get($id);
     }
 
     // Method to verify captcha
