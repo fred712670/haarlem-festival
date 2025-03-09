@@ -1,1 +1,149 @@
+/* General */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0 auto;
+    padding: 0 auto;    
+    background-color: #f8f1e3;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    max-width: 100%;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 60px;
+    height: 100vh;
+    background: white;
+    position: fixed;
+    right: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Navigation - Fixed to the Right */
+nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: auto; 
+    height: 100vh; 
+    background-color: rgba(0, 0, 0, 0.8); 
+    z-index: 1000;
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    padding: 20px 10px;
+}
+
+.nav-links {
+    list-style: none;
+    padding: 0;
+}
+
+.nav-links li {
+    padding: 10px;
+    margin: 20px auto;
+}
+
+.nav-links i {
+    font-size: 24px;
+    color: #2c3e50;
+}
+
 /* Add custom styles here */
+.logo{
+    width: 110%;
+}
+
+/* Footer Styling */
+footer {
+    margin: 0;
+    width: 100%;
+    left: 0;
+    margin-top: 30%;  /* maybe change later*/
+    background-color: rgb(96, 187, 212);
+}
+
+.footer-container {
+    max-width: 100%;
+    margin: 20px 140px ;
+    margin-left: 5%;
+}
+
+/* Top Section */
+.footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-top p {
+    font-weight: bold;
+}
+
+.social-icons a {
+    color: black;
+    font-size: 20px;
+}
+
+/* Divider */
+hr {
+    border: none;
+    border-top: 1px solid black;
+    margin: 2px 0;
+}
+
+/* Main Footer Content */
+.footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+}
+
+.footer-logo img {
+    width: 150px;
+}
+
+/* Footer Links */
+.footer-links {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding-left: 50px;
+}
+
+.footer-section h3 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 5px;
+}
+
+.footer-section ul li a {
+    text-decoration: none;
+    color: black;
+}
+
+/* Bottom Footer */
+.footer-bottom {
+    font-weight: bold;
+    padding-top: 30px;
+    font-size: 14px;
+}
+
+/* Contact Section */
+.footer-section ul li i {
+    margin-right: 8px;
+}
