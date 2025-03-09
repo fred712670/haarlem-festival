@@ -1,5 +1,11 @@
-<?php require_once __DIR__ . "/../partials/header.php"; ?>
-<?php require_once __DIR__ . "/../partials/header_nav.php"; ?>
+<?php 
+require_once __DIR__ . "/../partials/header.php"; 
+require_once __DIR__ . "/../partials/header_nav.php"; 
+require_once __DIR__ . "/../../controllers/YummyController.php"; 
+
+$controller = new YummyController();
+$restaurants = $controller->index();
+?>
 
 <!-- Hero Section -->
 <section class="hero">
@@ -40,19 +46,22 @@
 </section>
 
 <section class="restaurant-section">
-    <h2>Taste the Local Flavor</h2>
-    <p>Discover a variety of restaurants and cuisines...</p>
-
-    <div class="restaurant-list">
+    <div class="restaurant-titles">
+      <h2>Taste the Local Flavor</h2>
+      <p>Discover a variety of restaurants and cuisines...</p>
+    </div>
+    
+    <div class="restaurant-grid">
         <?php foreach ($restaurants as $restaurant): ?>
             <div class="restaurant-card">
-                <img src="/assets/img/<?= htmlspecialchars($restaurant['image_url']) ?>" alt="<?= htmlspecialchars($restaurant['name']) ?>">
-                <h3><?= htmlspecialchars($restaurant['name']) ?></h3>
-                <p><?= htmlspecialchars($restaurant['description']) ?></p>
-                <a href="/restaurant/<?= $restaurant['id'] ?>" class="view-details">View details →</a>
+                <img src="/assets/img/<?= htmlspecialchars($restaurant['Image_url']) ?>" alt="<?= htmlspecialchars($restaurant['Name']) ?>">
+                <h3><?= htmlspecialchars($restaurant['Name']) ?></h3>
+                <p><?= htmlspecialchars($restaurant['Description']) ?></p>
+                <a href="/restaurant/<?= htmlspecialchars($restaurant['id']) ?>" class="view-details">View details →</a>
             </div>
         <?php endforeach; ?>
     </div>
 </section>
+
 
 <?php require_once __DIR__ . "/../partials/footer.php"; ?>
