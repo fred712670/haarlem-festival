@@ -380,7 +380,7 @@ INSERT INTO `Restaurant`
 (`RestaurantId`, `Name`, `Description`, `About`, `Image_url`, `ImageGallery`, `Address`, `CuisineType`, `Seats`, `Rating`, `SessionAvailable`, `Duration`, `FirstStart`, `ReducedPrice`, `WorkingHours`) 
 VALUES
 (1, 'Café de Roemer', 'A cozy café serving Dutch, fish, and European dishes.', "Welcome to Café De Roemer, where tradition meets innovation! Located in the heart of Haarlem, we specialize in authentic Italian dishes crafted with locally sourced ingredients. Whether you're here for a romantic dinner, a family gathering, or a casual meal with friends, our warm ambiance and exquisite menu will ensure an unforgettable dining experience.", 
- 'cafe-roemer.jpg', 'cafe-roemer1.jpg,cafe-roemer2.jpg,cafe-roemer3.jpg', 
+ 'cafe-roemer.jpg', 'cafe-de-roemer1.jpg,cafe-de-roemer2.jpg,cafe-de-roemer3.jpg', 
  'Botermarkt 17, 2011 XL Haarlem', 'Dutch, Fish, European', 35, 4, 3, 1.5, '2024-03-09 18:00:00', 17.50, 
  'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00'),
 
