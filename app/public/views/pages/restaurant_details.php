@@ -10,12 +10,17 @@ require_once __DIR__ . "/../partials/header_nav.php";
 
     <!-- Image and About Section -->
     <div class="restaurant-header">
-        <div class="restaurant-image">
-            <img src="/assets/img/<?= htmlspecialchars($restaurant['Image_url']) ?>" alt="<?= htmlspecialchars($restaurant['Name']) ?>">
-        </div>
+    <div class="restaurant-image">
+    <div class="slideshow">
+        <?php foreach ($restaurant['ImageGallery'] as $image): ?>
+            <img class="slide" src="/assets/img/<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($restaurant['Name']) ?>">
+        <?php endforeach; ?>
+    </div>
+</div>
+
         <div class="restaurant-about">
             <h2>About <?= htmlspecialchars($restaurant['Name']) ?></h2>
-            <p><?= htmlspecialchars($restaurant['Description']) ?></p>
+            <p><?= htmlspecialchars($restaurant['About']) ?></p>
     
            <h3>Working Hours</h3>
            <p><?= nl2br(htmlspecialchars($restaurant['WorkingHours'])) ?></p>
@@ -33,23 +38,25 @@ require_once __DIR__ . "/../partials/header_nav.php";
     <div class="restaurant-info">
         <div class="menu-highlights">
             <h3>Menu Highlights</h3>
-            <ul>
+            <ol>
                 <li><strong>Kingfish</strong> - A refreshing blend of passion fruit, peanut, and Thai basil (€20)</li>
                 <li><strong>Scallops</strong> - Delicately paired with celeriac, katsuani, and mushroom (€19)</li>
                 <li><strong>Sea Bass</strong> - Served with nduja, arrabiata, and guanciale for a rich taste (€24)</li>
                 <li><strong>Perfect Egg</strong> - A luxurious combination of truffle, spätzle, and mushroom (€8)</li>
-            </ul>
+            </ol>
         </div>
         <div class="overview">
-            <h3>Overview</h3>
-            <p><strong>Sessions Available:</strong> <?= htmlspecialchars($restaurant['SessionAvailable']) ?></p>
-            <p><strong>Duration:</strong> <?= htmlspecialchars($restaurant['Duration']) ?> hours</p>
-            <p><strong>First Session Start:</strong> <?= htmlspecialchars($restaurant['FirstStart']) ?></p>
-            <p><strong>Rating:</strong> ⭐ <?= htmlspecialchars($restaurant['Rating']) ?>/5</p>
-            <p><strong>Seats:</strong> <?= htmlspecialchars($restaurant['Seats']) ?></p>
-            <p><strong>Price:</strong> €<?= htmlspecialchars($restaurant['ReducedPrice']) ?> (Reduced -12)</p>
-            <p><strong>Cuisine:</strong> <?= htmlspecialchars($restaurant['CuisineType']) ?></p>
-        </div>
+    <h3>Overview</h3>
+    <ol>
+        <li><strong>Sessions Available:</strong> <?= htmlspecialchars($restaurant['SessionAvailable']) ?></li>
+        <li><strong>Duration:</strong> <?= htmlspecialchars($restaurant['Duration']) ?> hours</li>
+        <li><strong>First Session Start:</strong> <?= htmlspecialchars($restaurant['FirstStart']) ?></li>
+        <li><strong>Rating:</strong> ⭐ <?= htmlspecialchars($restaurant['Rating']) ?>/5</li>
+        <li><strong>Seats:</strong> <?= htmlspecialchars($restaurant['Seats']) ?></li>
+        <li><strong>Price:</strong> €<?= htmlspecialchars($restaurant['ReducedPrice']) ?> (Reduced -12)</li>
+        <li><strong>Cuisine:</strong> <?= htmlspecialchars($restaurant['CuisineType']) ?></li>
+    </ol>
+</div>
     </div>
 
     <!-- Reservation Section -->

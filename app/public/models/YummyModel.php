@@ -29,11 +29,18 @@ class YummyModel extends BaseModel
             $stmt->execute();
             $restaurant = $stmt->fetch(PDO::FETCH_ASSOC);
     
+            // Convert ImageGallery (comma-separated) to an array
+            if (!empty($restaurant['ImageGallery'])) {
+                $restaurant['ImageGallery'] = explode(',', $restaurant['ImageGallery']);
+            } else {
+                $restaurant['ImageGallery'] = [$restaurant['Image_url']]; // Fallback to main image
+            }
+    
             return $restaurant ?: null;
         } catch (Exception $e) {
             error_log("Error fetching restaurant details: " . $e->getMessage());
             return null;
         }
-    }    
+    }
 }
 ?>

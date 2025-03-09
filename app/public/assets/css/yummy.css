@@ -209,6 +209,7 @@
 }
 
 .restaurant-about {
+    margin: 20px 40px;
     flex: 1;
 }
 
@@ -238,17 +239,20 @@
     flex: 1;
     background: #2A3A4E;
     color: white;
-    padding: 20px;
+    padding: 30px;
     border-radius: 10px;
 }
 
-.menu-highlights ul {
-    list-style-type: none;
-    padding: 0;
+.menu-highlights ol, .overview ol {
+    margin: 35px 0;
 }
 
 .menu-highlights li {
-    padding: 5px 0;
+    padding: 15px 5px;
+}
+
+.overview li {
+    padding: 5px;
 }
 
 /* Reservation */
@@ -258,12 +262,17 @@
     margin-top: 20px;
     background: #2A3A4E;
     color: white;
-    padding: 20px;
+    padding: 30px;
     border-radius: 10px;
 }
 
 .contact-info, .reservation-form {
     flex: 1;
+}
+
+.contact-info{
+    padding: 10px;
+    margin: 0;
 }
 
 .reservation-form input, .reservation-form select, .reservation-form textarea {
@@ -286,4 +295,19 @@
 .reservation-note {
     font-size: 12px;
     color: #FEC400;
+}
+
+/* Slideshow container */
+.slideshow {
+    width: 300px;
+    height: 300px;
+    overflow: hidden;
+}
+
+/* Each slide */
+.slide{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }

@@ -372,15 +372,44 @@ ADD COLUMN `Name` VARCHAR(255) NOT NULL AFTER `RestaurantId`,
 ADD COLUMN `Description` TEXT DEFAULT NULL AFTER `Name`,
 ADD COLUMN `Image_url` VARCHAR(255) DEFAULT NULL AFTER `Description`,
 ADD COLUMN `Address` TEXT DEFAULT NULL AFTER `Image_url`,
-ADD COLUMN `WorkingHours` TEXT DEFAULT NULL AFTER `Address`;
+ADD COLUMN `WorkingHours` TEXT DEFAULT NULL AFTER `Address`,
+ADD COLUMN `ImageGallery` TEXT DEFAULT NULL AFTER `Image_url`,
+ADD COLUMN `About` TEXT DEFAULT NULL AFTER `Description`;
 
 INSERT INTO `Restaurant` 
-(`RestaurantId`, `Name`, `Description`, `Image_url`, `Address`, `CuisineType`, `Seats`, `Rating`, `SessionAvailable`, `Duration`, `FirstStart`, `ReducedPrice`,`WorkingHours`)
+(`RestaurantId`, `Name`, `Description`, `About`, `Image_url`, `ImageGallery`, `Address`, `CuisineType`, `Seats`, `Rating`, `SessionAvailable`, `Duration`, `FirstStart`, `ReducedPrice`, `WorkingHours`) 
 VALUES
-(1, 'Café de Roemer', 'A cozy café serving Dutch, fish, and European dishes.', 'cafe-roemer.jpg', 'Botermarkt 17, 2011 XL Haarlem', 'Dutch, Fish, European', 35, 4, 3, 1.5, '2024-03-09 18:00:00', 17.50, 'Monday - Tuesday: Closed Wednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30 Sunday: 12:00 - 14:30, 18:30 - 21:00'),
-(2, 'Ratatouille', 'Fine French dining by the river, specializing in seafood.', 'ratatouille.jpg', 'Spaarne 96, 2011 CL Haarlem, Nederland', 'French, Fish, European', 52, 4, 3, 2, '2024-03-09 17:00:00', 22.50),
-(3, 'Restaurant ML', 'An elegant dining experience offering Dutch and seafood cuisine.', 'restaurant-ml.jpg', 'Kleine Houtstraat 70, 2011 DR Haarlem, Nederland', 'Dutch, Fish, European', 60, 4, 2, 2, '2024-03-09 17:00:00', 22.50, 'Monday - Tuesday: Closed Wednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30 Sunday: 12:00 - 14:30, 18:30 - 21:00'),
-(4, 'Restaurant Fris', 'A blend of Dutch and French flavors in a cozy atmosphere.', 'restaurant-fris.jpg', 'Twijnderslaan 7, 2012 BG Haarlem, Nederland', 'Dutch, French, European', 45, 4, 3, 1.5, '2024-03-09 17:30:00', 22.50, 'Monday - Tuesday: Closed Wednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30 Sunday: 12:00 - 14:30, 18:30 - 21:00'),
-(5, 'New Vegas', 'A fully vegan restaurant with innovative plant-based dishes.', 'new-vegas.jpg', 'Koningstraat 5, 2011 TB Haarlem', 'Vegan', 36, 3, 3, 1.5, '2024-03-09 17:00:00', 17.50, 'Monday - Tuesday: Closed Wednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30 Sunday: 12:00 - 14:30, 18:30 - 21:00'),
-(6, 'Grand Cafe Brinkman', 'A modern take on Dutch and European cuisine in a grand setting.', 'grand-cafe-brinkman.jpg', 'Grote Markt 13, 2011 RC Haarlem, Nederland', 'Dutch, European, Modern', 100, 3, 3, 1.5, '2024-03-09 16:30:00', 17.50, 'Monday - Tuesday: Closed Wednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30 Sunday: 12:00 - 14:30, 18:30 - 21:00'),
-(7, 'Urban Frenchy Bistro Toujours', 'A French-inspired bistro with fresh seafood and Dutch classics.', 'urban-frenchy.jpg', 'Oude Groenmarkt 10-12, 2011 HL Haarlem, Nederland', 'Dutch, Fish, European', 48, 3, 3, 1.5, '2024-03-09 17:30:00', 17.50, 'Monday - Tuesday: Closed Wednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30 Sunday: 12:00 - 14:30, 18:30 - 21:00');
+(1, 'Café de Roemer', 'A cozy café serving Dutch, fish, and European dishes.', "Welcome to Café De Roemer, where tradition meets innovation! Located in the heart of Haarlem, we specialize in authentic Italian dishes crafted with locally sourced ingredients. Whether you're here for a romantic dinner, a family gathering, or a casual meal with friends, our warm ambiance and exquisite menu will ensure an unforgettable dining experience.", 
+ 'cafe-roemer.jpg', 'cafe-roemer1.jpg,cafe-roemer2.jpg,cafe-roemer3.jpg', 
+ 'Botermarkt 17, 2011 XL Haarlem', 'Dutch, Fish, European', 35, 4, 3, 1.5, '2024-03-09 18:00:00', 17.50, 
+ 'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00'),
+
+(2, 'Ratatouille', 'Fine French dining by the river, specializing in seafood.', "Welcome to Fris, where tradition meets innovation! Located in the heart of Haarlem, we specialize in authentic Italian dishes crafted with locally sourced ingredients. Whether you're here for a romantic dinner, a family gathering, or a casual meal with friends, our warm ambiance and exquisite menu will ensure an unforgettable dining experience.", 
+ 'ratatouille.jpg', 'ratatouille1.jpg,ratatouille2.jpg,ratatouille3.jpg', 
+ 'Spaarne 96, 2011 CL Haarlem, Nederland', 'French, Fish, European', 52, 4, 3, 2, '2024-03-09 17:00:00', 22.50, 
+ 'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00'),
+
+(3, 'Restaurant ML', 'An elegant dining experience offering Dutch and seafood cuisine.', "Welcome to Restaurant ML, that blends historical elegance with contemporary flair, offering a Michelin-starred menu that impresses with its creativity and taste. Led by Chef Mark Gratama, the restaurant is celebrated for its innovative dishes that expertly combine traditional techniques with modern culinary artistry.",
+ 'restaurant-ml.jpg', 'restaurant-ml1.jpg,restaurant-ml2.jpg,restaurant-ml3.jpg', 
+ 'Kleine Houtstraat 70, 2011 DR Haarlem, Nederland', 'Dutch, Fish, European', 60, 4, 2, 2, '2024-03-09 17:00:00', 22.50, 
+ 'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00'),
+
+(4, 'Restaurant Fris', 'A blend of Dutch and French flavors in a cozy atmosphere.', "Welcome to Fris! Nestled in the heart of Haarlem, Fris marries contemporary culinary art with the rich flavors of Dutch cuisine. Perfect for a sophisticated night out, a memorable family dinner, or a delightful gathering with friends, our restaurant offers a warm atmosphere and a menu that caters to discerning palates. Join us at Fris for an exceptional dining adventure where every meal is a celebration of modern gastronomy." ,
+ 'restaurant-fris.jpg', 'restaurant-fris1.jpg,restaurant-fris2.jpg,restaurant-fris3.jpg', 
+ 'Twijnderslaan 7, 2012 BG Haarlem, Nederland', 'Dutch, French, European', 45, 4, 3, 1.5, '2024-03-09 17:30:00', 22.50, 
+ 'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00'),
+
+(5, 'New Vegas', 'A fully vegan restaurant with innovative plant-based dishes.', "Welcome to New Vegas, a culinary gem in the bustling heart of Haarlem at Koningstraat 5. Here, we merge vibrant flavors with an artistic flair to bring you a truly unique dining experience. Our kitchen focuses on innovative international cuisine, with each dish crafted to surprise and delight. " ,
+ 'new-vegas.jpg', 'new-vegas1.jpg,new-vegas2.jpg,new-vegas3.jpg', 
+ 'Koningstraat 5, 2011 TB Haarlem', 'Vegan', 36, 3, 3, 1.5, '2024-03-09 17:00:00', 17.50, 
+ 'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00'),
+
+(6, 'Grand Cafe Brinkman', 'A modern take on Dutch and European cuisine in a grand setting.', "Welcome to Grand Café Brinkmann, a cherished landmark nestled in the heart of Haarlem at Grote Markt 13. Established over a century ago, this iconic café blends rich history with contemporary hospitality. Offering a diverse menu that ranges from classic Dutch favorites to modern culinary delights, Grand Café Brinkmann is perfect for any dining occasion. " ,
+ 'grand-cafe-brinkman.jpg', 'grand-cafe-brinkman1.jpg,grand-cafe-brinkman2.jpg,grand-cafe-brinkman3.jpg', 
+ 'Grote Markt 13, 2011 RC Haarlem, Nederland', 'Dutch, European, Modern', 100, 3, 3, 1.5, '2024-03-09 16:30:00', 17.50, 
+ 'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00'),
+
+(7, 'Urban Frenchy Bistro Toujours', 'A French-inspired bistro with fresh seafood and Dutch classics.', "Welcome to Frenchy Bistro Toujours, your slice of Paris nestled in the charming streets of Haarlem at Oude Groenmarkt 10. This cozy bistro offers a romantic and inviting ambiance, perfect for indulging in the finest French cuisine. At Toujours, we pride ourselves on delivering authentic flavors using high-quality ingredients, paired beautifully with our selection of French wines. " ,
+ 'urban-frenchy.jpg', 'urban-frenchy1.jpg,urban-frenchy2.jpg,urban-frenchy3.jpg', 
+ 'Oude Groenmarkt 10-12, 2011 HL Haarlem, Nederland', 'Dutch, Fish, European', 48, 3, 3, 1.5, '2024-03-09 17:30:00', 17.50, 
+ 'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00');
