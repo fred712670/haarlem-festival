@@ -8,7 +8,6 @@ class YummyController
         $restaurantModel = new YummyModel();
         $restaurants = $restaurantModel->getAllRestaurants();
 
-        // ✅ Pass restaurants to the view (avoid direct include)
         return $restaurants;
     }
 }
