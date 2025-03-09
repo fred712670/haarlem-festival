@@ -147,3 +147,66 @@ hr {
 .footer-section ul li i {
     margin-right: 8px;
 }
+
+/* Forgot password form */
+/* Center the form */
+.auth-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 80px auto;
+    padding: 30px;
+    background: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* Form headings */
+.auth-container h2 {
+    margin-bottom: 20px;
+    color: #2c3e50;
+    font-size: 24px;
+}
+
+/* Input fields */
+.auth-container input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Submit button */
+.auth-container button {
+    width: 100%;
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.auth-container button:hover {
+    background: #2980b9;
+}
+
+/* Links */
+.auth-links {
+    margin-top: 15px;
+}
+
+.auth-links a {
+    text-decoration: none;
+    color: #3498db;
+    font-size: 14px;
+    margin: 5px;
+}
+
+.auth-links a:hover {
+    text-decoration: underline;
+}
