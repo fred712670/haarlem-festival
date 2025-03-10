@@ -16,6 +16,7 @@ Route::add('/user/([a-z-0-9-]*)', function ($userId) {
     $userController = new UserController(); // create a new user controller
     $user = $userController->get($userId); // get data for the view
     require_once(__DIR__ . "/../views/pages/user.php"); // load the view
+<<<<<<< HEAD
 });
 
 
@@ -131,3 +132,6 @@ Route::post('/process-reset-password', function() {
     echo $controller->processResetPassword($_POST["token"], $_POST["password"]); // Keep parameters
 });
 
+=======
+});
+>>>>>>> UserLogin

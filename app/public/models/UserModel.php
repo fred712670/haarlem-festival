@@ -70,6 +70,19 @@ class UserModel extends BaseModel
     } else {
         return ['success' => false, 'message' => 'Registration failed'];
     }
+
+    public function login($username): array
+    {
+        $stmt = self::$pdo->prepare("SELECT * FROM User WHERE FullName = :username");  // Prepare SQL to fetch user by username
+        $stmt->execute(['username' => $username]);  // Execute the SQL query with the entered username
+        return $stmt->fetch();  // Fetch the user record from the database
+    }
+
+    public function updatePassword(string $username, string $newPasword) 
+    {
+        $stmt = self::$pdo->prepare("UPDATE User SET password = :new_password WHERE FullName = :username");
+        $stmt->execute(['username' => $username, 'new_password' => $newPasword]);
+    }
 }
     public function get($id)
     {
