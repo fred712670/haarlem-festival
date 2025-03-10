@@ -44,6 +44,9 @@
 									<div class="col-sm-9 text-secondary">
 										<input type="button" id="openPrompt1" class="btn btn-primary px-4" data-bs-toggle="modal" data-bs-target="#modal-name" value="Save Changes">
 									</div>
+									<?php if (!empty($nameValidation)): ?>
+										<p style="color: red"><?= $nameValidation ?></p>
+										<?endif; ?>
 								</div>
 									<!-- Modal Name Change-->
 								<div class="modal fade" tabindex="-1" id="modal-name">
@@ -100,6 +103,9 @@
 										<div class="col-sm-9 text-secondary">
 											<input type="button" class="btn btn-primary px-4" data-bs-toggle="modal" data-bs-target="#modal-email" value="Save Changes">
 										</div>
+										<?php if (!empty($emailValidation)): ?>
+										<p style="color: red"><?= $emailValidation ?></p>
+										<?endif; ?>
 									</div>
 									<!-- Modal Email Change-->
 									<div class="modal fade" tabindex="-1" id="modal-email">
@@ -163,8 +169,8 @@
 										<div class="col-sm-9 text-secondary">
 										<input type="button" class="btn btn-primary px-4" id="openPrompt2" data-bs-toggle="modal" data-bs-target="#modal-pswd" value="Change Password">
 										</div>
-										<?php if (!empty($error)): ?>
-										<p style="color: red"><?= $error ?></p>
+										<?php if (!empty($passwordValidation)): ?>
+										<p style="color: red"><?= $passwordValidation ?></p>
 										<?endif; ?>
 									</div>
 										<!-- Modal Password change -->

@@ -328,3 +328,8 @@ hr {
     height: auto;
     display: block;
 }
+/* ------ PROFILE EDITING ------ */
+
+.card{
+    margin-top: 20px;
+}
