@@ -298,3 +298,33 @@ hr {
 .auth-links a:hover {
     text-decoration: underline;
 }
+
+/* MAGIC TEYLERS  */
+.img-fluid {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.text-section {
+    padding: 20px 15%; /* Adjust padding and set a percentage to keep text away from the edges */
+}
+
+.highlight {
+    background-color: #f8f9fa;
+    padding: 20px;
+    margin: 20px 15%; /* Increase margin for highlights to maintain consistency */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Optional: Adds subtle shadow for depth */
+}
+
+.btn-custom {
+    background-color: red;
+    color: white;
+    border: none;
+}
+
+#teylers-title-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
