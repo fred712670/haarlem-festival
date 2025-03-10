@@ -23,12 +23,12 @@ require_once(__DIR__ . "/lib/Route.php");
  */
 require_once(__DIR__ . "/routes/index.php");
 require_once(__DIR__ . "/routes/user.php");
-<<<<<<< HEAD
+
 require_once(__DIR__ . "/routes/registrationRoute.php");
 require_once(__DIR__ . "/routes/magic.php");
 =======
 require_once(__DIR__ . "/routes/login.php");
->>>>>>> UserLogin
+
 
 // Start the router, enabling handling requests
 Route::run();
