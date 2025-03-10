@@ -328,8 +328,35 @@ hr {
     height: auto;
     display: block;
 }
-/* ------ PROFILE EDITING ------ */
+/* MAGIC TEYLERS  */
 
 .card{
     margin-top: 20px;
+}
+
+/* SHOPPING CART  */
+.container {
+    padding-top: 20px;
+}
+.header {
+    background-color: #f0f0f0;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+.cart-item {
+    background-color: #f8f8f8;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 10px;
+}
+.cart-total {
+    text-align: right;
+    margin-top: 20px;
+}
+.form-section {
+    margin-bottom: 20px;
+}
+.button-bar {
+    text-align: right;
 }
