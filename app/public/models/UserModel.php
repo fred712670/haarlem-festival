@@ -9,6 +9,8 @@ class UserModel extends BaseModel
         parent::__construct();
     }
 
+
+
    // Fetch user by username
    public function getUserByUsername($fullName)
    {
@@ -74,7 +76,7 @@ class UserModel extends BaseModel
         $pdo = self::$pdo; 
 
         if (empty($id) || !is_numeric($id)) {
-            return false; // Return false if userID is not valid
+            return false;
         }
     
         // Prepare the SQL statement using PDO
