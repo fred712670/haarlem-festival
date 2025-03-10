@@ -1,6 +1,4 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 /**
  * Routes for admin user management functionality
  */
@@ -212,3 +210,5 @@ Route::add('/admin/users/delete/([0-9]+)', function($userId) {
     header('Location: /admin/users');
     exit();
 }, 'post');
+
+

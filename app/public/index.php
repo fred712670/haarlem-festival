@@ -6,6 +6,9 @@
 require_once(__DIR__ . "/lib/env.php"); // sets global env variables (database configuration)
 require_once(__DIR__ . "/lib/error_reporting.php"); // enables error reporting locally
 
+// Enable error display for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 /**
  * Start user session
  */
@@ -25,6 +28,11 @@ require_once(__DIR__ . "/routes/index.php");
 require_once(__DIR__ . "/routes/user.php");
 require_once(__DIR__ . "/routes/registrationRoute.php");
 require_once(__DIR__ . "/routes/magic.php");
+require_once(__DIR__ . "/routes/admin.php");
+
+
+echo "<!-- Total routes registered: " . count(Route::getAll()) . " -->";
+
 
 // Start the router, enabling handling requests
 Route::run();
