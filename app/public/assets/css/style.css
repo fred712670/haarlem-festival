@@ -329,8 +329,125 @@ hr {
     height: auto;
     display: block;
 }
-/* ------ PROFILE EDITING ------ */
+/* MAGIC TEYLERS  */
 
 .card{
     margin-top: 20px;
+}
+
+/* SHOPPING CART  */
+.container {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Two columns, the right column is narrower */
+    grid-template-rows: auto; /* Automatically adjust the row sizes */
+    grid-template-areas: 
+        "personal summary"
+        "cart summary";
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px; /* Set a max-width for the container */
+    margin: auto; /* Center the container */
+}
+
+.personal-and-cart {
+    display: flex;
+    flex-direction: column; /* This changes from grid to flex to control vertical stacking */
+    grid-area: personal; /* Assigns the entire left column for personal details and cart */
+}
+
+.form-section {
+    margin-bottom: 20px; /* Provides spacing between form section and cart section */
+}
+
+.cart-section {
+    margin-bottom: 20px; /* Optional, depending on your design needs */
+}
+
+.order-summary {
+    grid-area: summary; /* This ensures it takes up the entire right column */
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-self: start; /* Aligns to the top of the grid area */
+    height: 100%; /* Takes full height of its grid area */
+}
+
+.form-section, .cart-section {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+
+.button-bar {
+    grid-column: 1 / -1; /* Spans across all columns at the bottom */
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.header {
+    background-color: #f0f0f0;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+.ticket-container {
+    background: #f9f9f9;
+    width: 500px;
+    border: 1px solid #ccc;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-family: Arial, sans-serif;
+}
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+.quantity-controls button {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.quantity-controls input {
+    width: 40px;
+    text-align: center;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+button.update {
+    background-color: #28a745;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+    margin-top: 10px;
+}
+p.eventName{
+    font-weight: bold;
 }
