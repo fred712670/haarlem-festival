@@ -9,8 +9,6 @@ class UserModel extends BaseModel
         parent::__construct();
     }
 
-
-
    // Fetch user by username
    public function getUserByUsername($fullName)
    {
@@ -71,13 +69,22 @@ class UserModel extends BaseModel
         return ['success' => false, 'message' => 'Registration failed'];
     }
    }
-    public function login($username): array
-    {
-        $stmt = self::$pdo->prepare("SELECT * FROM User WHERE FullName = :username");  // Prepare SQL to fetch user by username
-        $stmt->execute(['username' => $username]);  // Execute the SQL query with the entered username
-        return $stmt->fetch();  // Fetch the user record from the database
-    }
 
+   public function login($username): array
+{
+    try {
+        $stmt = self::$pdo->prepare("SELECT * FROM User WHERE FullName = :username");
+        $stmt->execute(['username' => $username]);
+
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $user ?: []; // Ensures an empty array is always returned
+
+    } catch (PDOException $e) {
+        error_log("Database error in login(): " . $e->getMessage()); // Displays error
+        return []; // Return an empty array
+    }
+}
 
     public function get($id)
     {
@@ -221,4 +228,3 @@ class UserModel extends BaseModel
 }
 
 ?>
-
