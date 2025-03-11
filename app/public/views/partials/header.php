@@ -19,6 +19,9 @@
     <script 
         src="/assets/js/yummy.js">
     </script>
+    <script 
+        src="/assets/js/shoppingCart.js">
+    </script>
 </head>
 
 <body>
