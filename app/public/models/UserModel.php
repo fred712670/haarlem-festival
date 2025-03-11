@@ -9,8 +9,6 @@ class UserModel extends BaseModel
         parent::__construct();
     }
 
-
-
    // Fetch user by username
    public function getUserByUsername($fullName)
    {
@@ -70,6 +68,7 @@ class UserModel extends BaseModel
     } else {
         return ['success' => false, 'message' => 'Registration failed'];
     }
+   }
 
     public function login($username): array
     {
@@ -78,12 +77,6 @@ class UserModel extends BaseModel
         return $stmt->fetch();  // Fetch the user record from the database
     }
 
-    public function updatePassword(string $username, string $newPasword) 
-    {
-        $stmt = self::$pdo->prepare("UPDATE User SET password = :new_password WHERE FullName = :username");
-        $stmt->execute(['username' => $username, 'new_password' => $newPasword]);
-    }
-}
     public function get($id)
     {
         $pdo = self::$pdo; 
@@ -126,7 +119,6 @@ class UserModel extends BaseModel
         // Execute the statement and return true on success
         return $stmt->execute();
     }
-
 
     public function updateEmail($userId, $newEmail): bool {
         $pdo = self::$pdo;
@@ -221,4 +213,3 @@ class UserModel extends BaseModel
 }
 
 ?>
-
