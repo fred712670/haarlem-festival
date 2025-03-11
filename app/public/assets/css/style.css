@@ -13,15 +13,18 @@ body {
 /* Sidebar - Fixed to the Right */
 .sidebar {
     z-index: 1000;
-    position: fixed;
-    width: 70px;
+    width: 60px;
     height: 100vh;
+    background: white;
+    position: fixed;
     right: 0;
     top: 0;
-    background: white;
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+    transition: width 0.3s ease-in-out;
+    overflow-x: hidden;
 }
 
 /* Expanded Sidebar */
@@ -326,25 +329,8 @@ hr {
     height: auto;
     display: block;
 }
+/* MAGIC TEYLERS  */
 /* ------ PROFILE EDITING ------ */
-
-.card{
-    margin-top: 20px;
-}
-
-/* SHOPPING CART  */
-.container {
-    display: grid;
-    grid-template-columns: 2fr 1fr; /* Two columns, the right column is narrower */
-    grid-template-rows: auto; /* Automatically adjust the row sizes */
-    grid-template-areas: 
-        "personal summary"
-        "cart summary";
-    gap: 20px;
-    padding: 20px;
-    max-width: 1200px; /* Set a max-width for the container */
-    margin: auto; /* Center the container */
-}
 
 .personal-and-cart {
     display: flex;
@@ -386,11 +372,6 @@ hr {
     display: flex;
     justify-content: space-between;
     padding: 20px;
-}
-
-button {
-    padding: 10px 20px;
-    cursor: pointer;
 }
 
 .header {
