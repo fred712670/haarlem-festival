@@ -26,7 +26,6 @@ require_once(__DIR__ . "/routes/user.php");
 
 require_once(__DIR__ . "/routes/registrationRoute.php");
 require_once(__DIR__ . "/routes/magic.php");
-=======
 require_once(__DIR__ . "/routes/login.php");
 
 

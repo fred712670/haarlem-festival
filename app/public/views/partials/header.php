@@ -31,12 +31,12 @@
     </div>
     <ul class="nav-links">
         <li><a href="#"><i class="fas fa-shopping-cart"></i> <span class="link-text">Cart</span></a></li>
-        <li><a href="#"><i class="fas fa-home"></i> <span class="link-text">Home</span></a></li>
-        <li><a href="#"><i class="fas fa-utensils"></i> <span class="link-text">Yummy!</span></a></li>
+        <li><a href="/"><i class="fas fa-home"></i> <span class="link-text">Home</span></a></li>
+        <li><a href="/yummy"><i class="fas fa-utensils"></i> <span class="link-text">Yummy!</span></a></li>
         <li><a href="#"><i class="fas fa-running"></i> <span class="link-text">Dance!</span></a></li>
         <li><a href="#"><i class="fas fa-music"></i> <span class="link-text">Jazz</span></a></li>
         <li><a href="#"><i class="fas fa-history"></i> <span class="link-text">History</span></a></li>
-        <li><a href="#"><i class="fas fa-magic"></i> <span class="link-text">Magic@Teylers</span></a></li>
+        <li><a href="/magicteylers"><i class="fas fa-magic"></i> <span class="link-text">Magic@Teylers</span></a></li>
     </ul>
     <div class="language-switcher">
         <i class="fas fa-globe"></i>
