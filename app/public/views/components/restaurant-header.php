@@ -16,7 +16,7 @@ function renderRestaurantHeader($restaurant) {
             <div class="restaurant-image">
                 <div class="slideshow">
                     <?php foreach ($imageGallery as $image): ?>
-                        <img class="slide" src="/assets/img/<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($restaurant['Name']) ?>">
+                        <img class="slide" src="/assets/img/yummy/<?= htmlspecialchars($image) ?>" alt="<?= htmlspecialchars($restaurant['Name']) ?>">
                     <?php endforeach; ?>
                 </div>
             </div>
