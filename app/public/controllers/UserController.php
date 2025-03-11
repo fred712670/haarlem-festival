@@ -84,7 +84,7 @@ class UserController
             ? "✅ Password updated successfully! <a href='/login'>Login</a>."
             : "❌ Something went wrong.";
     }
-}
+
     // Method to verify captcha
     private function verifyCaptcha($captchaResponse)
     {
