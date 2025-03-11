@@ -12,7 +12,7 @@ class RestaurantDetailsController
             die("Restaurant not found.");
         }
 
-        require_once __DIR__ . '/../views/pages/restaurant_details.php';
+        require_once __DIR__ . '/../views/pages/restaurant-details.php';
     }
 }
 ?>
