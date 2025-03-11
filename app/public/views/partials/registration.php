@@ -6,6 +6,7 @@
     <title>Register Form</title>
     <link rel="stylesheet" href="../../assets/css/registrationStyle.css"/>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="/assets/js/navigation.js"></script>
 </head>
 <body>
     <div class="registration-container">
@@ -46,4 +47,5 @@
     </div>
 </body>
 </html>
+
 

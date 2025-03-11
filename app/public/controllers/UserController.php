@@ -97,7 +97,9 @@ class UserController
             // If we reach here, registration was successful
             // Send verification email
             $this->sendEmailRegister($username, $email, $verify_token);
-            header('Location: /login?message=verify');
+
+            $_SESSION['verification_status'] = 'Your account has been created successfully! Please check your email to verify your account.';
+            require(__DIR__ . "/../views/pages/verify-email.php");
             exit();
         } catch (Exception $e) {
             $_SESSION['register_error'] = $e->getMessage();
@@ -130,29 +132,29 @@ class UserController
             // Set email format to HTML
             $mail->isHTML(true);                                       
             $mail->Subject = 'Email Verification from Haarlem Festival';
-            $mail->Body    = "Hello $username, <br>Please click on the link below to verify your email address:<br><a href='http://localhost/registration/verify-email?token=$verify_token'> Verify Email</a>";
+            $mail->Body    = "Hello $username, <br>Please click on the link below to verify your email address:<br><a href='http://localhost/verify-email?token=$verify_token'> Verify Email</a>";
     
             $mail->send();
-            //echo 'Message has been sent';
+            return true;
         } catch (Exception $e) {
-            // Capture any errors and possibly return them as needed.
-            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            $_SESSION['email_error'] = "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            return false;
+
         }
     }
 
     public function verifyEmail($token) {
         $result = $this->userModel->verifyUser($token);
+        
         if ($result) {
             // Verification success
             $_SESSION['verification_status'] = 'Email successfully verified. You can now log in.';
-            header('Location: /login');
-            exit();
         } else {
             // Verification failed
             $_SESSION['verification_status'] = 'The verification link is invalid or has already been used.';
-            header('Location: /login?verified=false');
-            exit();
         }
+        require(__DIR__ . "/../views/pages/verify-email.php");
+        exit();
     }
 }
-
+?>

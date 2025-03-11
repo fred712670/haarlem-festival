@@ -83,7 +83,7 @@ class UserModel extends BaseModel
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
     
         if ($user) {
-            $sql = "UPDATE User SET verify_token = NULL, verify_status = 1 WHERE UserId = :userId";
+            $sql = "UPDATE User SET verify_status = 1 WHERE UserId = :userId";
             $stmt = self::$pdo->prepare($sql);
             $stmt->bindParam(':userId', $user['UserId']);
             return $stmt->execute();

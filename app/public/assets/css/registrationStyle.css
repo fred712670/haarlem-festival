@@ -10,7 +10,7 @@ body {
 }
 
 .registration-container {
-    width: 400px;
+    width: 360px;
     padding: 30px;
     background: #fff;
     border-radius: 5px;
@@ -61,8 +61,8 @@ form {
 /* reCAPTCHA container */
 .form-group:nth-child(4) {
     display: flex;
-    align-items: flex-start; /* Adjusted from center to flex-start */
-    justify-content: center;
+    align-items: flex-start;
+    justify-content: left;
 }
 
 /* reCAPTCHA scaling */
@@ -123,4 +123,44 @@ p {
     .g-recaptcha {
         transform: scale(0.77);
     }
+}
+
+/* Verification message styling */
+.verification-message {
+    margin: 20px 0;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Button styling for verification page */
+.btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    margin-top: 15px;
+    background: #FFD700;
+    color: #333;
+    text-decoration: none;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.btn:hover {
+    background: #FBBE49;
 }
