@@ -33,12 +33,58 @@ class UserModel extends BaseModel
         $stmt->execute();
         return $stmt->fetch() !== false;
     }
-    public function login($username): array
-    {
-        $stmt = self::$pdo->prepare("SELECT * FROM User WHERE FullName = :username");  // Prepare SQL to fetch user by username
-        $stmt->execute(['username' => $username]);  // Execute the SQL query with the entered username
-        return $stmt->fetch();  // Fetch the user record from the database
+
+    // Method to check if the email already exists
+    private function checkEmail($email) {
+        $sql = "SELECT UserId FROM User WHERE Email = :email";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        return $stmt->fetch() !== false;
     }
+
+   // Method to register a new user
+   public function register($fullName, $email, $password, $role) {
+
+    if ($this->checkUserName($fullName)) {
+        return ['success' => false, 'message' => 'Username already exists'];
+    }
+
+    if ($this->checkEmail($email)) {
+        return ['success' => false, 'message' => 'Email already exists'];
+    }
+
+    $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+
+    $sql = "INSERT INTO User (FullName, Email, Password, Role) VALUES (:fullName, :email, :password, :role)";
+    $stmt = self::$pdo->prepare($sql);
+    $stmt->bindParam(':fullName', $fullName);
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':password', $hashedPassword);
+    $stmt->bindParam(':role', $role);
+
+    if ($stmt->execute()) {
+        return ['success' => true];
+    } else {
+        return ['success' => false, 'message' => 'Registration failed'];
+    }
+   }
+
+   public function login($username): array
+{
+    try {
+        $stmt = self::$pdo->prepare("SELECT * FROM User WHERE FullName = :username");
+        $stmt->execute(['username' => $username]);
+
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $user ?: []; // Ensures an empty array is always returned
+
+    } catch (PDOException $e) {
+        error_log("Database error in login(): " . $e->getMessage()); // Displays error
+        return []; // Return an empty array
+    }
+}
 
     public function get($id)
     {
@@ -233,6 +279,3 @@ class UserModel extends BaseModel
 
 
 ?>
-
-
-
