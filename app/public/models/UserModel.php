@@ -19,6 +19,14 @@ class UserModel extends BaseModel
        return $stmt->fetch(PDO::FETCH_ASSOC);
    }
 
+   // Fetch user by email
+   public function getUserByEmail($email) {
+      $sql = "SELECT * FROM User WHERE Email = ?";
+      $stmt = self::$pdo->prepare($sql);
+      $stmt->execute([$email]);
+      return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
    // Verify password
    public function verifyPassword($inputPassword, $storedPassword)
    {
@@ -217,47 +225,6 @@ class UserModel extends BaseModel
         $sql = "UPDATE User SET password = ?, ResetToken = NULL, ResetTokenExpires = NULL WHERE UserId = ?";
         $stmt = self::$pdo->prepare($sql);
         return $stmt->execute([$hashedPassword, $userId]);
-    }
-
-    // Method to check if the email already exists
-    private function checkEmail($email) 
-    {
-        $sql = "SELECT UserId FROM User WHERE Email = :email";
-        $stmt = self::$pdo->prepare($sql);
-        $stmt->bindParam(':email', $email);
-        $stmt->execute();
-        return $stmt->fetch() !== false;
-    }
-   
-    public function register($fullName, $email, $password, $role, $verify_token) 
-    {
-        // Check if username exists
-        if ($this->checkUserName($fullName)) {
-            return ['success' => false, 'message' => 'Username already exists'];
-        }
-        
-        // Check if email exists
-        if ($this->checkEmail($email)) {
-            return ['success' => false, 'message' => 'Email already exists'];
-        }
-        
-        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-        
-        $sql = "INSERT INTO User (FullName, Email, Password, Role, verify_token, verify_status)
-                VALUES (:fullName, :email, :password, :role, :verify_token, 0)";
-        $stmt = self::$pdo->prepare($sql);
-        $stmt->bindParam(':fullName', $fullName);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':password', $hashedPassword);
-        $stmt->bindParam(':role', $role);
-        $stmt->bindParam(':verify_token', $verify_token);
-        
-        $result = $stmt->execute();
-        
-        return [
-            'success' => $result,
-            'verify_token' => $verify_token
-        ];
     }
         // Verify user and update verify_status
     public function verifyUser($token) {
