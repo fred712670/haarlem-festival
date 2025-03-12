@@ -1,4 +1,3 @@
-
 <?php
 require_once __DIR__ . '/../lib/Route.php';
 require_once __DIR__ . '/../controllers/YummyController.php';

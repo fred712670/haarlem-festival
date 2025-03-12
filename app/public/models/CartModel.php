@@ -9,11 +9,11 @@ class CartModel {
     }
 
     public function addToCart($ticket) {
-        $this->model->addTicket($ticket);
+        //$this->model->addTicket($ticket);
     }
 
     public function updateQuantity($index, $quantity) {
-        $this->model->updateTicketQuantity($index, $quantity);
+        //$this->model->updateTicketQuantity($index, $quantity);
         header('Location: cart.php'); // Redirect to the cart view after updating
     }
 

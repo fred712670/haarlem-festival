@@ -1,25 +1,11 @@
 <?php
-// Function to add a dummy ticket to the session cart
-
-    $dummyTicket = array(
-        'eventId' => 1,
-        'eventName' => 'Stroll To History Event',
-        'dateTime' => '13:00, Saturday, 26 July 2025',
-        'price' => 60.00,
-        'quantity' => 2
-    );
-
-    $_SESSION['cart'] = array();
-
-    // Add the dummy ticket to the cart
-    $_SESSION['cart'][] = $dummyTicket;
-
-    print_r($_SESSION['cart']);
+    //print_r($_SESSION['cart']);
+    $totalPrice = 0;
 ?>
 <body>
     <div class="container">
         <div class="personal-and-cart">
-            <div class="form-section">
+            <!--<div class="form-section">
                 <h2>Personal Details</h2>
                 <form>
                     <div class="mb-3">
@@ -39,28 +25,36 @@
                         <input type="email" class="form-control" id="email" required>
                     </div>
                 </form>
-            </div>
+            </div>-->
 
             <div class="cart-section">
                 <h2>Cart contents</h2>
 
-                <?php foreach ($_SESSION['cart'] as $index => $ticket): ?>
-                <div class="ticket-container">
-                    <form method="post" action="/completeOrder">
-                        <p class="eventName"><?= htmlspecialchars($ticket['eventName'])?>
+                <form method="post" action="completeOrder">
+                    <?php foreach ($_SESSION['cart'] as $index => $ticket): ?>
+                        <div class="ticket-container">
+                            <p class="eventName"><?= htmlspecialchars($ticket['description']) ?></p>
+                            <p><?= htmlspecialchars($ticket['location']) ?></p>
+                            <p><?= htmlspecialchars($ticket['dateTime']) ?></p>
+                            
                             <div class="quantity-controls">
-                                <button type="button" onclick="subtractQuantity()">-</button>
-                                <input type="number" id="quantity" name="quantity" value="<?= htmlspecialchars($ticket['quantity']) ?>" readonly>
-                                <button type="button" onclick="addQuantity()">+</button>
+                                <button type="button" onclick="subtractQuantity(<?= $index ?>)">-</button>
+                                <input type="number" id="quantity<?= $index ?>" name="quantity[<?= $index ?>]" value="<?= htmlspecialchars($ticket['quantity']) ?>" readonly>
+                                <button type="button" onclick="addQuantity(<?= $index ?>)">+</button>
                             </div>
-                        </p>
-                        <p>€ <span id="ticketPrice"><?= htmlspecialchars($ticket['price']) ?></span></p>
-                        <input type="hidden" name="index" value="<?= $index ?>">
 
-                    </div>
-                    <p>Total: € <span name="totalPrice" id="totalPrice"><?= htmlspecialchars($ticket['price'] * $ticket['quantity'] )?></span></p>
-                    <button class="btn btn-primary" name="completeOrder">Proceed to payment</button>
-                    <?php endforeach; ?>
+                            <p>€ <span id="ticketPrice<?= $index ?>"><?= htmlspecialchars($ticket['price']) ?></span></p>
+                            <input type="hidden" name="index" value="<?= $index ?>">
+                        </div>
+                        
+                        <?php
+                        // Calculate total price
+                        $totalPrice += $ticket['price'] * $ticket['quantity'];
+                        ?>
+                        <?php endforeach; ?>
+
+                        <p>Total: € <span id="totalPrice"><?= htmlspecialchars($totalPrice) ?></span></p>
+                        <button class="btn btn-primary" name="completeOrder">Proceed to payment</button>
                 </form>
         </div>
 
@@ -77,7 +71,5 @@
         </div>
     </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

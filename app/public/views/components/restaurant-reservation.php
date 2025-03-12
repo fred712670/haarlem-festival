@@ -10,21 +10,26 @@ function renderRestaurantReservation($restaurant) {
         </div>
         <div class="reservation-form">
             <h3>Make a Reservation</h3>
-            <form>
-                <label>Number of guests:</label>
-                <input type="number" min="1" max="<?= $restaurant['Seats'] ?>" value="2">
+            <!-- Added names so that the form is workable-->
+            <form method="post" action="/reserve/restaurant">
+                <!-- Hidden inputs to pass restaurant name and address with the form-->
+                <input type="hidden" name="restaurantName" value="<?= htmlspecialchars($restaurant['Name']) ?>">
+                <input type="hidden" name="restaurantAddress" value="<?= htmlspecialchars($restaurant['Address']) ?>">
 
-                <label>Select a date:</label>
-                <input type="date">
+                <label for="guests">Number of guests:</label>
+                <input type="number" id="guests" name="guests" min="1" max="12"<?= $restaurant['Seats'] ?> value="2">
 
-                <label>Select time:</label>
-                <select>
-                    <option>12:00 - 14:30</option>
-                    <option>18:30 - 21:00</option>
+                <label for="date">Select a date:</label>
+                <input type="date" id="date" name="date" min="<?php echo date('Y-m-d'); ?>" value="<?php echo date('Y-m-d'); ?>" required>
+
+                <label for="time">Select time:</label>
+                <select id="time" name="time">
+                    <option value="12:00-14:30">12:00 - 14:30</option>
+                    <option value="18:30-21:00">18:30 - 21:00</option>
                 </select>
 
-                <label>Special Requests:</label>
-                <textarea placeholder="Allergies, dietary preferences, etc."></textarea>
+                <label for="requests">Special Requests:</label>
+                <textarea id="requests" name="requests" placeholder="Allergies, dietary preferences, etc."></textarea>
 
                 <button type="submit">Reserve</button>
             </form>
