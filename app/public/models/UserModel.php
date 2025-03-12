@@ -19,6 +19,14 @@ class UserModel extends BaseModel
        return $stmt->fetch(PDO::FETCH_ASSOC);
    }
 
+   // Fetch user by email
+   public function getUserByEmail($email) {
+      $sql = "SELECT * FROM User WHERE Email = ?";
+      $stmt = self::$pdo->prepare($sql);
+      $stmt->execute([$email]);
+      return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
    // Verify password
    public function verifyPassword($inputPassword, $storedPassword)
    {
@@ -197,13 +205,6 @@ class UserModel extends BaseModel
         }
     }
 
-    public function getUserByEmail($email) {
-        $sql = "SELECT * FROM User WHERE Email = ?";
-        $stmt = self::$pdo->prepare($sql);
-        $stmt->execute([$email]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
     public function storeResetToken($email, $token_hash, $expiry) {
         $sql = "UPDATE User SET ResetToken = ?, ResetTokenExpires = ? WHERE Email = ?";
         $stmt = self::$pdo->prepare($sql);
@@ -225,6 +226,23 @@ class UserModel extends BaseModel
         $stmt = self::$pdo->prepare($sql);
         return $stmt->execute([$hashedPassword, $userId]);
     }
+        // Verify user and update verify_status
+    public function verifyUser($token) {
+        $sql = "SELECT UserId FROM User WHERE verify_token = :verify_token AND verify_status = 0";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(':verify_token', $token);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        if ($user) {
+            $sql = "UPDATE User SET verify_status = 1 WHERE UserId = :userId";
+            $stmt = self::$pdo->prepare($sql);
+            $stmt->bindParam(':userId', $user['UserId']);
+            return $stmt->execute();
+        }
+        return false;
+    }
 }
+
 
 ?>

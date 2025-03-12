@@ -330,24 +330,7 @@ hr {
     display: block;
 }
 /* MAGIC TEYLERS  */
-
-.card{
-    margin-top: 20px;
-}
-
-/* SHOPPING CART  */
-.container {
-    display: grid;
-    grid-template-columns: 2fr 1fr; /* Two columns, the right column is narrower */
-    grid-template-rows: auto; /* Automatically adjust the row sizes */
-    grid-template-areas: 
-        "personal summary"
-        "cart summary";
-    gap: 20px;
-    padding: 20px;
-    max-width: 1200px; /* Set a max-width for the container */
-    margin: auto; /* Center the container */
-}
+/* ------ PROFILE EDITING ------ */
 
 .personal-and-cart {
     display: flex;
@@ -389,11 +372,6 @@ hr {
     display: flex;
     justify-content: space-between;
     padding: 20px;
-}
-
-button {
-    padding: 10px 20px;
-    cursor: pointer;
 }
 
 .header {
