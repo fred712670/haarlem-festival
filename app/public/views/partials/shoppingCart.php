@@ -2,7 +2,14 @@
     //print_r($_SESSION['cart']);
     $totalPrice = 0;
 ?>
-<body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="/assets/css/cart.css">
+</head>
     <div class="container">
         <div class="personal-and-cart">
             <!--<div class="form-section">
@@ -71,5 +78,5 @@
         </div>
     </div>
     </div>
-</body>
+    <script src="/assets/js/shoppingCart.js"></script>
 </html>

@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
-    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <div class="auth-container">
@@ -21,8 +20,7 @@
         <button type="submit">Log In</button>
     </form>
     <p class="auth-links">
-        Don't have an account?
-        <a href="/registration">Sign Up</a>
+        <a href="/forgot-password">Forgot Password?</a>
     </p>
 </div>
 </body>

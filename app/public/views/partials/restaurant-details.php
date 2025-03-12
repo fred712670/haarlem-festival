@@ -1,27 +1,28 @@
-<pre>
-<?php print_r($restaurant); ?>
-</pre>
+<?php 
+require_once __DIR__ . '/../components/restaurant-header.php';
+require_once __DIR__ . '/../components/restaurant-location.php';
+require_once __DIR__ . '/../components/restaurant-info.php';
+require_once __DIR__ . '/../components/restaurant-reservation.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Puzzles and Science at Teylers Museum</title>
-    <link href="../../assets/css/yummy.css" rel="stylesheet">
+    <title>Yummy</title>
+    <link rel="stylesheet" href="/assets/css/yummy.css">
 </head>
 <body>
-<?php
-require_once __DIR__ . './../components/restaurant-header.php';
-require_once __DIR__ . './../components/restaurant-location.php';
-require_once __DIR__ . './../components/restaurant-info.php';
-require_once __DIR__ . './../components/restaurant-reservation.php';
+    <div class="restaurant-container">
+        <a href="/yummy" class="back-arrow">←</a>
 
-
-// Render Components
-renderRestaurantHeader($restaurant);
-renderRestaurantLocation($restaurant);
-renderRestaurantInfo($restaurant);
-renderRestaurantReservation($restaurant);
-?>
-
+        <?php 
+        renderRestaurantHeader($restaurant);
+        renderRestaurantLocation($restaurant);
+        renderRestaurantInfo($restaurant);
+        renderRestaurantReservation($restaurant);
+        ?>
+    </div>
+    <script src="/assets/js/yummy.js"></script>
 </body>
+</html>
