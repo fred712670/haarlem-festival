@@ -11,7 +11,6 @@
 <body>
     <div class="registration-container">
         <h1>Create an Account</h1>
-
         <!-- Display registration error message if exists -->
         <?php
         if (isset($_SESSION['register_error'])): ?>
