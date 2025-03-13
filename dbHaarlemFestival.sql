@@ -439,3 +439,8 @@ INSERT INTO `User` (`FullName`, `Email`, `Password`, `Role`, `RegisteredDate`, `
 ('Sam Visitor', 'visitor@example.com', '$2y$10$GGJ0tLjKEZ1RhYuKqSvs9OOuQJJ5SDhZQDRO0rJA7.TeWI4NFJrJG', 'Customer', DATE_SUB(NOW(), INTERVAL 7 DAY), 'Inactive');
 
 -- Note: The password hash above is for 'password123' - for testing purposes only
+
+-- Adding two attributes to the User Table
+ALTER TABLE `User` 
+ADD COLUMN `verify_token` VARCHAR(255) NULL AFTER `ResetTokenExpires`,
+ADD COLUMN `verify_status` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '0=not verified, 1=verified';
