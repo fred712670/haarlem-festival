@@ -132,20 +132,18 @@ class UserController
         $role = 'customer';  
     
         if (empty($username) || empty($email) || empty($password)) {
-            $_SESSION['register_error'] = "All fields are required.";
-            header('Location: /registration');
-            exit();
+            return ['success' => false, 'message' => "All fields are required."];
         }
     
         try {
             // Validate email format and domain
             if (!$this->validateEmail($email)) {
-                throw new Exception("Please enter a valid email address.");
+                return ['success' => false, 'message' => "Please enter a valid email address."];
             }
     
             // Verify captcha
             if (!$this->verifyCaptcha($captchaResponse)) {
-                throw new Exception("Captcha verification failed.");
+                return ['success' => false, 'message' => "Captcha verification failed."];
             }
     
             // Generate verification token
@@ -156,25 +154,23 @@ class UserController
             
             // Handle different registration outcomes
             if ($result['success'] === false) {
-               
                 if (isset($result['message'])) {
-                    throw new Exception($result['message']);
+                    return ['success' => false, 'message' => $result['message']];
                 } else {
-                    throw new Exception("Registration failed. Please try again.");
+                    return ['success' => false, 'message' => "Registration failed. Please try again."];
                 }
             }
             
             // If we reach here, registration was successful
             // Send verification email
             $this->sendEmailRegister($username, $email, $verify_token);
-
-            $_SESSION['verification_status'] = 'Your account has been created successfully! Please check your email to verify your account.';
-            require(__DIR__ . "/../views/pages/verify-email.php");
-            exit();
+    
+            return [
+                'success' => true, 
+                'message' => 'Your account has been created successfully! Please check your email to verify your account.'
+            ];
         } catch (Exception $e) {
-            $_SESSION['register_error'] = $e->getMessage();
-            header('Location: /registration');
-            exit();
+            return ['success' => false, 'message' => $e->getMessage()];
         }
     }
 
@@ -218,13 +214,17 @@ class UserController
         
         if ($result) {
             // Verification success
-            $_SESSION['verification_status'] = 'Email successfully verified. You can now log in.';
+            return [
+                'success' => true,
+                'message' => 'Email successfully verified. You can now log in.'
+            ];
         } else {
             // Verification failed
-            $_SESSION['verification_status'] = 'The verification link is invalid or has already been used.';
+            return [
+                'success' => false,
+                'message' => 'The verification link is invalid or has already been used.'
+            ];
         }
-        require(__DIR__ . "/../views/pages/verify-email.php");
-        exit();
     }
 }
 ?>

@@ -213,7 +213,7 @@ class UserModel extends BaseModel
             'verify_token' => $verify_token
         ];
     }
-        // Verify user and update verify_status
+    // Verify user and update verify_status
     public function verifyUser($token) {
         $sql = "SELECT UserId FROM User WHERE verify_token = :verify_token AND verify_status = 0";
         $stmt = self::$pdo->prepare($sql);
@@ -230,9 +230,4 @@ class UserModel extends BaseModel
         return false;
     }
 }
-
-
 ?>
-
-
-
