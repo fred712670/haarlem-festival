@@ -7,6 +7,7 @@ use PHPMailer\PHPMailer\Exception;
 require 'vendor/autoload.php';
 
 require_once(__DIR__ . "/../models/UserModel.php");
+require_once __DIR__ . '/../lib/mailer.php';
 
 class UserController
 {
@@ -58,7 +59,7 @@ class UserController
         // ✅ Send reset email
         $baseUrl = $_ENV["APP_URL"] ?? "http://localhost"; 
         $resetLink = "$baseUrl/reset-password?token=" . urlencode($token);
-        $mail = require __DIR__ . "/../views/pages/mailer.php";
+        $mail = require __DIR__ . "/../lib//mailer.php";
         $mail->addAddress($email);
         $mail->Subject = "Password Reset Request";
         $mail->Body = "Click <a href=\"$resetLink\">here</a> to reset your password.<br><br>This link expires in 1 hour.";
@@ -227,5 +228,3 @@ class UserController
         }
     }
 }
-?>
-

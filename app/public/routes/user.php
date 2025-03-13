@@ -112,22 +112,62 @@ Route::add('/profile/update/password', function() {
 }, 'post');*/
 
 
-// Forgot Password Routes
-Route::get('/forgot-password', function() {
+
+
+// -- Forgot Password Routes --
+
+// Forgot Password Page (Displays form)
+Route::add('/forgot-password', function () {
     require_once __DIR__ . '/../views/pages/forgot-password.php';
-});
+}, 'get');
 
-Route::post('/send-password-reset', function() {
-    $controller = new UserController();
-    echo $controller->sendResetLink($_POST["email"]);  // Keep parameters
-});
+// Send Reset Password Link (Handles form submission)
+Route::add('/send-password-reset', function () {
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        $email = $_POST["email"] ?? "";
+        $response = UserController::sendResetLink($email);
+        echo $response; // Return success/error message
+    } else {
+        die("❌ Invalid request method.");
+    }
+}, 'post');
 
-Route::get('/reset-password', function() {
+// Reset Password Page (Displays form)
+Route::add('/reset-password', function () {
+    require_once __DIR__ . '/../models/UserModel.php';
+    $userModel = new UserModel();
+    
+    $token = $_GET["token"] ?? null;
+    if (!$token) {
+        die("❌ No token provided in the URL.");
+    }
+
+    $tokenHash = hash("sha256", $token);
+    $user = $userModel->getUserByResetToken($tokenHash);
+
+    if (!$user) {
+        die("❌ Token not found or expired.");
+    }
+
+    // Make $token available in the view
+    $_SESSION['reset_token'] = $token;
     require_once __DIR__ . '/../views/pages/reset-password.php';
-});
+}, 'get');
 
-Route::post('/process-reset-password', function() {
-    $controller = new UserController();
-    echo $controller->processResetPassword($_POST["token"], $_POST["password"]); // Keep parameters
-});
+// Process Reset Password (Handles form submission)
+Route::add('/process-reset-password', function () {
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        $token = $_POST["token"] ?? null;
+        $newPassword = $_POST["password"] ?? null;
 
+        if (!$token || !$newPassword) {
+            die("❌ Invalid request.");
+        }
+        
+        $response = UserController::processResetPassword($token, $newPassword);
+        echo $response; // Return success/error message
+    } else {
+        die("❌ Invalid request method.");
+    }
+}, 'post');
+?>

@@ -1,4 +1,5 @@
 <?php
+require_once(__DIR__ . "/../controllers/ReservationController.php");
 
 Route::add('/cart', function()  {
 
@@ -8,11 +9,21 @@ Route::add('/cart', function()  {
 
 Route::add('/completeOrder', function()  {
 
-    $selectedQuantity = $_POST['totalPrice'];
-    $ticket = $_SESSION["cart"];
-    
+   $cartController = new CartController();
 
-    print_r($ticket);
-    echo $selectedQuantity;
+
+}, 'post');
+
+Route::add('/reserve/restaurant', function() {
+
+    $reservationController = new ReservationController();
+    $validation = $reservationController->createReservation($_POST);
+    
+    if($validation != true){
+        //redirect to restaurant and read SESSION ERROR
+    }
+    else{
+        header('Location: /cart');
+    }
 
 }, 'post');
