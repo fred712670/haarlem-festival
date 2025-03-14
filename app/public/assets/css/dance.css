@@ -206,8 +206,8 @@ section h2::after {
 
 .passes-container {
   display: grid;
-  gap: 10px 20px;
   justify-items: center;
+  gap: 10px 20px;
   width: 60vw;
 }
 
