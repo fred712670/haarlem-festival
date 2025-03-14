@@ -7,14 +7,85 @@ use PHPMailer\PHPMailer\Exception;
 require 'vendor/autoload.php';
 
 require_once(__DIR__ . "/../models/UserModel.php");
+require_once __DIR__ . '/../lib/mailer.php';
 
 class UserController
 {
     private $userModel;
+
     public function __construct()
     {
         $this->userModel = new UserModel();
     }
+
+    public function get($id){
+       return $this->userModel->get($id);
+    }
+    // Handle user registration
+   
+    public function updateName($username, $newName) {
+        return $this->userModel->updateName($username, $newName);
+    }
+    public function updateEmail($userId, $newEmail) {
+        return $this->userModel->updateEmail($userId, $newEmail);
+    }
+
+    public function changePassword($username, $currentPswd, $newPswd, $repeatNewPsw ) {
+        return $this->userModel->updatePassword($username, $currentPswd, $newPswd, $repeatNewPsw);
+    }
+
+    public static function sendResetLink($email) {
+        $userModel = new UserModel();
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return "❌ Invalid email format!";
+        }
+
+        $user = $userModel->getUserByEmail($email);
+        if (!$user) {
+            return "❌ No user found with this email.";
+        }
+
+        // ✅ Generate a secure token
+        $token = bin2hex(random_bytes(16));
+        $token_hash = hash("sha256", $token);
+        $expiry = date("Y-m-d H:i:s", time() + 3600); 
+
+        // ✅ Store reset token in DB
+        if (!$userModel->storeResetToken($email, $token_hash, $expiry)) {
+            return "❌ Failed to store reset token.";
+        }
+
+        // ✅ Send reset email
+        $baseUrl = $_ENV["APP_URL"] ?? "http://localhost"; 
+        $resetLink = "$baseUrl/reset-password?token=" . urlencode($token);
+        $mail = require __DIR__ . "/../lib//mailer.php";
+        $mail->addAddress($email);
+        $mail->Subject = "Password Reset Request";
+        $mail->Body = "Click <a href=\"$resetLink\">here</a> to reset your password.<br><br>This link expires in 1 hour.";
+
+        try {
+            $mail->send();
+            return "✅ Reset link sent! Check your inbox.";
+        } catch (Exception $e) {
+            return "❌ Email error: " . $mail->ErrorInfo;
+        }
+    }
+
+    public static function processResetPassword($token, $newPassword) {
+        $userModel = new UserModel();
+
+        $token_hash = hash("sha256", $token);
+        $user = $userModel->getUserByResetToken($token_hash);
+
+        if (!$user) return "❌ Token not found or expired.";
+        if (strtotime($user["ResetTokenExpires"]) <= time()) return "❌ Token expired.";
+
+        return $userModel->updateResetPassword($user["UserId"], $newPassword) 
+            ? "✅ Password updated successfully! <a href='/login'>Login</a>."
+            : "❌ Something went wrong.";
+    }
+
     // Method to verify captcha
     private function verifyCaptcha($captchaResponse)
     {
@@ -62,20 +133,18 @@ class UserController
         $role = 'customer';  
     
         if (empty($username) || empty($email) || empty($password)) {
-            $_SESSION['register_error'] = "All fields are required.";
-            header('Location: /registration');
-            exit();
+            return ['success' => false, 'message' => "All fields are required."];
         }
     
         try {
             // Validate email format and domain
             if (!$this->validateEmail($email)) {
-                throw new Exception("Please enter a valid email address.");
+                return ['success' => false, 'message' => "Please enter a valid email address."];
             }
     
             // Verify captcha
             if (!$this->verifyCaptcha($captchaResponse)) {
-                throw new Exception("Captcha verification failed.");
+                return ['success' => false, 'message' => "Captcha verification failed."];
             }
     
             // Generate verification token
@@ -86,25 +155,23 @@ class UserController
             
             // Handle different registration outcomes
             if ($result['success'] === false) {
-               
                 if (isset($result['message'])) {
-                    throw new Exception($result['message']);
+                    return ['success' => false, 'message' => $result['message']];
                 } else {
-                    throw new Exception("Registration failed. Please try again.");
+                    return ['success' => false, 'message' => "Registration failed. Please try again."];
                 }
             }
             
             // If we reach here, registration was successful
             // Send verification email
             $this->sendEmailRegister($username, $email, $verify_token);
-
-            $_SESSION['verification_status'] = 'Your account has been created successfully! Please check your email to verify your account.';
-            require(__DIR__ . "/../views/pages/verify-email.php");
-            exit();
+    
+            return [
+                'success' => true, 
+                'message' => 'Your account has been created successfully! Please check your email to verify your account.'
+            ];
         } catch (Exception $e) {
-            $_SESSION['register_error'] = $e->getMessage();
-            header('Location: /registration');
-            exit();
+            return ['success' => false, 'message' => $e->getMessage()];
         }
     }
 
@@ -148,13 +215,16 @@ class UserController
         
         if ($result) {
             // Verification success
-            $_SESSION['verification_status'] = 'Email successfully verified. You can now log in.';
+            return [
+                'success' => true,
+                'message' => 'Email successfully verified. You can now log in.'
+            ];
         } else {
             // Verification failed
-            $_SESSION['verification_status'] = 'The verification link is invalid or has already been used.';
+            return [
+                'success' => false,
+                'message' => 'The verification link is invalid or has already been used.'
+            ];
         }
-        require(__DIR__ . "/../views/pages/verify-email.php");
-        exit();
     }
 }
-?>
