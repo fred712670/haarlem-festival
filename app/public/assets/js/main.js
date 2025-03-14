@@ -14,12 +14,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Change logo dynamically
         if (sidebar.classList.contains("expanded")) {
-            logo.src = "/assets/img/logo-extended.png"; // Expanded logo
+            logo.src = "/assets/img/home/logo-extended.png"; // Expanded logo
             toggleBtn.innerHTML = '<i class="fas fa-angle-double-right"></i>'; // Change to >>
         } else {
-            logo.src = "/assets/img/logo-not-extended.png"; // Collapsed logo
+            logo.src = "/assets/img/home/logo-not-extended.png"; // Collapsed logo
             toggleBtn.innerHTML = '<i class="fas fa-angle-double-left"></i>'; // Change to <<
         }
     });
 });
-

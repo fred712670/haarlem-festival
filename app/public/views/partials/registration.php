@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Register Form</title>
     <link rel="stylesheet" href="../../assets/css/registrationStyle.css"/>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="/assets/js/navigation.js"></script>
 </head>
 <body>
     <div class="registration-container">
         <h1>Create an Account</h1>
-
         <!-- Display registration error message if exists -->
         <?php
         if (isset($_SESSION['register_error'])): ?>
@@ -32,21 +33,10 @@
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required/>
             </div>
-
-            <div class="form-group">
-                <label for="role">Role</label>
-                <select id="role" name="role" required>
-                    <option value="customer">Customer</option>
-                    <option value="admin">Admin</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="captcha">Enter Captcha</label>
-                <input type="text" id="captcha" name="captcha" required/>
-                <div class="captcha-code"><?php echo $_SESSION['captcha_question']; ?></div>
-            </div>
             
+            <div class="form-group">
+            <div class="g-recaptcha" data-sitekey="6LevYe4qAAAAAB_HfwrKPBPqbajTiYpd2Vt7jfSU"></div>
+            </div>
             <button type="submit">Register</button>
         </form>
 
@@ -56,3 +46,5 @@
     </div>
 </body>
 </html>
+
+

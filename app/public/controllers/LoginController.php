@@ -14,10 +14,10 @@ class LoginController
 
         if ($user && password_verify($password, $user['Password'])) {  // Check if user exists and password is correct
             $_SESSION['user'] = $user['FullName'];  // Store the username in session
-            header('Location: '. '/');
+            header('Location: '. '/'); // Direct user to index page
             exit;
         } else {
-            header('Location: '. '/login');
+            header('Location: '. '/login?error=1'); 
             exit;
         }   
     }

@@ -9,8 +9,6 @@ class UserModel extends BaseModel
         parent::__construct();
     }
 
-
-
    // Fetch user by username
    public function getUserByUsername($fullName)
    {
@@ -20,6 +18,14 @@ class UserModel extends BaseModel
        $stmt->execute();
        return $stmt->fetch(PDO::FETCH_ASSOC);
    }
+
+   // Fetch user by email
+   public function getUserByEmail($email) {
+      $sql = "SELECT * FROM User WHERE Email = ?";
+      $stmt = self::$pdo->prepare($sql);
+      $stmt->execute([$email]);
+      return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
    // Verify password
    public function verifyPassword($inputPassword, $storedPassword)
@@ -36,48 +42,22 @@ class UserModel extends BaseModel
         return $stmt->fetch() !== false;
     }
 
-    // Method to check if the email already exists
-    private function checkEmail($email) {
-        $sql = "SELECT UserId FROM User WHERE Email = :email";
-        $stmt = self::$pdo->prepare($sql);
-        $stmt->bindParam(':email', $email);
-        $stmt->execute();
-        return $stmt->fetch() !== false;
+   
+   public function login($username): array
+{
+    try {
+        $stmt = self::$pdo->prepare("SELECT * FROM User WHERE FullName = :username");
+        $stmt->execute(['username' => $username]);
+
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $user ?: []; // Ensures an empty array is always returned
+
+    } catch (PDOException $e) {
+        error_log("Database error in login(): " . $e->getMessage()); // Displays error
+        return []; // Return an empty array
     }
-
-   // Method to register a new user
-   public function register($fullName, $email, $password, $role) {
-
-    if ($this->checkUserName($fullName)) {
-        return ['success' => false, 'message' => 'Username already exists'];
-    }
-
-    if ($this->checkEmail($email)) {
-        return ['success' => false, 'message' => 'Email already exists'];
-    }
-
-    $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-
-    $sql = "INSERT INTO User (FullName, Email, Password, Role) VALUES (:fullName, :email, :password, :role)";
-    $stmt = self::$pdo->prepare($sql);
-    $stmt->bindParam(':fullName', $fullName);
-    $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':password', $hashedPassword);
-    $stmt->bindParam(':role', $role);
-
-    if ($stmt->execute()) {
-        return ['success' => true];
-    } else {
-        return ['success' => false, 'message' => 'Registration failed'];
-    }
-   }
-    public function login($username): array
-    {
-        $stmt = self::$pdo->prepare("SELECT * FROM User WHERE FullName = :username");  // Prepare SQL to fetch user by username
-        $stmt->execute(['username' => $username]);  // Execute the SQL query with the entered username
-        return $stmt->fetch();  // Fetch the user record from the database
-    }
-
+}
 
     public function get($id)
     {
@@ -190,13 +170,6 @@ class UserModel extends BaseModel
         }
     }
 
-    public function getUserByEmail($email) {
-        $sql = "SELECT * FROM User WHERE Email = ?";
-        $stmt = self::$pdo->prepare($sql);
-        $stmt->execute([$email]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
     public function storeResetToken($email, $token_hash, $expiry) {
         $sql = "UPDATE User SET ResetToken = ?, ResetTokenExpires = ? WHERE Email = ?";
         $stmt = self::$pdo->prepare($sql);
@@ -218,7 +191,63 @@ class UserModel extends BaseModel
         $stmt = self::$pdo->prepare($sql);
         return $stmt->execute([$hashedPassword, $userId]);
     }
+
+    // Method to check if the email already exists
+    private function checkEmail($email) 
+    {
+        $sql = "SELECT UserId FROM User WHERE Email = :email";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        return $stmt->fetch() !== false;
+    }
+   
+    public function register($fullName, $email, $password, $role, $verify_token) 
+    {
+        // Check if username exists
+        if ($this->checkUserName($fullName)) {
+            return ['success' => false, 'message' => 'Username already exists'];
+        }
+        
+        // Check if email exists
+        if ($this->checkEmail($email)) {
+            return ['success' => false, 'message' => 'Email already exists'];
+        }
+        
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+        
+        $sql = "INSERT INTO User (FullName, Email, Password, Role, verify_token, verify_status)
+                VALUES (:fullName, :email, :password, :role, :verify_token, 0)";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(':fullName', $fullName);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':password', $hashedPassword);
+        $stmt->bindParam(':role', $role);
+        $stmt->bindParam(':verify_token', $verify_token);
+        
+        $result = $stmt->execute();
+        
+        return [
+            'success' => $result,
+            'verify_token' => $verify_token
+        ];
+    }
+    // Verify user and update verify_status
+
+    public function verifyUser($token) {
+        $sql = "SELECT UserId FROM User WHERE verify_token = :verify_token AND verify_status = 0";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(':verify_token', $token);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        if ($user) {
+            $sql = "UPDATE User SET verify_status = 1 WHERE UserId = :userId";
+            $stmt = self::$pdo->prepare($sql);
+            $stmt->bindParam(':userId', $user['UserId']);
+            return $stmt->execute();
+        }
+        return false;
+    }
 }
-
 ?>
-

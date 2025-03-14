@@ -12,30 +12,21 @@
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/assets/css/style.css">
-    <link rel="stylesheet" href="/assets/css/yummy.css">
-    <script 
-        src="/assets/js/main.js">
-    </script>
-    <script 
-        src="/assets/js/yummy.js">
-    </script>
-    <script 
-        src="/assets/js/shoppingCart.js">
-    </script>
+
 </head>
 
 <body>
 <nav class="sidebar">
     <div class="top-section">
-        <img id="logo" src="/assets/img/logo-not-extended.png" alt="Logo">
+        <img id="logo" src="/assets/img/home/logo-not-extended.png" alt="Logo">
         <button class="toggle-btn">
             <i class="fas fa-angle-double-left"></i> <!-- Initial Arrow -->
         </button>
     </div>
     <ul class="nav-links">
         <li><a href="/cart"><i class="fas fa-shopping-cart"></i> <span class="link-text">Cart</span></a></li>
-        <li><a href="#"><i class="fas fa-home"></i> <span class="link-text">Home</span></a></li>
-        <li><a href="#"><i class="fas fa-utensils"></i> <span class="link-text">Yummy!</span></a></li>
+        <li><a href="/"><i class="fas fa-home"></i> <span class="link-text">Home</span></a></li>
+        <li><a href="/yummy"><i class="fas fa-utensils"></i> <span class="link-text">Yummy!</span></a></li>
         <li><a href="#"><i class="fas fa-running"></i> <span class="link-text">Dance!</span></a></li>
         <li><a href="#"><i class="fas fa-music"></i> <span class="link-text">Jazz</span></a></li>
         <li><a href="#"><i class="fas fa-history"></i> <span class="link-text">History</span></a></li>
@@ -50,4 +41,3 @@
         </select>
     </div>
 </nav>
-</body>

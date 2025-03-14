@@ -1,0 +1,151 @@
+/* Slideshow Container */
+.slideshow-container {
+    position: relative;
+    width: 100%;
+    height: 90vh;
+    overflow: hidden;
+}
+
+/* Individual Slides */
+.slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Ensure the first slide is visible */
+.slide:first-child {
+    opacity: 1;
+}
+
+/* Slideshow Text Box */
+.text-box {
+    position: absolute;
+    bottom: 15%;
+    left: 7%;
+    color: white;
+    font-size: 2.2rem;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.text-box h2{
+    font-size: 2.2rem;
+    font-weight: bold;
+}
+
+/* button  */
+#read-more-btn {
+    position: absolute;
+    bottom: 15%;
+    left: 7%;
+    background: #ffcc00;
+    color: black;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Welcome Section */
+.welcome-section {
+    text-align: center;
+    padding: 40px 200px;
+    background: #fff3db;
+    font-size: 18px;
+    line-height: 2.0;
+}
+
+/* About Section */
+.about-section {
+    text-align: center;
+    padding: 40px 200px;
+    font-size: 18px;
+    line-height: 2.0;
+    background: #2a5d88;
+    color: white;
+}
+
+/* Event Locations */
+.locations-section {
+    text-align: center;
+    padding: 40px;
+}
+
+.locations-section img {
+    width: 80%;
+    border-radius: 10px;
+}
+
+/* Events Section */
+.events-section {
+    text-align: center;
+    padding: 40px;
+}
+
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 30px;
+    justify-content: center;
+    max-width: 80%;
+    margin: auto;
+}
+
+.event-card {
+    background: #2a5d88;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: left;
+}
+
+.event-card-line{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+.event-card-line h3{
+    font-size: 25px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-around;
+}
+
+.event-card-line img{
+    width: 14%;
+    height: auto;
+}
+/* Center the map section */
+.map-section {
+    text-align: center;
+    margin: 40px 0;
+}
+
+/* Dropdown Styling */
+.location-dropdown {
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+/* Responsive Map */
+.location-map {
+    width: 80%;
+    height: 400px;
+    border-radius: 8px;
+}

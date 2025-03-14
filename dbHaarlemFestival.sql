@@ -412,9 +412,6 @@ VALUES
 (7, 'Urban Frenchy Bistro Toujours', 'A French-inspired bistro with fresh seafood and Dutch classics.', "Welcome to Frenchy Bistro Toujours, your slice of Paris nestled in the charming streets of Haarlem at Oude Groenmarkt 10. This cozy bistro offers a romantic and inviting ambiance, perfect for indulging in the finest French cuisine. At Toujours, we pride ourselves on delivering authentic flavors using high-quality ingredients, paired beautifully with our selection of French wines. " ,
  'urban-frenchy.jpg', 'urban-frenchy1.jpg,urban-frenchy2.jpg,urban-frenchy3.jpg', 
  'Oude Groenmarkt 10-12, 2011 HL Haarlem, Nederland', 'Dutch, Fish, European', 48, 3, 3, 1.5, '2024-03-09 17:30:00', 17.50, 
-<<<<<<< HEAD
- 'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00');
-=======
  'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00');
 
 
@@ -442,4 +439,8 @@ INSERT INTO `User` (`FullName`, `Email`, `Password`, `Role`, `RegisteredDate`, `
 ('Sam Visitor', 'visitor@example.com', '$2y$10$GGJ0tLjKEZ1RhYuKqSvs9OOuQJJ5SDhZQDRO0rJA7.TeWI4NFJrJG', 'Customer', DATE_SUB(NOW(), INTERVAL 7 DAY), 'Inactive');
 
 -- Note: The password hash above is for 'password123' - for testing purposes only
->>>>>>> admin-func
+
+-- Adding two attributes to the User Table
+ALTER TABLE `User` 
+ADD COLUMN `verify_token` VARCHAR(255) NULL AFTER `ResetTokenExpires`,
+ADD COLUMN `verify_status` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '0=not verified, 1=verified';
