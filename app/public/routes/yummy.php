@@ -6,6 +6,7 @@ require_once __DIR__ . '/../controllers/YummyController.php';
 Route::add('/yummy', function () {
     $controller = new YummyController();
     $restaurants = $controller->index(); // Fetch restaurant data
+
     require_once __DIR__ . '/../views/pages/yummy.php';
 }, 'get');
 
@@ -13,12 +14,12 @@ Route::add('/yummy', function () {
 Route::add('/restaurant/([0-9]+)', function ($id) {
     require_once __DIR__ . '/../controllers/YummyController.php';
     $controller = new RestaurantDetailsController();
-    $controller->show($id);
-    $restaurant = $controller->show($id);
+    $restaurant = $controller->show($id); // Fetch restaurant data
 
     if (!$restaurant) {
         die("Error: Restaurant not found.");
     }
+
     require_once __DIR__ . '/../views/pages/restaurant-details.php';
 }, 'get');
 ?>

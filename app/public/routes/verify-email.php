@@ -6,10 +6,16 @@ Route::add('/verify-email', function () {
     
     if (isset($_GET['token'])) {
         $token = $_GET['token'];
-        $userController->verifyEmail($token);
+        $result = $userController->verifyEmail($token);
+        
+        // Set verification status based on result
+        $_SESSION['verification_status'] = $result['message'];
     } else {
         $_SESSION['verification_status'] = 'No verification token provided.';
-        require(__DIR__ . "/../views/pages/verify-email.php");
     }
+    
+    // Display verification page
+    require(__DIR__ . "/../views/pages/verify-email.php");
 }, 'get');
+?>
 

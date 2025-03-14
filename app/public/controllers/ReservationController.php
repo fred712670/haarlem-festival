@@ -44,12 +44,27 @@ class ReservationController {
                 $_SESSION['cart'] = [];
             }
             //for now, clear the session
-            $_SESSION['cart'] = array();
             $_SESSION['cart'][] = $ticket;
             
             return true;
         }
-
-
     }
-}
+
+    public function deleteItem($index) {
+        if (isset($_SESSION['cart'][$index])) {
+            array_splice($_SESSION['cart'], $index, 1);
+        }
+    }
+
+    public function updateQuantity($index, $action) {
+
+        if (isset($_SESSION['cart'][$index])) {
+            if ($action === 'add') {
+                $_SESSION['cart'][$index]['quantity']++;
+            } elseif ($action === 'subtract' && $_SESSION['cart'][$index]['quantity'] > 1) {
+                $_SESSION['cart'][$index]['quantity']--;
+            }
+            $_SESSION['feedback'] = "Quantity updated.";
+        } 
+    }
+}   

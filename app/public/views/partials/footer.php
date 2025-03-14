@@ -11,7 +11,7 @@
         <hr>
         <div class="footer-content">
             <div class="footer-logo">
-                <img src="/assets/img/logo.png" alt="Haarlem Festival Logo">
+                <img src="/assets/img/home/logo-extended.png" alt="Haarlem Festival Logo">
             </div>
             <div class="footer-links">
                 <div class="footer-section">
@@ -46,3 +46,6 @@
         </div>
     </div>
 </footer>
+<script src="/assets/js/main.js"></script>
+</body>
+</html>

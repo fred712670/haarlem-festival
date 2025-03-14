@@ -9,8 +9,8 @@ Route::add('/cart', function()  {
 
 Route::add('/completeOrder', function()  {
 
-   $cartController = new CartController();
-
+   //$cartController = new CartController();
+   //header('Location: /cart');
 
 }, 'post');
 
@@ -26,4 +26,16 @@ Route::add('/reserve/restaurant', function() {
         header('Location: /cart');
     }
 
+}, 'post');
+
+Route::add('/updateQuantity', function() {
+    $reservationController = new ReservationController();
+    $reservationController->updateQuantity($_POST['index'], $_POST['action']);
+    header('Location: /cart');
+}, 'post');
+
+Route::add('/deleteItem', function() {
+    $reservationController = new ReservationController();
+    $reservationController->deleteItem($_POST['itemIndex']);
+    header('Location: /cart');
 }, 'post');
