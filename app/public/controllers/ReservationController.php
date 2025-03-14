@@ -44,7 +44,6 @@ class ReservationController {
                 $_SESSION['cart'] = [];
             }
             //for now, clear the session
-            $_SESSION['cart'] = array();
             $_SESSION['cart'][] = $ticket;
             
             return true;
