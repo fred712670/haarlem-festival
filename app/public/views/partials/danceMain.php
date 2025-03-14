@@ -1,9 +1,3 @@
-<?php 
-
-print_r($artists);
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
