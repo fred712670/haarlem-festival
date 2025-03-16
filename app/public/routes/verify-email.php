@@ -17,5 +17,3 @@ Route::add('/verify-email', function () {
     // Display verification page
     require(__DIR__ . "/../views/pages/verify-email.php");
 }, 'get');
-?>
-
