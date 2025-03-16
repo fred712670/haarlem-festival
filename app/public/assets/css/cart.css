@@ -1,19 +1,20 @@
 .personal-and-cart {
     display: flex;
-    flex-direction: column; /* This changes from grid to flex to control vertical stacking */
-    grid-area: personal; /* Assigns the entire left column for personal details and cart */
+    flex-direction: column;
+    grid-area: personal;
 }
 
 .form-section {
-    margin-bottom: 20px; /* Provides spacing between form section and cart section */
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .cart-section {
-    margin-bottom: 20px; /* Optional, depending on your design needs */
+    margin-bottom: 20px;
 }
 
 .order-summary {
-    grid-area: summary; /* This ensures it takes up the entire right column */
+    grid-area: summary;
     background: #f9f9f9;
     padding: 20px;
     border-radius: 8px;
@@ -21,8 +22,8 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    align-self: start; /* Aligns to the top of the grid area */
-    height: 100%; /* Takes full height of its grid area */
+    align-self: start;
+    height: 100%;
 }
 
 .form-section, .cart-section {
@@ -34,7 +35,7 @@
 
 
 .button-bar {
-    grid-column: 1 / -1; /* Spans across all columns at the bottom */
+    grid-column: 1 / -1;
     display: flex;
     justify-content: space-between;
     padding: 20px;
@@ -46,52 +47,69 @@
     margin-bottom: 20px;
     border-radius: 5px;
 }
-.ticket-container {
-    background: #f9f9f9;
-    width: 500px;
-    border: 1px solid #ccc;
-    padding: 10px 15px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    font-family: Arial, sans-serif;
-}
-.quantity-controls {
+
+.cart-items-container {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 10px;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
 }
-.quantity-controls button {
-    background-color: #007bff;
-    border: none;
+
+.ticket-container {
+    position: relative;
+    flex: 1 1 300px;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    max-width: calc(50% - 20px); 
+    font-family: 'Open Sans', Arial, sans-serif;
+}
+
+.quantity-controls button, .btn {
+    background-color: #2A3A4E;
     color: white;
-    padding: 5px 10px;
+    text-align: center;
     border-radius: 5px;
     font-size: 16px;
-    cursor: pointer;
+    transition: background-color 0.3s;
 }
-.quantity-controls input {
+
+.btn-pay{
+    background-color: green;
+}
+
+
+.quantity-controls button:hover, .btn:hover {
+    background-color: #FEC400;
+}
+
+.inp-quantity{
     width: 40px;
     text-align: center;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    padding: 5px;
 }
-button.update {
-    background-color: #28a745;
+
+button.delete-item {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: transparent;
     border: none;
-    color: white;
-    padding: 8px 16px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
+    color: #ff6347;
+    font-size: 20px;
     cursor: pointer;
-    border-radius: 5px;
-    width: 100%;
-    margin-top: 10px;
 }
-p.eventName{
+
+button.delete-item:hover {
+    color: #ff0000;
+}
+
+p.eventName {
     font-weight: bold;
+    font-size: 18px;
+}
+
+p {
+    margin: 10px 0;
 }
