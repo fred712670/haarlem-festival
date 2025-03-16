@@ -4,6 +4,19 @@
     grid-area: personal;
 }
 
+.cart-title {
+    font-size: 24px; /* Adjust the size as needed */
+    color: #333; /* Dark grey text color, adjust as needed */
+    font-weight: bold; /* Makes the text bold */
+    display: flex; /* Aligns the icon and text inline */
+    align-items: center; /* Centers the icon and text vertically */
+    gap: 10px; /* Spacing between the icon and text */
+}
+
+.cart-title i {
+    color: #555; /* You can adjust the color of the icon specifically if needed */
+}
+
 .form-section {
     margin-top: 20px;
     margin-bottom: 20px;

@@ -13,6 +13,10 @@
     <div class="container">
         <div class="personal-and-cart">
 
+            <div class="cart-title">
+                <br><br>
+                <i class="fa fa-shopping-cart"> Shopping Cart</i>
+            </div>
             <?php if (!isset($_SESSION['user'])) {?>
             <div class="form-section">
                 <p>Please log in before proceeding with the payment!</p>
