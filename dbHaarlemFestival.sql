@@ -444,3 +444,106 @@ INSERT INTO `User` (`FullName`, `Email`, `Password`, `Role`, `RegisteredDate`, `
 ALTER TABLE `User` 
 ADD COLUMN `verify_token` VARCHAR(255) NULL AFTER `ResetTokenExpires`,
 ADD COLUMN `verify_status` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '0=not verified, 1=verified';
+
+-- improving the tour guide tables 
+ALTER TABLE `TourGuide` 
+DROP COLUMN `AvailableTime`,
+DROP COLUMN `AvailableDate`,
+MODIFY `FullName` varchar(255) NOT NULL,
+MODIFY `LanguageSpoke` enum('English','Dutch','Chinese') NOT NULL,
+ADD COLUMN `ProfileImage` varchar(255) DEFAULT NULL;
+
+-- creating history tour schedule 
+CREATE TABLE `HistoryTourSchedule` (
+  `ScheduleId` int(11) NOT NULL AUTO_INCREMENT,
+  `TourDate` date NOT NULL,
+  `TourTime` time NOT NULL,
+  `TourGuideId` int(11) NOT NULL,
+  `Language` enum('English','Dutch','Chinese') NOT NULL,
+  `TotalSeats` int(11) NOT NULL DEFAULT 12,
+  `SeatsBooked` int(11) NOT NULL DEFAULT 0,
+  `TicketPrice` decimal(10,2) NOT NULL,
+  `FamilyTicketPrice` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`ScheduleId`),
+  KEY `idx_tour_date_time` (`TourDate`, `TourTime`),
+  KEY `idx_tourguide` (`TourGuideId`),
+  CONSTRAINT `fk_schedule_guide` FOREIGN KEY (`TourGuideId`) REFERENCES `TourGuide` (`TourGuideId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+
+--creating history tour booking 
+CREATE TABLE `HistoryTourBooking` (
+  `BookingId` int(11) NOT NULL AUTO_INCREMENT,
+  `ScheduleId` int(11) NOT NULL,
+  `Language` enum('English','Dutch','Chinese') NOT NULL,
+  `TicketType` enum('Regular Participant','Family Package Deal') NOT NULL,
+  `Seats` int(11) NOT NULL DEFAULT 1,
+  `TotalPrice` decimal(10,2) NOT NULL,
+  `BookingTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`BookingId`),
+  KEY `idx_schedule` (`ScheduleId`),
+  CONSTRAINT `fk_booking_schedule` FOREIGN KEY (`ScheduleId`) REFERENCES `HistoryTourSchedule` (`ScheduleId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+
+--filling data into tourguide table
+INSERT INTO `TourGuide` (`FullName`, `LanguageSpoke`, `ProfileImage`) VALUES
+('Jan-Willem', 'Dutch', 'jan-willem.png'),
+('Lisa', 'Dutch', 'lisa.png'),
+('Frederic', 'English', 'frederic.png'),
+('Lisa', 'Chinese', 'lisa-chinese.png'),
+('Annet', 'Dutch', 'annet.png'),
+('Susan', 'Chinese', 'susan.png'),
+('William', 'English', 'william.png'),
+('Deirdre', 'English', 'deirdre.png'),
+('Kim', 'Chinese', 'kim.png');
+
+-- Thursday, July 24
+INSERT INTO `HistoryTourSchedule` (`TourDate`, `TourTime`, `TourGuideId`, `Language`, `TotalSeats`, `SeatsBooked`, `TicketPrice`, `FamilyTicketPrice`) VALUES
+('2025-07-24', '10:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Jan-Willem' AND LanguageSpoke = 'Dutch'), 'Dutch', 12, 0, 17.50, 60.00),
+('2025-07-24', '10:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Frederic' AND LanguageSpoke = 'English'), 'English', 12, 0, 17.50, 60.00),
+('2025-07-24', '13:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Jan-Willem' AND LanguageSpoke = 'Dutch'), 'Dutch', 12, 0, 17.50, 60.00),
+('2025-07-24', '13:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Frederic' AND LanguageSpoke = 'English'), 'English', 12, 0, 17.50, 60.00),
+('2025-07-24', '16:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Jan-Willem' AND LanguageSpoke = 'Dutch'), 'Dutch', 12, 0, 17.50, 60.00),
+('2025-07-24', '16:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Frederic' AND LanguageSpoke = 'English'), 'English', 12, 0, 17.50, 60.00);
+
+-- Friday, July 25
+INSERT INTO `HistoryTourSchedule` (`TourDate`, `TourTime`, `TourGuideId`, `Language`, `TotalSeats`, `SeatsBooked`, `TicketPrice`, `FamilyTicketPrice`) VALUES
+('2025-07-25', '10:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Annet' AND LanguageSpoke = 'Dutch'), 'Dutch', 12, 0, 17.50, 60.00),
+('2025-07-25', '10:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'William' AND LanguageSpoke = 'English'), 'English', 12, 0, 17.50, 60.00),
+('2025-07-25', '13:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Annet' AND LanguageSpoke = 'Dutch'), 'Dutch', 12, 0, 17.50, 60.00),
+('2025-07-25', '13:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'William' AND LanguageSpoke = 'English'), 'English', 12, 0, 17.50, 60.00),
+('2025-07-25', '13:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Kim' AND LanguageSpoke = 'Chinese'), 'Chinese', 12, 0, 17.50, 60.00),
+('2025-07-25', '16:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Annet' AND LanguageSpoke = 'Dutch'), 'Dutch', 12, 0, 17.50, 60.00),
+('2025-07-25', '16:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'William' AND LanguageSpoke = 'English'), 'English', 12, 0, 17.50, 60.00);
+
+-- Saturday, July 26
+INSERT INTO `HistoryTourSchedule` (`TourDate`, `TourTime`, `TourGuideId`, `Language`, `TotalSeats`, `SeatsBooked`, `TicketPrice`, `FamilyTicketPrice`) VALUES
+('2025-07-26', '10:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Annet' AND LanguageSpoke = 'Dutch'), 'Dutch', 12, 0, 17.50, 60.00),
+('2025-07-26', '10:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Jan-Willem' AND LanguageSpoke = 'Dutch'), 'Dutch', 12, 0, 17.50, 60.00),
+('2025-07-26', '10:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Frederic' AND LanguageSpoke = 'English'), 'English', 12, 0, 17.50, 60.00),
+('2025-07-26', '10:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'William' AND LanguageSpoke = 'English'), 'English', 12, 0, 17.50, 60.00),
+('2025-07-26', '13:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Annet' AND LanguageSpoke = 'Dutch'), 'Dutch', 12, 0, 17.50, 60.00),
+('2025-07-26', '13:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Jan-Willem' AND LanguageSpoke = 'Dutch'), 'Dutch', 12, 0, 17.50, 60.00),
+('2025-07-26', '13:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Frederic' AND LanguageSpoke = 'English'), 'English', 12, 0, 17.50, 60.00),
+('2025-07-26', '13:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'William' AND LanguageSpoke = 'English'), 'English', 12, 0, 17.50, 60.00),
+('2025-07-26', '13:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Kim' AND LanguageSpoke = 'Chinese'), 'Chinese', 12, 0, 17.50, 60.00),
+('2025-07-26', '16:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Annet' AND LanguageSpoke = 'Dutch'), 'Dutch', 12, 0, 17.50, 60.00),
+('2025-07-26', '16:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Jan-Willem' AND LanguageSpoke = 'Dutch'), 'Dutch', 12, 0, 17.50, 60.00);
+
+-- Sunday, July 27
+INSERT INTO `HistoryTourSchedule` (`TourDate`, `TourTime`, `TourGuideId`, `Language`, `TotalSeats`, `SeatsBooked`, `TicketPrice`, `FamilyTicketPrice`) VALUES
+('2025-07-27', '10:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Lisa' AND LanguageSpoke = 'Dutch'), 'Dutch', 12, 0, 17.50, 60.00),
+('2025-07-27', '10:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Annet' AND LanguageSpoke = 'Dutch'), 'Dutch', 12, 0, 17.50, 60.00),
+('2025-07-27', '10:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Jan-Willem' AND LanguageSpoke = 'Dutch'), 'Dutch', 12, 0, 17.50, 60.00),
+('2025-07-27', '10:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Deirdre' AND LanguageSpoke = 'English'), 'English', 12, 0, 17.50, 60.00),
+('2025-07-27', '10:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Frederic' AND LanguageSpoke = 'English'), 'English', 12, 0, 17.50, 60.00),
+('2025-07-27', '10:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Kim' AND LanguageSpoke = 'Chinese'), 'Chinese', 12, 0, 17.50, 60.00),
+('2025-07-27', '13:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Lisa' AND LanguageSpoke = 'Dutch'), 'Dutch', 12, 0, 17.50, 60.00),
+('2025-07-27', '13:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Annet' AND LanguageSpoke = 'Dutch'), 'Dutch', 12, 0, 17.50, 60.00),
+('2025-07-27', '13:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Jan-Willem' AND LanguageSpoke = 'Dutch'), 'Dutch', 12, 0, 17.50, 60.00),
+('2025-07-27', '13:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Deirdre' AND LanguageSpoke = 'English'), 'English', 12, 0, 17.50, 60.00),
+('2025-07-27', '13:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Frederic' AND LanguageSpoke = 'English'), 'English', 12, 0, 17.50, 60.00),
+('2025-07-27', '13:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'William' AND LanguageSpoke = 'English'), 'English', 12, 0, 17.50, 60.00),
+('2025-07-27', '13:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Kim' AND LanguageSpoke = 'Chinese'), 'Chinese', 12, 0, 17.50, 60.00),
+('2025-07-27', '13:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Susan' AND LanguageSpoke = 'Chinese'), 'Chinese', 12, 0, 17.50, 60.00),
+('2025-07-27', '16:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Lisa' AND LanguageSpoke = 'Dutch'), 'Dutch', 12, 0, 17.50, 60.00),
+('2025-07-27', '16:00:00', (SELECT TourGuideId FROM TourGuide WHERE FullName = 'Deirdre' AND LanguageSpoke = 'English'), 'English', 12, 0, 17.50, 60.00);
