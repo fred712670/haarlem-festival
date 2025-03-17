@@ -28,15 +28,15 @@
             <div class="booking-box-content">
                 <div class="booking-confirmation-details">
                     <div class="guide-info">
-                        <img src="<?= htmlspecialchars($details['GuideImage'] ?? '/assets/img/default-guide.jpg') ?>" 
-                             alt="Tour Guide" 
-                             class="guide-image">
-                        <h2>Your Tour Guide</h2>
+                    <img src="/assets/img/history/<?= htmlspecialchars($details['GuideImage']) ?>"
+                        alt="<?= htmlspecialchars($details['GuideName']) ?>"
+                        class="guide-image">
+                        <h4>Your Tour Guide</h4>
                         <p><?= htmlspecialchars($details['GuideName'] ?? 'No Guide Assigned') ?></p>
                     </div>
                     
                     <div class="tour-details">
-                        <h2>Tour Details</h2>
+                        <h4>Tour Details</h4>
                         <p><strong>Date:</strong> <?= !empty($details['TourDate']) ? date('l, F j, Y', strtotime($details['TourDate'])) : 'N/A' ?></p>
                         <p><strong>Time:</strong> <?= !empty($details['TourTime']) ? date('h:i A', strtotime($details['TourTime'])) : 'N/A' ?></p>
                         <p><strong>Language:</strong> <?= htmlspecialchars($details['Language'] ?? 'N/A') ?></p>

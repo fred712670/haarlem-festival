@@ -581,6 +581,7 @@ footer {
     padding: 20px;
 }
 
+
 .booking-field {
     margin-bottom: 20px;
 }
@@ -703,6 +704,22 @@ footer {
     margin-bottom: 20px;
 }
 
+/* confimation styling */
+.guide-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 15px;
+    display: block;
+    border: 2px solid #f0f0f0;
+}
+
+.guide-info {
+    text-align: center;
+}
+
+
 
 
 /* Responsive styles */
@@ -718,7 +735,7 @@ footer {
     }
     
     section {
-        padding: 20px; /* Reduced padding for mobile */
+        padding: 20px; 
     }
     
     .content-wrapper, .detail-wrapper {
