@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 /**
  * Set env variables and enable error reporting in local environment
  */
@@ -35,3 +35,4 @@ require_once(__DIR__ . "/routes/shoppingCart.php");
 require_once(__DIR__ . "/routes/yummy.php");
 // Start the router, enabling handling requests
 Route::run();
+ob_end_flush();

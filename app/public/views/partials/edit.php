@@ -1,5 +1,3 @@
-<?php require_once(__DIR__ . "/../../partials/admin_header.php"); ?>
-
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-8 offset-md-2">
@@ -53,6 +51,21 @@
                         </div>
                         
                         <div class="mb-3">
+                            <label for="status" class="form-label">Status *</label>
+                            <select class="form-select" id="status" name="status" required>
+                                <?php foreach ($statuses as $status): ?>
+                                    <option value="<?= htmlspecialchars($status) ?>" 
+                                            <?= ($user['Status'] === $status) ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($status) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a status.
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
                             <label class="form-label">Registration Date</label>
                             <p class="form-control-plaintext">
                                 <?= htmlspecialchars($user['RegisteredDate']) ?>
@@ -99,5 +112,3 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-
-<?php require_once(__DIR__ . "/../../partials/admin_footer.php"); ?>

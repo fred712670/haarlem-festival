@@ -32,4 +32,3 @@ Route::add('/registration', function () {
     }
 }, ["get", "post"]);
 ?>
-

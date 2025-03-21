@@ -1,5 +1,3 @@
-<?php require_once(__DIR__ . "/../../partials/admin_header.php"); ?>
-
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-8 offset-md-2">
@@ -145,5 +143,3 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-
-<?php require_once(__DIR__ . "/../../partials/admin_footer.php"); ?>
