@@ -216,14 +216,14 @@ class UserModel extends BaseModel
         
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
         
-        $sql = "INSERT INTO User (FullName, Email, Password, Role, verify_token, verify_status)
-                VALUES (:fullName, :email, :password, :role, :verify_token, 0)";
+        $sql = "INSERT INTO User (FullName, Email, Password, Role, VerifyToken, VerifyStatus)
+                VALUES (:fullName, :email, :password, :role, :verifyToken, 0)";
         $stmt = self::$pdo->prepare($sql);
         $stmt->bindParam(':fullName', $fullName);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':password', $hashedPassword);
         $stmt->bindParam(':role', $role);
-        $stmt->bindParam(':verify_token', $verify_token);
+        $stmt->bindParam(':verifyToken', $verify_token);
         
         $result = $stmt->execute();
         
@@ -233,16 +233,15 @@ class UserModel extends BaseModel
         ];
     }
     // Verify user and update verify_status
-
     public function verifyUser($token) {
-        $sql = "SELECT UserId FROM User WHERE verify_token = :verify_token AND verify_status = 0";
+        $sql = "SELECT UserId FROM User WHERE VerifyToken = :verifyToken AND VerifyStatus = 0";
         $stmt = self::$pdo->prepare($sql);
-        $stmt->bindParam(':verify_token', $token);
+        $stmt->bindParam(':verifyToken', $token);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
     
         if ($user) {
-            $sql = "UPDATE User SET verify_status = 1 WHERE UserId = :userId";
+            $sql = "UPDATE User SET VerifyStatus = 1 WHERE UserId = :userId";
             $stmt = self::$pdo->prepare($sql);
             $stmt->bindParam(':userId', $user['UserId']);
             return $stmt->execute();
