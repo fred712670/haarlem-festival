@@ -32,12 +32,12 @@ class ReservationController {
             return false; 
         } else {
             $ticket = [
-            //'eventId' => rand(100, 999),
+            'eventId' => $postData["eventId"],
             'description' => $postData["restaurantName"],
             'location' => $postData["restaurantAddress"],
             'dateTime' => "Reservation for " . htmlspecialchars($postData['date']) . " at " . htmlspecialchars($postData['time']),
             'price' => 0,
-            'quantity' => (int)$postData['guests']
+            'amount' => (int)$postData['guests']
             ];
 
             if (!isset($_SESSION['cart'])) {
