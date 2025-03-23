@@ -3,7 +3,17 @@ require(__DIR__ . "/../controllers/HistoryController.php");
 
 //History route
 Route::add('/history', function () {
-   require(__DIR__ . "/../views/pages/history.php");
+    $controller = new HistoryController();
+    $guides = $controller->getTourGuides();
+    $schedule = $controller->getTourSchedule();
+    $locations = $controller->getHistoryLocations();
+    $overviewContent = $controller->getHistoryContent('overview');
+    $eventDetailContent = $controller->getHistoryContent('event_detail');
+    $pricing = $controller->getPricing();
+
+
+    require(__DIR__ . "/../views/pages/history.php");
+
 }, 'get');
 
 //Reservation route
@@ -44,3 +54,27 @@ Route::add('/booking-confirmation', function () {
     require(__DIR__ . "/../views/pages/tour_confirmation.php");
 }, 'get');
 
+//details page
+Route::add('/history/tour-location/([0-9]+)', function($locationId) {
+    $controller = new HistoryController();
+    $location = $controller->getTourLocationById($locationId);
+    $locations = $controller->getHistoryLocations(); // For the experience section
+    
+    if (!$location) {
+        header("Location: /history");
+        exit();
+    }
+    
+    // Prepare specific images for each section
+    $images = [
+        'banner' => $location['ImageGalleryArray'][0] ?? '',
+        'about' => $location['ImageGalleryArray'][1] ?? '',
+        'gallery' => [
+            $location['ImageGalleryArray'][2] ?? '',
+            $location['ImageGalleryArray'][3] ?? '',
+            $location['ImageGalleryArray'][4] ?? ''
+        ]
+    ];
+    
+    require(__DIR__ . "/../views/pages/tour_location.php");
+}, 'get');
