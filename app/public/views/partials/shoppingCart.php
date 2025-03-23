@@ -1,6 +1,8 @@
 <?php
     //print_r($_SESSION['cart']);
+    //echo password_hash("fred123", PASSWORD_DEFAULT);
     $totalPrice = 0;
+    $isUserLoggedIn = isset($_SESSION['user']);
 ?>
 <!DOCTYPE html>
 <lang="en">
@@ -17,7 +19,7 @@
                 <br><br>
                 <i class="fa fa-shopping-cart"> Shopping Cart</i>
             </div>
-            <?php if (!isset($_SESSION['user'])) {?>
+            <?php if (!$isUserLoggedIn) {?>
             <div class="form-section">
                 <p>Please log in before proceeding with the payment!</p>
             </div>
@@ -54,7 +56,9 @@
                         <?php endforeach; ?>
                         </div>
                         <p>Total: € <span id="totalPrice"><?= htmlspecialchars($totalPrice) ?></span></p>
-                        <button class="btn btn-primary btn-pay" name="completeOrder">Proceed to payment</button>
+                        <button class="btn btn-primary btn-pay" name="createOrder" id="createOrderBtn" <?php echo $isUserLoggedIn ? '' : 'disabled'; ?>>
+                            Proceed to payment
+                        </button>
                         <?php
                         // Calculate total price
                         $totalPrice += $ticket['price'] * $ticket['quantity'];

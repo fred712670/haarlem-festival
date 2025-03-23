@@ -1,5 +1,6 @@
 <?php
 require_once(__DIR__ . "/../controllers/ReservationController.php");
+require_once(__DIR__ . "/../controllers/OrderController.php");
 
 Route::add('/cart', function()  {
 
@@ -7,12 +8,12 @@ Route::add('/cart', function()  {
 }, 'get');
 
 
-Route::add('/completeOrder', function()  {
+Route::add('/create/order', function()  {
+    $orderController = new OrderController();
 
-   //$cartController = new CartController();
-   //header('Location: /cart');
-
-}, 'post');
+    $orderController->createOrder();
+    
+});
 
 Route::add('/reserve/restaurant', function() {
 

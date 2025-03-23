@@ -43,3 +43,7 @@ function subtractQuantity(index) {
         totalPriceElement.textContent = totalPrice.toFixed(2) + '€';
     }
 }
+
+document.getElementById('createOrderBtn').addEventListener('click', function() {
+    window.location.href = '/create/order';
+});
