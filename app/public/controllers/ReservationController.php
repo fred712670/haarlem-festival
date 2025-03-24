@@ -37,7 +37,7 @@ class ReservationController {
             'location' => $postData["restaurantAddress"],
             'dateTime' => "Reservation for " . htmlspecialchars($postData['date']) . " at " . htmlspecialchars($postData['time']),
             'price' => 0,
-            'amount' => (int)$postData['guests']
+            'quantity' => (int)$postData['guests']
             ];
 
             if (!isset($_SESSION['cart'])) {
