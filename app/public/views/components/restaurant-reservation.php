@@ -13,6 +13,7 @@ function renderRestaurantReservation($restaurant) {
             <!-- Added names so that the form is workable-->
             <form method="post" action="/reserve/restaurant">
                 <!-- Hidden inputs to pass restaurant name and address with the form-->
+                <input type="hidden" name="eventId" value="<?= htmlspecialchars($restaurant['EventId']) ?>">
                 <input type="hidden" name="restaurantName" value="<?= htmlspecialchars($restaurant['Name']) ?>">
                 <input type="hidden" name="restaurantAddress" value="<?= htmlspecialchars($restaurant['Address']) ?>">
 
