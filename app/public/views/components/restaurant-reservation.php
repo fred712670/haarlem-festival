@@ -11,7 +11,7 @@ function renderRestaurantReservation($restaurant) {
         <div class="reservation-form">
             <h3>Make a Reservation</h3>
             <!-- Added names so that the form is workable-->
-            <form method="post" action="/reserve/restaurant">
+            <form method="post" action="/reserve">
                 <!-- Hidden inputs to pass restaurant name and address with the form-->
                 <input type="hidden" name="eventId" value="<?= htmlspecialchars($restaurant['EventId']) ?>">
                 <input type="hidden" name="restaurantName" value="<?= htmlspecialchars($restaurant['Name']) ?>">

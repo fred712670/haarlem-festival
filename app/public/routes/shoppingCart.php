@@ -16,7 +16,7 @@ Route::add('/create/order', function()  {
     header('Location: /profile');
 });
 
-Route::add('/reserve/restaurant', function() {
+Route::add('/reserve', function() {
 
     $reservationController = new ReservationController();
     $validation = $reservationController->createReservation($_POST);
@@ -29,6 +29,7 @@ Route::add('/reserve/restaurant', function() {
     }
 
 }, 'post');
+
 
 Route::add('/updateQuantity', function() {
     $reservationController = new ReservationController();
