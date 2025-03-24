@@ -299,3 +299,25 @@ hr {
 .auth-links a:hover {
     text-decoration: underline;
 }
+
+/* Profile Styles */
+
+.card{
+    margin-top: 20px;
+}
+.ticket-info {
+    padding: 10px;
+    background-color: #f8f9fa;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  .card-header {
+    background-color: #e9ecef;
+  }
+  .form-section {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 30px;
+}

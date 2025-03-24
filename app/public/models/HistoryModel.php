@@ -31,7 +31,7 @@ class HistoryModel extends BaseModel {
     public function getAvailableLanguages($date, $time) {
         $query = "SELECT DISTINCT Language FROM HistoryTourSchedule 
                   WHERE TourDate = ? AND TourTime = ? 
-                  AND (TotalSeats - SeatsBooked) > 0";
+                  AND TicketsAvailable > 0";
         $stmt = self::$pdo->prepare($query);
         $stmt->execute([$date, $time]);
         return $stmt->fetchAll();
@@ -39,7 +39,7 @@ class HistoryModel extends BaseModel {
     
     // Get available seats for a date, time, and language
     public function getAvailableSeats($date, $time, $language) {
-        $query = "SELECT SUM(TotalSeats - SeatsBooked) as AvailableSeats 
+        $query = "SELECT SUM(TicketsAvailable) as AvailableSeats 
                   FROM HistoryTourSchedule 
                   WHERE TourDate = ? AND TourTime = ? AND Language = ?";
         $stmt = self::$pdo->prepare($query);
@@ -66,16 +66,16 @@ class HistoryModel extends BaseModel {
         try {
             // Create booking
             $query = "INSERT INTO HistoryTourBooking 
-                      (ScheduleId, Language, TicketType, Seats, TotalPrice) 
+                      (ScheduleId, Language, TicketType, Seats, Price) 
                       VALUES (?, ?, ?, ?, ?)";
             $stmt = self::$pdo->prepare($query);
             $stmt->execute([$scheduleId, $language, $ticketType, $seats, $totalPrice]);
             $bookingId = self::$pdo->lastInsertId();
             
-            // Update seats booked
+            // Update available tickets
             $query = "UPDATE HistoryTourSchedule 
-                      SET SeatsBooked = SeatsBooked + ? 
-                      WHERE ScheduleId = ?";
+                      SET TicketsAvailable = TicketsAvailable - ? 
+                      WHERE EventId = ?";
             $stmt = self::$pdo->prepare($query);
             $stmt->execute([$seats, $scheduleId]);
             
@@ -94,8 +94,8 @@ class HistoryModel extends BaseModel {
     public function getGuideInfo($scheduleId) {
         $query = "SELECT tg.FullName, tg.ProfileImage 
                   FROM HistoryTourSchedule hts
-                  JOIN TourGuide tg ON hts.TourGuideId = tg.TourGuideId
-                  WHERE hts.ScheduleId = ?";
+                  JOIN TourGuide tg ON hts.GuideId = tg.GuideId
+                  WHERE hts.EventId = ?";
         $stmt = self::$pdo->prepare($query);
         $stmt->execute([$scheduleId]);
         return $stmt->fetch();
@@ -103,30 +103,103 @@ class HistoryModel extends BaseModel {
     
     // Get available schedules
     public function getScheduleId($date, $time, $language) {
-        $query = "SELECT ScheduleId FROM HistoryTourSchedule 
+        $query = "SELECT EventId 
+                  FROM HistoryTourSchedule 
                   WHERE TourDate = ? AND TourTime = ? AND Language = ? 
-                  AND (TotalSeats - SeatsBooked) > 0 
-                  ORDER BY (TotalSeats - SeatsBooked) DESC 
+                  AND TicketsAvailable > 0 
+                  ORDER BY TicketsAvailable DESC 
                   LIMIT 1";
         $stmt = self::$pdo->prepare($query);
         $stmt->execute([$date, $time, $language]);
         $result = $stmt->fetch();
-        return $result ? $result['ScheduleId'] : null;
+        return $result ? $result['EventId'] : null;
     }
 
    public function getBookingDetails($bookingId) {
     $query = "SELECT 
-        htb.Language, htb.TicketType, htb.Seats, htb.TotalPrice,
+        htb.Language, htb.TicketType, htb.Seats, htb.Price as TotalPrice,
         hts.TourDate, hts.TourTime,
         tg.FullName as GuideName, tg.ProfileImage as GuideImage
     FROM HistoryTourBooking htb
-    JOIN HistoryTourSchedule hts ON htb.ScheduleId = hts.ScheduleId
-    JOIN TourGuide tg ON hts.TourGuideId = tg.TourGuideId
+    JOIN HistoryTourSchedule hts ON htb.ScheduleId = hts.EventId
+    JOIN TourGuide tg ON hts.GuideId = tg.GuideId
     WHERE htb.BookingId = ?";
     
     $stmt = self::$pdo->prepare($query);
     $stmt->execute([$bookingId]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    //get history content
+    public function getHistoryContent($section) {
+        $query = "SELECT Content FROM Content 
+                  WHERE EventType = 'history' AND Section = ?";
+        $stmt = self::$pdo->prepare($query);
+        $stmt->execute([$section]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? $result['Content'] : '';
+    }
+    
+    //get history location
+    public function getHistoryLocations() {
+        $query = "SELECT LocationId, LocationName, Description, Address, ImageGenera, ImageGallery 
+                  FROM HistoryTour 
+                  ORDER BY LocationId";
+        $stmt = self::$pdo->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    //get tour guide info
+    public function getTourGuides() {
+        $query = "SELECT GuideId, FullName, ProfileImage, LanguagesSpoken 
+                  FROM TourGuide 
+                  ORDER BY FullName";
+        $stmt = self::$pdo->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    //get tour schedule info
+    public function getTourSchedule() {
+        $query = "SELECT 
+                    DATE_FORMAT(TourDate, '%d %M') as FormattedDate,
+                    DATE_FORMAT(TourDate, '%W') as DayOfWeek,
+                    GROUP_CONCAT(DISTINCT TIME_FORMAT(TourTime, '%H:%i') ORDER BY TourTime SEPARATOR ', ') as Times,
+                    'Church of St. Bavo' as StartLocation,
+                    MAX(CASE WHEN Language = 'English' THEN 'Yes' ELSE 'No' END) as EnglishTour,
+                    MAX(CASE WHEN Language = 'Dutch' THEN 'Yes' ELSE 'No' END) as DutchTour,
+                    MAX(CASE WHEN Language = 'Chinese' THEN 'Yes' ELSE 'No' END) as ChineseTour,
+                    12 as Seats
+                  FROM HistoryTourSchedule
+                  GROUP BY TourDate
+                  ORDER BY TourDate";
+        $stmt = self::$pdo->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    //pricing for overview
+    public function getPricing() {
+        $query = "SELECT TicketPrice, FamilyTicketPrice 
+                  FROM HistoryTourSchedule 
+                  LIMIT 1";
+        $stmt = self::$pdo->prepare($query);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    //get location details for detail page
+public function getTourLocationById($locationId) {
+    $query = "SELECT * FROM HistoryTour WHERE LocationId = ?";
+    $stmt = self::$pdo->prepare($query);
+    $stmt->execute([$locationId]);
+    $location = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($location && !empty($location['ImageGallery'])) {
+        // Convert gallery string to array
+        $location['ImageGalleryArray'] = explode(',', $location['ImageGallery']);
+    } else if ($location) {
+        $location['ImageGalleryArray'] = [$location['ImageGenera']]; // Default to main image
+    }
+    
+    return $location;
 }
 }
 ?>
