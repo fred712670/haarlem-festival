@@ -33,5 +33,8 @@ require_once(__DIR__ . "/routes/login.php");
 require_once(__DIR__ . "/routes/shoppingCart.php");
 
 require_once(__DIR__ . "/routes/yummy.php");
+
+require_once(__DIR__ . "/routes/dance.php");
+
 // Start the router, enabling handling requests
 Route::run();

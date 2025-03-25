@@ -9,7 +9,6 @@ Route::add('/login', function () {
 });
 
 Route::add('/login', function() {
-
     $controller = new LoginController();
 
     $controller->Login();

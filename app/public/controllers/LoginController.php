@@ -18,8 +18,9 @@ class LoginController
             header('Location: '. '/'); // Direct user to index page
             exit;
         } else {
-            header('Location: '. '/login?error=1'); 
-            exit;
+            $error = "Your login credentials are incorrect.";
+            require(__DIR__ . "/../views/pages/login.php");
+            //exit;
         }   
     }
 }
