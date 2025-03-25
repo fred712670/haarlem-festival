@@ -1,0 +1,7 @@
+<?php 
+require_once __DIR__ . "/../partials/header.php"; 
+?>
+
+<?php require_once __DIR__ . '/../partials/jazz-main.php'; ?>
+
+<?php require_once __DIR__ . "/../partials/footer.php"; ?>

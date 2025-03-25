@@ -1,5 +1,3 @@
-<?php require_once(__DIR__ . "/../../partials/admin_header.php"); ?>
-
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>User Management</h1>
@@ -28,7 +26,7 @@
     <div class="card mb-4">
         <div class="card-body">
             <form method="get" action="/admin/users" class="row g-3">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label for="search" class="form-label">Search</label>
                     <input type="text" class="form-control" id="search" name="search" 
                            value="<?= htmlspecialchars($viewData['searchTerm']) ?>" 
@@ -48,19 +46,19 @@
                     </select>
                 </div>
                 
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <label for="startDate" class="form-label">Start Date</label>
                     <input type="date" class="form-control" id="startDate" name="startDate" 
                            value="<?= htmlspecialchars($viewData['filters']['startDate']) ?>">
                 </div>
                 
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <label for="endDate" class="form-label">End Date</label>
                     <input type="date" class="form-control" id="endDate" name="endDate" 
                            value="<?= htmlspecialchars($viewData['filters']['endDate']) ?>">
                 </div>
                 
-                <div class="col-md-3 d-flex align-items-end">
+                <div class="col-md-12 d-flex mt-3">
                     <button type="submit" class="btn btn-primary me-2">
                         <i class="fas fa-search"></i> Filter
                     </button>
@@ -89,27 +87,27 @@
                         <thead>
                             <tr>
                                 <th>
-                                    <a href="<?= $this->sortUrl('FullName', $viewData) ?>" class="text-decoration-none text-dark">
+                                    <a href="<?= sortUrl('FullName', $viewData) ?>" class="text-decoration-none text-dark">
                                         Name
-                                        <?= $this->sortIcon('FullName', $viewData) ?>
+                                        <?= sortIcon('FullName', $viewData) ?>
                                     </a>
                                 </th>
                                 <th>
-                                    <a href="<?= $this->sortUrl('Email', $viewData) ?>" class="text-decoration-none text-dark">
+                                    <a href="<?= sortUrl('Email', $viewData) ?>" class="text-decoration-none text-dark">
                                         Email
-                                        <?= $this->sortIcon('Email', $viewData) ?>
+                                        <?= sortIcon('Email', $viewData) ?>
                                     </a>
                                 </th>
                                 <th>
-                                    <a href="<?= $this->sortUrl('Role', $viewData) ?>" class="text-decoration-none text-dark">
+                                    <a href="<?= sortUrl('Role', $viewData) ?>" class="text-decoration-none text-dark">
                                         Role
-                                        <?= $this->sortIcon('Role', $viewData) ?>
+                                        <?= sortIcon('Role', $viewData) ?>
                                     </a>
                                 </th>
                                 <th>
-                                    <a href="<?= $this->sortUrl('RegisteredDate', $viewData) ?>" class="text-decoration-none text-dark">
+                                    <a href="<?= sortUrl('RegisteredDate', $viewData) ?>" class="text-decoration-none text-dark">
                                         Registration Date
-                                        <?= $this->sortIcon('RegisteredDate', $viewData) ?>
+                                        <?= sortIcon('RegisteredDate', $viewData) ?>
                                     </a>
                                 </th>
                                 <th>Actions</th>
@@ -124,13 +122,13 @@
                                     <td><?= htmlspecialchars($user['RegisteredDate']) ?></td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <a href="/admin/users/edit/<?= $user['UserId'] ?>" class="btn btn-sm btn-outline-primary">
+                                            <a href="/admin/users/edit/<?= $user['UserId'] ?>" class="btn btn-sm btn-outline-primary" title="Edit User">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <a href="/admin/users/reset-password/<?= $user['UserId'] ?>" class="btn btn-sm btn-outline-warning">
+                                            <a href="/admin/users/reset-password/<?= $user['UserId'] ?>" class="btn btn-sm btn-outline-warning" title="Reset Password">
                                                 <i class="fas fa-key"></i>
                                             </a>
-                                            <a href="/admin/users/delete/<?= $user['UserId'] ?>" class="btn btn-sm btn-outline-danger">
+                                            <a href="/admin/users/delete/<?= $user['UserId'] ?>" class="btn btn-sm btn-outline-danger" title="Delete User">
                                                 <i class="fas fa-trash"></i>
                                             </a>
                                         </div>
@@ -146,21 +144,21 @@
                     <nav aria-label="User pagination">
                         <ul class="pagination justify-content-center">
                             <li class="page-item <?= ($viewData['currentPage'] <= 1) ? 'disabled' : '' ?>">
-                                <a class="page-link" href="<?= $this->paginationUrl($viewData, $viewData['currentPage'] - 1) ?>">
+                                <a class="page-link" href="<?= paginationUrl($viewData, $viewData['currentPage'] - 1) ?>">
                                     Previous
                                 </a>
                             </li>
                             
                             <?php for ($i = 1; $i <= $viewData['totalPages']; $i++): ?>
                                 <li class="page-item <?= ($viewData['currentPage'] == $i) ? 'active' : '' ?>">
-                                    <a class="page-link" href="<?= $this->paginationUrl($viewData, $i) ?>">
+                                    <a class="page-link" href="<?= paginationUrl($viewData, $i) ?>">
                                         <?= $i ?>
                                     </a>
                                 </li>
                             <?php endfor; ?>
                             
                             <li class="page-item <?= ($viewData['currentPage'] >= $viewData['totalPages']) ? 'disabled' : '' ?>">
-                                <a class="page-link" href="<?= $this->paginationUrl($viewData, $viewData['currentPage'] + 1) ?>">
+                                <a class="page-link" href="<?= paginationUrl($viewData, $viewData['currentPage'] + 1) ?>">
                                     Next
                                 </a>
                             </li>
@@ -189,7 +187,6 @@ function sortUrl($field, $viewData) {
         'role' => $viewData['filters']['role'],
         'startDate' => $viewData['filters']['startDate'],
         'endDate' => $viewData['filters']['endDate'],
-        'status' => $viewData['filters']['status'] ?? '',
         'page' => $viewData['currentPage']
     ];
     
@@ -220,17 +217,9 @@ function paginationUrl($viewData, $page) {
         'role' => $viewData['filters']['role'],
         'startDate' => $viewData['filters']['startDate'],
         'endDate' => $viewData['filters']['endDate'],
-        'status' => $viewData['filters']['status'] ?? '',
         'page' => $page
     ];
     
     return '/admin/users?' . http_build_query(array_filter($params));
 }
-
-// Assign functions to object for use in template
-$this->sortUrl = 'sortUrl';
-$this->sortIcon = 'sortIcon';
-$this->paginationUrl = 'paginationUrl';
 ?>
-
-<?php require_once(__DIR__ . "/../../partials/admin_footer.php"); ?>
