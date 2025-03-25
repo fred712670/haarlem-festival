@@ -16,16 +16,21 @@ class DanceController
     }
 
   public function getContent($event, $section)
-{
-    $model = new DanceModel();
-    return $model->getContentByEventAndSection($event, $section);
-}
+    {
+        $model = new DanceModel();
+        return $model->getContentByEventAndSection($event, $section);
+    }
 
-public function getDanceEvents()
-{
-    $danceModel = new DanceModel();
-    return $danceModel->getDanceEvents();
-}
+    public function getDanceEvents()
+    {
+        $danceModel = new DanceModel();
+        return $danceModel->getDanceEvents();
+    }
 
+    public function getSongsByArtistId($id)
+    {
+        $songModel = new DanceModel();
+        return $songModel->getArtistSongs();
+    }
 }
 ?>
