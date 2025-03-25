@@ -41,36 +41,39 @@ class DanceModel extends BaseModel
         }
     }
 
- public function getContentByEventAndSection($event, $section)
-{
-    try {
-        $query = "SELECT Content FROM Content WHERE EventType = :event AND Section = :section LIMIT 1";
-        $stmt = self::$pdo->prepare($query);
-        $stmt->bindParam(':event', $event);
-        $stmt->bindParam(':section', $section);
-        $stmt->execute();
-        return $stmt->fetchColumn(); // returns string
-    } catch (Exception $e) {
-        error_log("Error fetching content: " . $e->getMessage());
-        return '';
+    public function getContentByEventAndSection($event, $section)
+    {
+        try {
+            $query = "SELECT Content FROM Content WHERE EventType = :event AND Section = :section LIMIT 1";
+            $stmt = self::$pdo->prepare($query);
+            $stmt->bindParam(':event', $event);
+            $stmt->bindParam(':section', $section);
+            $stmt->execute();
+            return $stmt->fetchColumn(); // returns string
+        } catch (Exception $e) {
+            error_log("Error fetching content: " . $e->getMessage());
+            return '';
+        }
     }
-}
 
-public function getDanceEvents()
-{
-    try {
-        $query = "SELECT * FROM DanceEvent ORDER BY StartDateTime ASC";
-        $stmt = self::$pdo->prepare($query);
-        $stmt->execute();
-        $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        error_log("Fetched dance events: " . print_r($events, true));
-        return $events ?: [];
+    public function getDanceEvents()
+    {
+        try {
+            $query = "SELECT * FROM DanceEvent ORDER BY StartDateTime ASC";
+            $stmt = self::$pdo->prepare($query);
+            $stmt->execute();
+            $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            error_log("Fetched dance events: " . print_r($events, true));
+            return $events ?: [];
     } catch (Exception $e) {
         error_log("Error fetching dance events: " . $e->getMessage());
         return [];
     }
 }
 
+public function getArtistSongs()
+{
+
+}
 
 }
