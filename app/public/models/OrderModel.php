@@ -3,7 +3,7 @@ require_once(__DIR__ . "/BaseModel.php");
 
 class OrderModel extends BaseModel {
 
-    public function createOrder($order){
+    public function createOrder($order, $phone = null, $address = null){
         // Insert the order into the 'orders' table
         $orderQuery = "INSERT INTO `Order` (UserId, OrderDate, PhoneNumber, Address)
                     VALUES (:UserId, :OrderDate, :PhoneNumber, :Address)";
@@ -14,8 +14,8 @@ class OrderModel extends BaseModel {
         $stmt = self::$pdo->prepare($orderQuery);
         $stmt->bindParam(':UserId', $_SESSION['userId']);
         $stmt->bindParam(':OrderDate', $currentDateTime);
-        $stmt->bindParam(':PhoneNumber', $null);
-        $stmt->bindParam(':Address', $null);
+        $stmt->bindParam(':PhoneNumber', $phone);
+        $stmt->bindParam(':Address', $address);
         $stmt->execute();
 
         // Get the OrderId of the newly inserted order
@@ -38,6 +38,7 @@ class OrderModel extends BaseModel {
                 $stmt->execute();
             }
         }
+        return $orderId;
     }
 
     public function getUserOrders($userId){
