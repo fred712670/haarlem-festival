@@ -3,29 +3,27 @@
  * Routes for admin user management functionality
  */
 require_once(__DIR__ . "/../controllers/AdminUserController.php");
-require_once(__DIR__ . "/../views/admin/users/index.php");
-require_once(__DIR__ . "/../views/admin/users/index.php");
 
 /**
  * Middleware to check if user is an administrator
  * Redirects to login page if not authenticated or not an admin
  */
 function requireAdmin() {
-    // TEMPORARY TEST CODE - REMOVE BEFORE PRODUCTION
-    if (!isset($_SESSION['userId'])) {
-        $_SESSION['userId'] = 1;
-        $_SESSION['role'] = 'Administrator';
-        $_SESSION['fullName'] = 'Test Admin';
-    }
-    
-    // Comment out the original check
-    /*
-    if (!isset($_SESSION['userId']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'Administrator') {
-        $_SESSION['error_message'] = 'You must be an administrator to access this page.';
+    // Check if user is logged in
+    if (!isset($_SESSION['user'])) {
+        $_SESSION['error_message'] = 'You must be logged in to access this page.';
         header('Location: /login');
         exit();
     }
-    */
+    
+    // Check if the role exists and equals Administrator
+    if (!isset($_SESSION['role']) || $_SESSION['role'] != 'Administrator') {
+        $_SESSION['error_message'] = 'You must be an administrator to access this page.';
+        header('Location: /');
+        exit();
+    }
+    
+    // If we get here, the user is an admin
 }
 
 // Admin Dashboard
@@ -45,8 +43,7 @@ Route::add('/admin/users', function() {
     $filters = [
         'role' => $_GET['role'] ?? '',
         'startDate' => $_GET['startDate'] ?? '',
-        'endDate' => $_GET['endDate'] ?? '',
-        'status' => $_GET['status'] ?? ''
+        'endDate' => $_GET['endDate'] ?? ''
     ];
     
     $searchTerm = $_GET['search'] ?? '';
@@ -57,8 +54,11 @@ Route::add('/admin/users', function() {
     // Get data for the view
     $viewData = $controller->index($filters, $searchTerm, $sortBy, $sortOrder, $page);
     $viewData['roles'] = $controller->getRoles();
+    // No longer getting statuses as that feature has been removed
     
-    require_once(__DIR__ . "/../views/admin/users/index.php");
+    require_once(__DIR__ . "/../views/partials/header.php");
+    require_once(__DIR__ . "/../views/partials/adminFeatures.php");
+    require_once(__DIR__ . "/../views/partials/footer.php");
 }, 'get');
 
 // Form to create a new user
@@ -68,7 +68,9 @@ Route::add('/admin/users/create', function() {
     $controller = new AdminUserController();
     $roles = $controller->getRoles();
     
-    require_once(__DIR__ . "/../views/admin/users/create.php");
+    require_once(__DIR__ . "/../views/partials/header.php");
+    require_once(__DIR__ . "/../views/partials/create.php");
+    require_once(__DIR__ . "/../views/partials/footer.php");
 }, 'get');
 
 // Process new user creation
@@ -110,7 +112,9 @@ Route::add('/admin/users/edit/([0-9]+)', function($userId) {
     
     $roles = $controller->getRoles();
     
-    require_once(__DIR__ . "/../views/admin/users/edit.php");
+    require_once(__DIR__ . "/../views/partials/header.php");
+    require_once(__DIR__ . "/../views/partials/edit.php");
+    require_once(__DIR__ . "/../views/partials/footer.php");
 }, 'get');
 
 // Process user update
@@ -148,7 +152,9 @@ Route::add('/admin/users/reset-password/([0-9]+)', function($userId) {
         exit();
     }
     
-    require_once(__DIR__ . "/../views/admin/users/reset_password.php");
+    require_once(__DIR__ . "/../views/partials/header.php");
+    require_once(__DIR__ . "/../views/partials/reset_password.php");
+    require_once(__DIR__ . "/../views/partials/footer.php");
 }, 'get');
 
 // Process password reset
@@ -191,7 +197,9 @@ Route::add('/admin/users/delete/([0-9]+)', function($userId) {
         exit();
     }
     
-    require_once(__DIR__ . "/../views/admin/users/delete.php");
+    require_once(__DIR__ . "/../views/partials/header.php");
+    require_once(__DIR__ . "/../views/partials/delete.php");
+    require_once(__DIR__ . "/../views/partials/footer.php");
 }, 'get');
 
 // Process user deletion
@@ -210,5 +218,3 @@ Route::add('/admin/users/delete/([0-9]+)', function($userId) {
     header('Location: /admin/users');
     exit();
 }, 'post');
-
-
