@@ -98,4 +98,3 @@
         </div>
     </div>
 </div>
-<script src="/assets/js/jazz.js"></script>
