@@ -33,6 +33,9 @@ require_once(__DIR__ . "/routes/admin.php");
 require_once(__DIR__ . "/routes/shoppingCart.php");
 require_once __DIR__ . '/routes/jazz.php';
 require_once(__DIR__ . "/routes/yummy.php");
+
+require_once(__DIR__ . "/routes/dance.php");
+
 // Start the router, enabling handling requests
 Route::run();
 ob_end_flush();

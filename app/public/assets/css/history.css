@@ -472,9 +472,6 @@ section {
     border-radius: 8px;
 }
 
-/* Style for Google Maps info windows */
-
-
 /* Call to Action Panel (right column) */
 .cta-panel {
     flex: 0 0 250px;
@@ -719,9 +716,6 @@ footer {
     text-align: center;
 }
 
-
-
-
 /* Responsive styles */
 @media (max-width: 768px) {
     .hero-content {
@@ -827,5 +821,4 @@ footer {
     .booking-submit {
         width: 100%;
     }
-  
 }

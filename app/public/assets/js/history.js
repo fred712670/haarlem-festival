@@ -1,33 +1,27 @@
 //history overview
 document.addEventListener('DOMContentLoaded', function() {
+    // Handle location thumbnail hover effects
     const thumbnails = document.querySelectorAll('.location-thumbnail');
     const locationTitle = document.getElementById('location-title');
     const locationText = document.getElementById('location-text');
     
-    // Location information
-    const locationInfo = {
-        'Church of St. Bavo': 'The Church of St. Bavo, an iconic Gothic masterpiece in Haarlem, dates back to the 14th century. Known for its towering spire and stunning architecture, it houses the world-famous Müller organ, once played by Mozart himself. A true symbol of Haarlem\'s rich history and grandeur.',
-        'Grote Markt': 'The Grote Markt, Haarlem\'s historic main square, is the heart of the city. Surrounded by landmarks like the Town Hall and the Church of St. Bavo, it serves as a vibrant gathering place for markets, events, and cultural celebrations.',
-        'De Hallen': 'De Hallen Haarlem, a striking cultural landmark, is home to the Frans Hals Museum\'s contemporary art collection. Located in a historic building on the Grote Markt, it offers a blend of modern creativity and Haarlem\'s rich artistic heritage.',
-        'Proveniershof': 'Proveniershof, a serene 17th-century courtyard in Haarlem, is nestled among picturesque historic houses. Once home to retired tradesmen, it now offers a peaceful escape, showcasing the city\'s rich architectural and cultural heritage.',
-        'Jopenkerk': 'Jopenkerk Haarlem, a former church turned brewery, blends history with modern craft beer culture. This unique venue offers visitors a chance to enjoy locally brewed Jopen beers while surrounded by stunning stained-glass windows and Gothic architecture, making it a must-visit landmark.',
-        'Waalse Kerk Haarlem': 'The Waalse Kerk, a charming 14th-century chapel in Haarlem, is renowned for its intimate atmosphere and beautiful acoustics. Once a refuge for French Huguenots, it now serves as a cultural venue for concerts and events.',
-        'Molen de Adriaan': 'Molen de Adriaan, a historic windmill on the banks of the Spaarne River, offers panoramic views of Haarlem. Originally built in 1779, this iconic landmark showcases the Netherlands\' rich milling heritage and provides a fascinating glimpse into traditional Dutch craftsmanship.',
-        'Amsterdamse Poort': 'The Amsterdamse Poort, Haarlem\'s last remaining city gate, is a stunning medieval structure dating back to the 14th century. Once a key entry point to the city, it now stands as a testament to Haarlem\'s rich history and architectural grandeur.',
-        'Hof van Bakenes': 'Hof van Bakenes, Haarlem\'s oldest hofje, is a tranquil courtyard dating back to the 14th century. Surrounded by charming historic houses, it offers a peaceful retreat and a glimpse into the city\'s tradition of community living'
-    };
-    
-    // Set initial active state for first thumbnail
-    thumbnails[0].classList.add('active');
+    // Set default content with first location if available
+    if (thumbnails.length > 0) {
+        const firstThumb = thumbnails[0];
+        locationTitle.textContent = firstThumb.getAttribute('data-location');
+        locationText.textContent = firstThumb.getAttribute('data-description');
+        firstThumb.classList.add('active');
+    }
     
     thumbnails.forEach(function(thumbnail) {
         thumbnail.addEventListener('mouseenter', function() {
-            // Get location name from data attribute
-            const location = this.getAttribute('data-location');
+            // Get location data from data attributes
+            const locationName = this.getAttribute('data-location');
+            const locationDesc = this.getAttribute('data-description');
             
             // Update description
-            locationTitle.textContent = location;
-            locationText.textContent = locationInfo[location];
+            locationTitle.textContent = locationName;
+            locationText.textContent = locationDesc;
             
             // Update active state
             thumbnails.forEach(t => t.classList.remove('active'));
@@ -85,6 +79,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function toggleSeats() {
         const seatsContainer = document.getElementById('seats-container');
         seatsContainer.style.display = familyRadio.checked ? 'none' : 'block';
+        
+        // When family package is selected, set seats to 4
+        if (familyRadio.checked) {
+            seatsInput.value = 4;
+        }
+        
         updatePrice();
     }
     
@@ -120,3 +120,4 @@ document.addEventListener('DOMContentLoaded', function() {
     toggleSeats();
     updatePrice();
 });
+

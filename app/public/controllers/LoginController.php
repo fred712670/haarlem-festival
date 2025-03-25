@@ -22,25 +22,13 @@ class LoginController
         if ($user && password_verify($password, $user['Password'])) {  // Check if user exists and password is correct
             // Store essential user information in session
             $_SESSION['user'] = $user['FullName'];  // Store the username in session
-            $_SESSION['userId'] = $user['UserId']; // Store user ID
-            $_SESSION['role'] = $user['Role']; // Store the user role
-            $_SESSION['email'] = $user['Email']; // Store email
-            
-            // Debug: Log session data
-            error_log("Session data set: " . json_encode($_SESSION));
-            
-            // Redirect based on role
-            if (strtolower($user['Role']) === strtolower('Administrator')) {
-                error_log("Redirecting to admin panel");
-                header('Location: '. '/admin');
-            } else {
-                error_log("Redirecting to homepage");
-                header('Location: '. '/'); // Direct user to index page 
-            }
+            $_SESSION['userId'] = $user['UserId'];
+            header('Location: '. '/'); // Direct user to index page
             exit;
         } else {
-            header('Location: '. '/login?error=1'); 
-            exit;
+            $error = "Your login credentials are incorrect.";
+            require(__DIR__ . "/../views/pages/login.php");
+            //exit;
         }   
     }
 }

@@ -7,7 +7,25 @@ class HistoryController {
     public function __construct() {
         $this->model = new HistoryModel();
     }
+    public function getTourGuides() {
+        return $this->model->getTourGuides();
+    }
+    public function getTourSchedule() {
+        return $this->model->getTourSchedule();
+    }
+    public function getHistoryContent($section) {
+        return $this->model->getHistoryContent($section);
+    }
     
+    public function getHistoryLocations() {
+        return $this->model->getHistoryLocations();
+    }
+    public function getPricing() {
+        return $this->model->getPricing();
+    }
+    public function getTourLocationById($locationId) {
+        return $this->model->getTourLocationById($locationId);
+    }
    //handling booking
     public function processBooking($postData) {
         $errors = [];
@@ -75,10 +93,14 @@ class HistoryController {
             $priceInfo = $this->model->getPriceInfo($postData['date'], $postData['time']);
             
             // Calculate total price
-            $seats = ($postData['ticket_type'] === 'Family Package Deal') ? 1 : (int)$postData['seats'];
-            $totalPrice = ($postData['ticket_type'] === 'Regular Participant') 
-                ? $priceInfo['TicketPrice'] * $seats 
-                : $priceInfo['FamilyTicketPrice'];
+            $seats = (int)$postData['seats']; 
+            if ($postData['ticket_type'] === 'Family Package Deal') {
+                $seats = 4;
+                $totalPrice = $priceInfo['FamilyTicketPrice'];
+            } else {
+                $seats = (int)$postData['seats'];
+                $totalPrice = $priceInfo['TicketPrice'] * $seats;
+            }
 
             // Create booking
             $bookingId = $this->model->createBooking(

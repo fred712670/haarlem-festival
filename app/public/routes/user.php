@@ -2,6 +2,7 @@
 
 // require the user controller so we can use it in this file
 require_once(__DIR__ . "/../controllers/UserController.php");
+require_once(__DIR__ . "/../controllers/OrderController.php");
 
 // any request for the /users route will be handled by this function
 Route::add('/users', function () {
@@ -22,17 +23,23 @@ Route::add('/user/([a-z-0-9-]*)', function ($userId) {
 
 // PROFILE EDITING
 
-Route::add('/profile/edit', function()  {
-    $userController = new UserController();
-    //$user = $userController->get($_SESSION['userId']);
-    $user = $userController->get(1);
-    require_once(__DIR__ . '/../views/pages/profileEdit.php');
+Route::add('/profile', function()  {
+    if (isset($_SESSION['userId'])){
+        $userController = new UserController();
+        $user = $userController->get($_SESSION['userId']);
+
+        $orderController = new OrderController();
+        $orders = $orderController->getUserOrders();
+        
+        require_once(__DIR__ . '/../views/pages/profile.php');
+    } else {
+        header("Location: /login");
+    }
 }, 'get');
 
 
 Route::add('/profile/update/name', function() {
-    //$username = filter_var($_SESSION["username"]);
-    $username = "John Doe";
+    $username = filter_var($_SESSION["username"]);
     $newFullName = $_POST['fullName'] ?? '';
     $userController = new UserController();
 
@@ -68,12 +75,12 @@ Route::add('/profile/update/email', function() {
         }
     }
     // Fetch the updated user data
-    $user = $userController->get(id: 1);
+    $user = $userController->get(id: $_SESSION['userId']);
 
     //$_SESSION['message'] = $message;
 
     // Redirect back to the profile edit page or include it directly
-    require_once(__DIR__ . '/../views/pages/profileEdit.php');
+    require_once(__DIR__ . '/../views/pages/profile.php');
 }, method: 'post');
 
 

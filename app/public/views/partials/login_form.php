@@ -11,11 +11,10 @@
     <form action="/login" method="POST">
         <input type="text" name="username" placeholder="Enter your username" required>
         <input type="password" name="password" placeholder="Enter your password" required>
-        
-        <?php 
-        if (isset($_GET['error']) && $_GET['error'] == 1): ?>
-            <p style="color: red; text-align: center;">Your login information is not correct.</p>
-        <?php endif; ?>
+    
+        <?php if(isset($error)){ ?>
+            <p style ="color: red;, text-align: center;"><?php echo $error; ?></p>
+        <?php } ?>
 
         <button type="submit">Log In</button>
     </form>

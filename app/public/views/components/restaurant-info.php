@@ -15,7 +15,7 @@ function renderRestaurantInfo($restaurant) {
         <div class="overview">
             <h3>Overview</h3>
             <ol>
-                <li><strong>Sessions Available:</strong> <?= htmlspecialchars($restaurant['SessionAvailable']) ?></li>
+                <li><strong>Sessions Available:</strong> <?= htmlspecialchars($restaurant['SessionsAvailable']) ?></li>
                 <li><strong>Duration:</strong> <?= htmlspecialchars($restaurant['Duration']) ?> hours</li>
                 <li><strong>First Session Start:</strong> <?= htmlspecialchars($restaurant['FirstStart']) ?></li>
                 <li><strong>Rating:</strong> ⭐ <?= htmlspecialchars($restaurant['Rating']) ?>/5</li>
