@@ -79,4 +79,3 @@
 </section>
 <script src="/assets/js/yummy.js"></script>
 <?php require_once __DIR__ . "/../partials/footer.php"; ?>.
-</html>
