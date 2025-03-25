@@ -171,14 +171,14 @@ class UserModel extends BaseModel
     }
 
     public function storeResetToken($email, $token_hash, $expiry) {
-        $sql = "UPDATE User SET ResetToken = ?, ResetTokenExpires = ? WHERE Email = ?";
+        $sql = "UPDATE User SET VerifyToken = ?, ResetTokenExpires = ? WHERE Email = ?";
         $stmt = self::$pdo->prepare($sql);
         return $stmt->execute([$token_hash, $expiry, $email]);
     }
     
     public function getUserByResetToken($token_hash)
     {
-        $sql = "SELECT * FROM User WHERE ResetToken = ? AND ResetTokenExpires > NOW()";
+        $sql = "SELECT * FROM User WHERE VerifyToken = ? AND ResetTokenExpires > NOW()";
         $stmt = self::$pdo->prepare($sql);
         $stmt->execute([$token_hash]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -187,7 +187,7 @@ class UserModel extends BaseModel
     public function updateResetPassword($userId, $newPassword)
     {
         $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-        $sql = "UPDATE User SET password = ?, ResetToken = NULL, ResetTokenExpires = NULL WHERE UserId = ?";
+        $sql = "UPDATE User SET password = ?, VerifyToken = NULL, ResetTokenExpires = NULL WHERE UserId = ?";
         $stmt = self::$pdo->prepare($sql);
         return $stmt->execute([$hashedPassword, $userId]);
     }

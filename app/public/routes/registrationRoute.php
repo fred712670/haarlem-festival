@@ -31,3 +31,4 @@ Route::add('/registration', function () {
         require(__DIR__ . "/../views/pages/registration.php");
     }
 }, ['get', 'post']);
+

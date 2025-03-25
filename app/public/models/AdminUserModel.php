@@ -37,7 +37,7 @@ class AdminUserModel extends BaseModel
         
         // Build the base query
         $sql = "SELECT UserId, FullName, Email, Role, 
-                IFNULL(DATE_FORMAT(RegisteredDate, '%Y-%m-%d'), 'N/A') as RegisteredDate 
+                IFNULL(DATE_FORMAT(RegisteredDate, '%Y-%m-%d'), 'N/A') as RegisteredDate
                 FROM User WHERE 1=1";
         $params = [];
         
@@ -58,32 +58,35 @@ class AdminUserModel extends BaseModel
                 $params[] = $filters['role'];
             }
             
-            // Filter by date range (if added to your User table)
+            // Filter by date range
             if (!empty($filters['startDate']) && !empty($filters['endDate'])) {
                 $sql .= " AND RegisteredDate BETWEEN ? AND ?";
                 $params[] = $filters['startDate'];
                 $params[] = $filters['endDate'];
-            }
-            
-            // Filter by status (if you have a status field)
-            if (isset($filters['status']) && $filters['status'] !== '') {
-                $sql .= " AND Status = ?";
-                $params[] = $filters['status'];
             }
         }
         
         // Add sorting
         $sql .= " ORDER BY $sortBy $sortOrder";
         
-        // Add pagination
-        $sql .= " LIMIT ? OFFSET ?";
-        $params[] = $perPage;
-        $params[] = $offset;
+        // Add pagination using limit clause
+        $sql .= " LIMIT ?, ?";
         
-        // Execute query
+        // Prepare statement
         $stmt = self::$pdo->prepare($sql);
-        $stmt->execute($params);
         
+        // Bind parameters with the correct types
+        $paramIndex = 1;
+        foreach ($params as $param) {
+            $stmt->bindValue($paramIndex++, $param, PDO::PARAM_STR);
+        }
+        
+        // Bind the pagination parameters as integers
+        $stmt->bindValue($paramIndex++, $offset, PDO::PARAM_INT);
+        $stmt->bindValue($paramIndex++, $perPage, PDO::PARAM_INT);
+        
+        // Execute and return results
+        $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
@@ -123,12 +126,6 @@ class AdminUserModel extends BaseModel
                 $params[] = $filters['startDate'];
                 $params[] = $filters['endDate'];
             }
-            
-            // Filter by status
-            if (isset($filters['status']) && $filters['status'] !== '') {
-                $sql .= " AND Status = ?";
-                $params[] = $filters['status'];
-            }
         }
         
         // Execute query
@@ -148,7 +145,7 @@ class AdminUserModel extends BaseModel
     public function getUserById($userId)
     {
         $sql = "SELECT UserId, FullName, Email, Role, 
-                IFNULL(DATE_FORMAT(RegisteredDate, '%Y-%m-%d'), 'N/A') as RegisteredDate 
+                IFNULL(DATE_FORMAT(RegisteredDate, '%Y-%m-%d'), 'N/A') as RegisteredDate
                 FROM User WHERE UserId = ?";
         $stmt = self::$pdo->prepare($sql);
         $stmt->execute([$userId]);
