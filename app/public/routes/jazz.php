@@ -45,18 +45,4 @@ Route::add('/jazz/artist/([0-9]+)', function ($id) {
     // Include the artist detail view
     require_once __DIR__ . '/../views/partials/jazz-artist.php';
 }, 'get');
-
-// Optional: API route to get artist data as JSON (for AJAX functionality)
-Route::add('/api/jazz/artist/([0-9]+)', function ($id) {
-    $controller = new JazzController();
-    $artist = $controller->showArtist($id);
-    
-    if (!$artist) {
-        http_response_code(404);
-        echo json_encode(['error' => 'Artist not found']);
-        return;
-    }
-    
-    header('Content-Type: application/json');
-    echo json_encode($artist);
-}, 'get');
+?>

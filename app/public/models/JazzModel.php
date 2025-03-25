@@ -349,7 +349,8 @@ class JazzModel extends BaseModel
      * 
      * @return array Ticket types and pricing
      */
-    public function getTicketInfo()
+    // this is temporary until we all get a unified database 
+     public function getTicketInfo()
     {
         try {
             // Get the pass information from the database
@@ -369,65 +370,11 @@ class JazzModel extends BaseModel
                     'featured' => (bool)$pass['Featured']
                 ];
                 
-                // Add specific features based on pass type
-                switch ($passType) {
-                    case 'Free':
-                        $ticketInfo['free'] = true;
-                        $ticketInfo['features'] = [
-                            'Free for all visitors',
-                            'No reservation needed',
-                            'Open-air performances at Grote Markt'
-                        ];
-                        break;
-                        
-                    case 'SingleUse':
-                        $ticketInfo['price_info'] = [
-                            'main_hall' => '€15.00',
-                            'second_hall' => '€10.00',
-                            'third_hall' => '€10.00',
-                            'grote_markt' => 'Free'
-                        ];
-                        $ticketInfo['notes'] = 'Prices vary by venue';
-                        break;
-                        
-                    case 'DayPass':
-                        $ticketInfo['features'] = [
-                            'Access to all venues for one day',
-                            'Complimentary festival program',
-                            'One free drink'
-                        ];
-                        break;
-                        
-                    case 'WeekendPass':
-                        $ticketInfo['features'] = [
-                            'Access to all venues Thursday through Saturday',
-                            'Complimentary festival program',
-                            'Three free drinks',
-                            '15% off merchandise'
-                        ];
-                        break;
-                }
+                
                 
                 $formattedInfo[] = $ticketInfo;
             }
             
-            // Add VIP pass if not present (since it's not in our enum yet)
-            if (!isset($passes['VIP'])) {
-                $formattedInfo[] = [
-                    'id' => $id++,
-                    'title' => 'VIP Festival Pass',
-                    'description' => 'Premium access to all festival events',
-                    'price' => 120.00,
-                    'featured' => false,
-                    'features' => [
-                        'Access to all venues for all festival days',
-                        'VIP seating areas',
-                        'Meet & Greet with select artists',
-                        'Complimentary food & drinks',
-                        'Exclusive festival merchandise'
-                    ]
-                ];
-            }
             
             return $formattedInfo;
         } catch (Exception $e) {
@@ -477,7 +424,7 @@ class JazzModel extends BaseModel
     private function enrichVenueData($venues)
     {
         try {
-            // will be added to database and fetched from there 
+            // will be added to database and fetched from there once we merge the data base 
             foreach ($venues as &$venue) {
                 if (strpos($venue['location'], 'Patronaat') !== false) {
                     $venue['contact'] = [
