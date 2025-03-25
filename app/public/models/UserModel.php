@@ -171,14 +171,14 @@ class UserModel extends BaseModel
     }
 
     public function storeResetToken($email, $token_hash, $expiry) {
-        $sql = "UPDATE User SET ResetToken = ?, ResetTokenExpires = ? WHERE Email = ?";
+        $sql = "UPDATE User SET VerifyToken = ?, ResetTokenExpires = ? WHERE Email = ?";
         $stmt = self::$pdo->prepare($sql);
         return $stmt->execute([$token_hash, $expiry, $email]);
     }
     
     public function getUserByResetToken($token_hash)
     {
-        $sql = "SELECT * FROM User WHERE ResetToken = ? AND ResetTokenExpires > NOW()";
+        $sql = "SELECT * FROM User WHERE VerifyToken = ? AND ResetTokenExpires > NOW()";
         $stmt = self::$pdo->prepare($sql);
         $stmt->execute([$token_hash]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -187,7 +187,7 @@ class UserModel extends BaseModel
     public function updateResetPassword($userId, $newPassword)
     {
         $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-        $sql = "UPDATE User SET password = ?, ResetToken = NULL, ResetTokenExpires = NULL WHERE UserId = ?";
+        $sql = "UPDATE User SET password = ?, VerifyToken = NULL, ResetTokenExpires = NULL WHERE UserId = ?";
         $stmt = self::$pdo->prepare($sql);
         return $stmt->execute([$hashedPassword, $userId]);
     }
@@ -216,14 +216,14 @@ class UserModel extends BaseModel
         
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
         
-        $sql = "INSERT INTO User (FullName, Email, Password, Role, verify_token, verify_status)
-                VALUES (:fullName, :email, :password, :role, :verify_token, 0)";
+        $sql = "INSERT INTO User (FullName, Email, Password, Role, VerifyToken, VerifyStatus)
+                VALUES (:fullName, :email, :password, :role, :verifyToken, 0)";
         $stmt = self::$pdo->prepare($sql);
         $stmt->bindParam(':fullName', $fullName);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':password', $hashedPassword);
         $stmt->bindParam(':role', $role);
-        $stmt->bindParam(':verify_token', $verify_token);
+        $stmt->bindParam(':verifyToken', $verify_token);
         
         $result = $stmt->execute();
         
@@ -233,16 +233,15 @@ class UserModel extends BaseModel
         ];
     }
     // Verify user and update verify_status
-
     public function verifyUser($token) {
-        $sql = "SELECT UserId FROM User WHERE verify_token = :verify_token AND verify_status = 0";
+        $sql = "SELECT UserId FROM User WHERE VerifyToken = :verifyToken AND VerifyStatus = 0";
         $stmt = self::$pdo->prepare($sql);
-        $stmt->bindParam(':verify_token', $token);
+        $stmt->bindParam(':verifyToken', $token);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
     
         if ($user) {
-            $sql = "UPDATE User SET verify_status = 1 WHERE UserId = :userId";
+            $sql = "UPDATE User SET VerifyStatus = 1 WHERE UserId = :userId";
             $stmt = self::$pdo->prepare($sql);
             $stmt->bindParam(':userId', $user['UserId']);
             return $stmt->execute();

@@ -30,6 +30,5 @@ Route::add('/registration', function () {
         // Display the registration form view
         require(__DIR__ . "/../views/pages/registration.php");
     }
-}, ["get", "post"]);
-?>
+}, ["post"]);
 
