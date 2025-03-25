@@ -34,7 +34,7 @@ require_once(__DIR__ . "/routes/shoppingCart.php");
 
 require_once(__DIR__ . "/routes/yummy.php");
 
-require_once(__DIR__ . "/routes/danceMain.php");
+require_once(__DIR__ . "/routes/dance.php");
 
 // Start the router, enabling handling requests
 Route::run();

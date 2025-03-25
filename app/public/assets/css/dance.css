@@ -1,21 +1,29 @@
+/* Shared Styling */
+
 body {
   font-family: Montserrat, sans-serif;
   margin: 0;
   padding: 0;
-  display: flex;
-  justify-content: center; /* Centers horizontally */
-  align-items: center;
   background: #f5eedc;
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
 }
 
+/* Main Styling */
+
 .hero {
-  background: url("../../assets/img/dance/general/heroImage.png") no-repeat
-    center center;
+  background: url("../../assets/img/dance/heroImage.png") no-repeat center
+    center;
   background-size: cover;
   width: 100vw;
   height: 100vh;
-  position: relative; /* Important for overlay positioning */
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,12 +31,12 @@ body {
 }
 
 .hero .overlay {
-  position: absolute; /* Ensures it sits over the hero image */
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -112,20 +120,16 @@ nav {
   background: #458abc;
 }
 
-/* Sections */
-.section {
-  margin-top: 100px;
-  padding: 60px 20px;
-}
-.section h2 {
-  font-style: italic;
-  font-size: 4rem;
-  margin-bottom: 30px;
-  letter-spacing: 20px;
+h2 {
+  font-size: 3rem;
+  margin-top: 75px;
+  margin-bottom: 75px;
+
+  letter-spacing: 5px;
 }
 
-section h2::before,
-section h2::after {
+h2::before,
+h2::after {
   content: "";
   display: inline-block;
   width: 100px;
@@ -137,23 +141,23 @@ section h2::after {
 
 /* About Section */
 .content-box {
-  background: #2a5172;
+  background: black;
   color: white;
   padding: 20px;
-  border-radius: 50px;
-  max-width: 60vw;
+  max-width: 55%;
   margin: auto;
 }
 
 .content-box p {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
 }
 
 .artist-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, auto);
-  gap: 50px;
+  row-gap: 60px;
+  column-gap: 100px;
   justify-items: center;
 }
 
@@ -166,73 +170,210 @@ section h2::after {
   width: 200px;
   padding: 20px;
   border-radius: 10px;
-  background: #2a5172;
+  background: black;
   color: white;
   text-align: center;
 }
 .artist-card img {
   width: 100%;
   border-radius: 100px;
-  margin: 0px;
+  margin-bottom: 10px;
 }
 
-.artist-card button {
-  background: yellow;
+.artist-card:nth-child(1) {
+  border: 4px solid #c1121f;
+  box-shadow: 0 0 0 10px #d74c41, 0 0 0 20px #e1816a;
+}
+.artist-card:nth-child(2) {
+  border: 4px solid #de6834;
+  box-shadow: 0 0 0 10px #e58a4f, 0 0 0 20px #eda46b;
+}
+.artist-card:nth-child(3) {
+  border: 4px solid #fbbe49;
+  box-shadow: 0 0 0 10px #fccc72, 0 0 0 20px #fdd99b;
+}
+.artist-card:nth-child(4) {
+  border: 4px solid #669bbc;
+  box-shadow: 0 0 0 10px #7fa9c3, 0 0 0 20px #99b7cb;
+}
+.artist-card:nth-child(5) {
+  border: 4px solid #336683;
+  box-shadow: 0 0 0 10px #4d7e98, 0 0 0 20px #6896ad;
+}
+.artist-card:nth-child(6) {
+  border: 4px solid #003049;
+  box-shadow: 0 0 0 10px #1f4a63, 0 0 0 20px #3f647d;
+}
+
+.small-button {
+  background: white;
   border: none;
   padding: 10px;
   cursor: pointer;
   margin-top: 10px;
+}
+
+.day-column {
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* spacing between shows */
+  align-items: center;
 }
 
 .shows-grid {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
 }
-.show-day {
-  background: #2a5172;
+
+.show {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start; /* key line for left alignment */
+  background: black;
   padding: 20px;
   border-radius: 10px;
   color: white;
-  width: 250px;
-}
-.show-day button {
-  background: yellow;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  margin-top: 10px;
+  width: 350px;
+  height: 350px;
+  text-align: left; /* ensures paragraphs and inline text align left */
 }
 
-.passes-container {
+.show .small-button {
+  align-self: center; /* center button horizontally */
+  margin-top: auto; /* pushes it to bottom */
+}
+
+.passes-grid {
   display: grid;
   justify-items: center;
   gap: 10px 20px;
   width: 60vw;
 }
 
-.passes-container .pass:first-child {
+.passes-grid .pass:first-child {
   grid-column: span 3;
   grid-row: 1;
   width: 100%;
 }
 
-.passes-container .pass:not(:first-child) {
+.passes-grid .pass:not(:first-child) {
   grid-row: 2;
   width: 100%;
 }
 
 .pass {
-  background: #2a5172;
+  background: black;
   padding: 20px;
   border-radius: 10px;
   color: white;
   width: 200px;
 }
-.pass button {
-  background: yellow;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  margin-top: 10px;
+
+/* Detail Styling */
+
+.artist-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers the whole section */
+  text-align: center;
+  max-width: 100%;
+  padding: 50px;
+  background-color: black;
+}
+
+.artist-name {
+  font-size: 6rem;
+  font-weight: bold;
+  margin-bottom: 60px;
+  color: white;
+}
+
+.artist-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal columns */
+  gap: 40px; /* Space between image and text */
+  align-items: center; /* Vertically center content */
+  width: 80%;
+  color: white;
+}
+
+.artist-image {
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.desc-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.artist-description {
+  font-size: 1.5rem;
+  line-height: 2;
+  text-align: left;
+}
+
+.popular-works {
+  display: flex;
+  flex-direction: column;
+  max-width: 60%;
+}
+
+.song {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 60%;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: black;
+  color: white;
+}
+
+.song-image {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  object-fit: cover;
+  justify-self: center;
+}
+
+.song-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }

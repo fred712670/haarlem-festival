@@ -1,3 +1,28 @@
+<?php
+function wrapParagraphs($text) {
+    if (!is_string($text)) return '';
+    $lines = preg_split('/\r\n|\r|\n/', trim($text));
+    $paragraphs = array_filter($lines, fn($line) => trim($line) !== '');
+    return implode("\n", array_map(fn($line) => "<p>" . htmlspecialchars($line) . "</p>", $paragraphs));
+}
+?>
+
+<?php
+$friday = [];
+$saturday = [];
+$sunday = [];
+
+foreach ($danceEvents as $event) {
+    $date = date('Y-m-d', strtotime($event['StartDateTime']));
+    if ($date === '2025-07-25') $friday[] = $event;
+    elseif ($date === '2025-07-26') $saturday[] = $event;
+    elseif ($date === '2025-07-27') $sunday[] = $event;
+}
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +34,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
 </head>
+
 <body>
+
+
+
+
     <section class="hero">
         <div class="overlay">
             <h1 class="hero-title">
@@ -27,48 +57,96 @@
         </div>
     </section>
 
-    <section id="about" class="section">
-        <h2>ABOUT US</h2>
-        <div class="content-box">
-            <p>At Haarlem Dance, we showcase top-tier dance, house, techno, and trance acts in iconic venues in and around the city of Haarlem.</p>
-            <p>Six world-class DJs will thrill audiences with epic <i>Back2Back</i> sessions on big stages and intimate experimental club sets.</p>
-            <p>So don’t miss out — hop in, join the vibe, and dance the night away.</p>
+    <section id="about">
+        <h2>ABOUT</h2>
+        <div class="about-content">
+            <div class="content-box">
+                <p><?= wrapParagraphs($aboutContent) ?></p>
+            </div>
         </div>
     </section>
 
-    <section id="artists" class="section">
+
+    <section id="artists">
         <h2>ARTISTS</h2>
         <div class="artist-grid">
-
-                <?php foreach ($artists as $artist): ?>
-                    <div class="artist-card">
-                        <img src="../../assets/img/dance/general/<?= htmlspecialchars($artist['Name'])?>.png" alt="<?= htmlspecialchars($artist['Name']) ?>">
-                        <h3><i><?= htmlspecialchars($artist['Name']) ?></i></h3>
-                    <p><i><?= htmlspecialchars($artist['Genre']) ?></i></p>
-                        <button>Details</button>
-                    </div>
-               <?php endforeach; ?>
-
+            <?php foreach ($artists as $artist): ?>
+            <div class="artist-card">
+                <img src="../../assets/img/dance/<?= htmlspecialchars($artist['ProfileImageName']) ?>">
+                <h3><i><?= htmlspecialchars($artist['Name']) ?></i></h3>
+                <p><i><?= htmlspecialchars($artist['Genre']) ?></i></p>
+                <a href="/dance/artist?id=<?= htmlspecialchars($artist['ArtistId']) ?>">
+                    <button class="small-button">Details</button>
+                </a>
+            </div>
+            <?php endforeach; ?>
         </div>
     </section>
 
-    <section id="shows" class="section">
+    <section id="shows">
         <h2>SHOWS</h2>
         <div class="shows-grid">
-            <div class="show-day"> <h3>FRIDAY</h3> <p>20:00 - 02:00 | Hardwell, Afrojack</p> <button>Book This Show</button> </div>
-            <div class="show-day"> <h3>SATURDAY</h3> <p>14:00 - 23:00 | Armin, Tiësto, Nicky</p> <button>Book This Show</button> </div>
-            <div class="show-day"> <h3>SUNDAY</h3> <p>16:00 - 23:00 | Hardwell, Martin, Armin</p> <button>Book This Show</button> </div>
+            <?php foreach (['FRIDAY' => $friday, 'SATURDAY' => $saturday, 'SUNDAY' => $sunday] as $day => $events): ?>
+            <div class="day-column">
+                <h3><?= $day ?></h3>
+                <?php foreach ($events as $event): ?>
+                <div class="show">
+                    <p><strong><?= date('l, F j, Y', strtotime($event['StartDateTime'])) ?></strong></p> <!-- Day name, full date -->
+                    <p><strong><?= htmlspecialchars($event['TimeSlot']) ?></strong></p>
+                    <p><strong>Venue:</strong> <em><?= htmlspecialchars($event['Location']) ?></em></p>
+                    <p><strong>Artists:</strong> <?= htmlspecialchars($event['Description']) ?></p>
+                    <p><strong>Price:</strong> €<?= htmlspecialchars($event['Price']) ?></p>
+                    <p><strong>Tickets left:</strong> <?= htmlspecialchars($event['TicketsAvailable']) ?></p>
+                    <button class="small-button book-button" data-id="<?= $event['DanceEventId'] ?>">Book This Show</button>
+                </div>
+                <?php endforeach; ?>
+            </div>
+            <?php endforeach; ?>
         </div>
     </section>
 
-    <section id="passes" class="section">
+    <section id="passes">
         <h2>PASSES</h2>
-        <div class="passes-container">
-            <div class="pass"> <h3>Weekend All-Access</h3> <p>€250.00</p> <button>Purchase</button> </div>
-            <div class="pass"> <h3>Friday Access</h3> <p>€125.00</p> <button>Purchase</button> </div>
-            <div class="pass"> <h3>Saturday Access</h3> <p>€150.00</p> <button>Purchase</button> </div>
-            <div class="pass"> <h3>Sunday Access</h3> <p>€150.00</p> <button>Purchase</button> </div>
+        <div class="passes-grid">
+            <div class="pass"> <h3>Weekend All-Access</h3> <p>€250.00</p> <button class="small-button">Purchase</button> </div>
+            <div class="pass"> <h3>Friday Access</h3> <p>€125.00</p> <button class="small-button">Purchase</button> </div>
+            <div class="pass"> <h3>Saturday Access</h3> <p>€150.00</p> <button class="small-button">Purchase</button> </div>
+            <div class="pass"> <h3>Sunday Access</h3> <p>€150.00</p> <button class="small-button">Purchase</button> </div>
         </div>
     </section>
+
+    <?php require_once __DIR__ . '/../partials/danceBooker.php'; ?>
+
+
+
+
+
+
+
+
+
+
+
+    
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+  const modal = document.getElementById("booking-modal");
+  const cancelBtn = document.getElementById("cancel-btn");
+
+  // Open modal by adding 'active' class
+  document.querySelectorAll(".book-button").forEach(button => {
+    button.addEventListener("click", () => {
+      modal.classList.add("active");
+    });
+  });
+
+  // Close modal by removing 'active' class
+  cancelBtn.addEventListener("click", () => {
+    modal.classList.remove("active");
+  });
+});
+</script>
+
+
 </body>
 </html>
