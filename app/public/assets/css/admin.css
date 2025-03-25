@@ -2,7 +2,7 @@
  * Enhanced Admin CSS with responsive design
  */
 
- :root {
+:root {
   --primary-color: #4e73df;
   --primary-dark: #3a56b3;
   --secondary-color: #858796;
@@ -280,59 +280,59 @@
   :root {
     --sidebar-width: 80px;
   }
-  
+
   .admin-nav-text {
     display: none;
   }
-  
+
   .admin-sidebar-brand span {
     display: none;
   }
-  
+
   .admin-nav-link {
     justify-content: center;
     padding: 0.75rem;
   }
-  
+
   .admin-nav-icon {
     margin-right: 0;
   }
-  
+
   .admin-nav-heading {
     text-align: center;
     padding: 0.75rem 0.25rem;
   }
-  
+
   .admin-nav-divider {
     margin: 0.5rem 0.25rem;
   }
-  
+
   .admin-sidebar:hover {
     width: 225px;
   }
-  
+
   .admin-sidebar:hover .admin-nav-text {
     display: block;
   }
-  
+
   .admin-sidebar:hover .admin-sidebar-brand span {
     display: block;
   }
-  
+
   .admin-sidebar:hover .admin-nav-link {
     justify-content: flex-start;
     padding: 0.75rem 1.5rem;
   }
-  
+
   .admin-sidebar:hover .admin-nav-icon {
     margin-right: 0.75rem;
   }
-  
+
   .admin-sidebar:hover .admin-nav-heading {
     text-align: left;
     padding: 0.75rem 1.5rem 0.25rem;
   }
-  
+
   .admin-sidebar:hover .admin-nav-divider {
     margin: 0.5rem 1.5rem;
   }
@@ -342,69 +342,69 @@
   :root {
     --sidebar-width: 0;
   }
-  
+
   .admin-header .toggle-sidebar {
     display: block;
   }
-  
+
   .admin-sidebar {
     left: -225px;
     width: 225px;
   }
-  
+
   .admin-sidebar.show {
     left: 0;
   }
-  
+
   .admin-nav-text {
     display: block;
   }
-  
+
   .admin-sidebar-brand span {
     display: block;
   }
-  
+
   .admin-nav-link {
     justify-content: flex-start;
     padding: 0.75rem 1.5rem;
   }
-  
+
   .admin-nav-icon {
     margin-right: 0.75rem;
   }
-  
+
   .admin-nav-heading {
     text-align: left;
     padding: 0.75rem 1.5rem 0.25rem;
   }
-  
+
   .admin-nav-divider {
     margin: 0.5rem 1.5rem;
   }
-  
+
   .filter-col {
     flex: 0 0 100%;
   }
-  
+
   .admin-table {
     display: block;
     width: 100%;
     overflow-x: auto;
   }
-  
+
   /* Convert tables to cards on mobile */
   .admin-table.responsive {
     display: block;
   }
-  
+
   .admin-table.responsive thead {
     display: none;
   }
-  
+
   .admin-table.responsive tbody {
     display: block;
   }
-  
+
   .admin-table.responsive tr {
     display: block;
     border: 1px solid var(--card-border);
@@ -412,25 +412,24 @@
     margin-bottom: 1rem;
     padding: 1rem;
   }
-  
+
   .admin-table.responsive td {
     display: flex;
     text-align: right;
     border: none;
     padding: 0.5rem 0;
   }
-  
+
   .admin-table.responsive td::before {
     content: attr(data-label);
     font-weight: 700;
     margin-right: auto;
     text-align: left;
+
+    padding: 0 1rem;
+    background-color: white;
   }
 }
-  padding: 0 1rem;
-  background-color: white;
-}
-
 .admin-header .toggle-sidebar {
   margin-right: 1rem;
   cursor: pointer;
@@ -448,7 +447,11 @@
   position: fixed;
   top: 0;
   left: 0;
-  background: linear-gradient(180deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(
+    180deg,
+    var(--primary-color) 0%,
+    var(--primary-dark) 100%
+  );
   color: rgba(255, 255, 255, 0.8);
   transition: width var(--transition-speed), left var(--transition-speed);
   z-index: 1000;
@@ -682,7 +685,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Pagination */

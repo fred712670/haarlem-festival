@@ -26,7 +26,7 @@
     <div class="card mb-4">
         <div class="card-body">
             <form method="get" action="/admin/users" class="row g-3">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label for="search" class="form-label">Search</label>
                     <input type="text" class="form-control" id="search" name="search" 
                            value="<?= htmlspecialchars($viewData['searchTerm']) ?>" 
@@ -45,27 +45,14 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
-
-                <div class="col-md-2">
-                    <label for="status" class="form-label">Status</label>
-                    <select class="form-select" id="status" name="status">
-                        <option value="">All Statuses</option>
-                        <?php foreach ($viewData['statuses'] as $status): ?>
-                            <option value="<?= htmlspecialchars($status) ?>" 
-                                <?= ($viewData['filters']['status'] === $status) ? 'selected' : '' ?>>
-                                <?= htmlspecialchars($status) ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
                 
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <label for="startDate" class="form-label">Start Date</label>
                     <input type="date" class="form-control" id="startDate" name="startDate" 
                            value="<?= htmlspecialchars($viewData['filters']['startDate']) ?>">
                 </div>
                 
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <label for="endDate" class="form-label">End Date</label>
                     <input type="date" class="form-control" id="endDate" name="endDate" 
                            value="<?= htmlspecialchars($viewData['filters']['endDate']) ?>">
@@ -123,7 +110,6 @@
                                         <?= sortIcon('RegisteredDate', $viewData) ?>
                                     </a>
                                 </th>
-                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -134,11 +120,6 @@
                                     <td><?= htmlspecialchars($user['Email']) ?></td>
                                     <td><?= htmlspecialchars($user['Role']) ?></td>
                                     <td><?= htmlspecialchars($user['RegisteredDate']) ?></td>
-                                    <td>
-                                        <span class="badge <?= $user['Status'] === 'Active' ? 'bg-success' : 'bg-danger' ?>">
-                                            <?= htmlspecialchars($user['Status']) ?>
-                                        </span>
-                                    </td>
                                     <td>
                                         <div class="btn-group" role="group">
                                             <a href="/admin/users/edit/<?= $user['UserId'] ?>" class="btn btn-sm btn-outline-primary" title="Edit User">
@@ -206,7 +187,6 @@ function sortUrl($field, $viewData) {
         'role' => $viewData['filters']['role'],
         'startDate' => $viewData['filters']['startDate'],
         'endDate' => $viewData['filters']['endDate'],
-        'status' => $viewData['filters']['status'] ?? '',
         'page' => $viewData['currentPage']
     ];
     
@@ -237,7 +217,6 @@ function paginationUrl($viewData, $page) {
         'role' => $viewData['filters']['role'],
         'startDate' => $viewData['filters']['startDate'],
         'endDate' => $viewData['filters']['endDate'],
-        'status' => $viewData['filters']['status'] ?? '',
         'page' => $page
     ];
     

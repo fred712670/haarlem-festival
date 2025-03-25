@@ -31,7 +31,7 @@ require_once(__DIR__ . "/routes/magic.php");
 require_once(__DIR__ . "/routes/login.php");
 require_once(__DIR__ . "/routes/admin.php");
 require_once(__DIR__ . "/routes/shoppingCart.php");
-
+require_once __DIR__ . '/routes/jazz.php';
 require_once(__DIR__ . "/routes/yummy.php");
 // Start the router, enabling handling requests
 Route::run();

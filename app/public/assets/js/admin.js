@@ -1,5 +1,5 @@
 /**
- * Enhanced Admin JavaScript with dark mode and responsive features
+ * Enhanced Admin JavaScript with dark mode, responsive features, and accessibility improvements
  */
 document.addEventListener("DOMContentLoaded", function () {
   // Initialize Bootstrap components
@@ -13,6 +13,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Add form validation
   setupFormValidation();
+
+  // Setup password visibility toggles
+  setupPasswordToggles();
 
   // Initialize advanced components
   initializeCharts();
@@ -50,10 +53,12 @@ function initBootstrapComponents() {
 
   // Handle date pickers
   document.querySelectorAll(".datepicker").forEach(function (input) {
-    flatpickr(input, {
-      dateFormat: "Y-m-d",
-      allowInput: true,
-    });
+    if (typeof flatpickr !== "undefined") {
+      flatpickr(input, {
+        dateFormat: "Y-m-d",
+        allowInput: true,
+      });
+    }
   });
 }
 
@@ -71,9 +76,13 @@ function setupThemePreferences() {
   // Set initial theme
   if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
     document.body.classList.add("dark-mode");
-    themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+    themeToggleBtn.innerHTML =
+      '<span class="fas fa-sun" aria-hidden="true"></span>';
+    themeToggleBtn.setAttribute("aria-label", "Switch to light mode");
   } else {
-    themeToggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
+    themeToggleBtn.innerHTML =
+      '<span class="fas fa-moon" aria-hidden="true"></span>';
+    themeToggleBtn.setAttribute("aria-label", "Switch to dark mode");
   }
 
   // Handle theme toggle click
@@ -81,11 +90,13 @@ function setupThemePreferences() {
     if (document.body.classList.contains("dark-mode")) {
       document.body.classList.remove("dark-mode");
       localStorage.setItem("admin-theme", "light");
-      this.innerHTML = '<i class="fas fa-moon"></i>';
+      this.innerHTML = '<span class="fas fa-moon" aria-hidden="true"></span>';
+      this.setAttribute("aria-label", "Switch to dark mode");
     } else {
       document.body.classList.add("dark-mode");
       localStorage.setItem("admin-theme", "dark");
-      this.innerHTML = '<i class="fas fa-sun"></i>';
+      this.innerHTML = '<span class="fas fa-sun" aria-hidden="true"></span>';
+      this.setAttribute("aria-label", "Switch to light mode");
     }
   });
 
@@ -96,10 +107,14 @@ function setupThemePreferences() {
       if (!localStorage.getItem("admin-theme")) {
         if (e.matches) {
           document.body.classList.add("dark-mode");
-          themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+          themeToggleBtn.innerHTML =
+            '<span class="fas fa-sun" aria-hidden="true"></span>';
+          themeToggleBtn.setAttribute("aria-label", "Switch to light mode");
         } else {
           document.body.classList.remove("dark-mode");
-          themeToggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
+          themeToggleBtn.innerHTML =
+            '<span class="fas fa-moon" aria-hidden="true"></span>';
+          themeToggleBtn.setAttribute("aria-label", "Switch to dark mode");
         }
       }
     });
@@ -111,11 +126,10 @@ function setupThemePreferences() {
 function setupSidebar() {
   const toggleSidebarBtn = document.querySelector(".toggle-sidebar");
   const sidebar = document.querySelector(".admin-sidebar");
-  const backdrop = document.createElement("div");
-
   if (!toggleSidebarBtn || !sidebar) return;
 
   // Create backdrop for mobile
+  const backdrop = document.createElement("div");
   backdrop.className = "sidebar-backdrop";
   backdrop.style.position = "fixed";
   backdrop.style.top = "0";
@@ -130,10 +144,14 @@ function setupSidebar() {
   // Handle toggle click
   toggleSidebarBtn.addEventListener("click", function () {
     sidebar.classList.toggle("show");
-    if (sidebar.classList.contains("show")) {
-      backdrop.style.display = "block";
-    } else {
-      backdrop.style.display = "none";
+    const isExpanded = sidebar.classList.contains("show");
+
+    backdrop.style.display = isExpanded ? "block" : "none";
+    toggleSidebarBtn.setAttribute("aria-expanded", isExpanded);
+
+    if (isExpanded) {
+      // Trap focus within sidebar when open
+      sidebar.focus();
     }
   });
 
@@ -141,6 +159,7 @@ function setupSidebar() {
   backdrop.addEventListener("click", function () {
     sidebar.classList.remove("show");
     backdrop.style.display = "none";
+    toggleSidebarBtn.setAttribute("aria-expanded", "false");
   });
 
   // Close sidebar on window resize if screen becomes larger
@@ -148,6 +167,7 @@ function setupSidebar() {
     if (window.innerWidth > 768 && sidebar.classList.contains("show")) {
       sidebar.classList.remove("show");
       backdrop.style.display = "none";
+      toggleSidebarBtn.setAttribute("aria-expanded", "false");
     }
   });
 }
@@ -158,7 +178,6 @@ function setupSidebar() {
 function setupFormValidation() {
   // Get all forms with the class 'needs-validation'
   const forms = document.querySelectorAll(".needs-validation");
-
   if (forms.length === 0) return;
 
   // Loop over them and prevent submission
@@ -176,32 +195,8 @@ function setupFormValidation() {
       false
     );
 
-    // Custom password validation
-    const passwordField = form.querySelector('input[type="password"]');
-    const confirmPasswordField = form.querySelector(
-      "input[data-match-password]"
-    );
-
-    if (passwordField && confirmPasswordField) {
-      confirmPasswordField.addEventListener("input", function () {
-        if (this.value !== passwordField.value) {
-          this.setCustomValidity("Passwords do not match");
-        } else {
-          this.setCustomValidity("");
-        }
-      });
-
-      passwordField.addEventListener("input", function () {
-        if (
-          confirmPasswordField.value !== "" &&
-          confirmPasswordField.value !== this.value
-        ) {
-          confirmPasswordField.setCustomValidity("Passwords do not match");
-        } else {
-          confirmPasswordField.setCustomValidity("");
-        }
-      });
-    }
+    // Handle password validation
+    setupPasswordValidation(form);
 
     // Custom email validation
     const emailField = form.querySelector('input[type="email"]');
@@ -213,6 +208,81 @@ function setupFormValidation() {
         }
       });
     }
+  });
+}
+
+/**
+ * Setup password validation for a form
+ * @param {HTMLFormElement} form - The form element
+ */
+function setupPasswordValidation(form) {
+  // Check for different possible password field configurations
+  const passwordField =
+    form.querySelector("input#password") ||
+    form.querySelector("input#newPassword") ||
+    form.querySelector('input[type="password"]:not([id="confirmPassword"])');
+
+  const confirmPasswordField =
+    form.querySelector("input#confirmPassword") ||
+    form.querySelector("input[data-match-password]");
+
+  if (passwordField && confirmPasswordField) {
+    // Validate passwords match on input
+    confirmPasswordField.addEventListener("input", function () {
+      if (this.value !== passwordField.value) {
+        this.setCustomValidity("Passwords do not match");
+      } else {
+        this.setCustomValidity("");
+      }
+    });
+
+    passwordField.addEventListener("input", function () {
+      if (
+        confirmPasswordField.value !== "" &&
+        confirmPasswordField.value !== this.value
+      ) {
+        confirmPasswordField.setCustomValidity("Passwords do not match");
+      } else {
+        confirmPasswordField.setCustomValidity("");
+      }
+    });
+  }
+}
+
+/**
+ * Setup password visibility toggles
+ */
+function setupPasswordToggles() {
+  const passwordToggleBtns = document.querySelectorAll('button[id^="toggle"]');
+
+  passwordToggleBtns.forEach(function (toggleBtn) {
+    toggleBtn.addEventListener("click", function () {
+      // Find the associated password input
+      // Extract the ID from the button's ID (e.g., "togglePassword" -> "Password")
+      const fieldId = this.id.replace("toggle", "");
+      const passwordField =
+        document.getElementById(fieldId) || this.previousElementSibling;
+
+      if (!passwordField) return;
+
+      // Toggle between password and text type
+      const type =
+        passwordField.getAttribute("type") === "password" ? "text" : "password";
+      passwordField.setAttribute("type", type);
+
+      // Toggle the icon
+      const icon = this.querySelector("span, i");
+      if (icon) {
+        icon.classList.toggle("fa-eye");
+        icon.classList.toggle("fa-eye-slash");
+      }
+
+      // Update the aria-label for accessibility
+      this.setAttribute(
+        "aria-label",
+        type === "text" ? "Hide password" : "Show password"
+      );
+    });
   });
 }
 
@@ -258,6 +328,8 @@ function checkEmailAvailability(email, field) {
  * Initialize charts for dashboard
  */
 function initializeCharts() {
+  if (typeof Chart === "undefined") return;
+
   const userChartCanvas = document.getElementById("userRegistrationChart");
   if (!userChartCanvas) return;
 
@@ -283,7 +355,7 @@ function initializeCharts() {
       datasets: [
         {
           label: "New Users",
-          data: userChartData || [
+          data: window.userChartData || [
             65, 59, 80, 81, 56, 55, 40, 30, 45, 60, 70, 85,
           ],
           fill: false,
@@ -357,7 +429,7 @@ function initializeCharts() {
       labels: ["Customers", "Employees", "Administrators"],
       datasets: [
         {
-          data: userRolesData || [70, 20, 10],
+          data: window.userRolesData || [70, 20, 10],
           backgroundColor: ["#4e73df", "#1cc88a", "#e74a3b"],
           hoverBackgroundColor: ["#2e59d9", "#17a673", "#e02d1b"],
           hoverBorderColor: "rgba(234, 236, 244, 1)",
@@ -390,6 +462,8 @@ function initializeCharts() {
  * Initialize DataTables for enhanced table functionality
  */
 function initializeDataTables() {
+  if (typeof $ === "undefined" || typeof $.fn.DataTable === "undefined") return;
+
   const dataTablesEnabled = document.querySelectorAll(".datatable");
   if (dataTablesEnabled.length === 0) return;
 
@@ -463,6 +537,8 @@ function setupSessionTimeout() {
       warningEl = document.createElement("div");
       warningEl.id = "session-timeout-warning";
       warningEl.className = "session-timeout-warning";
+      warningEl.setAttribute("role", "alert");
+      warningEl.setAttribute("aria-live", "assertive");
       warningEl.innerHTML = `
         <div class="session-timeout-content">
           <h4>Session Timeout Warning</h4>
@@ -545,12 +621,15 @@ function showToast(message, type = "info") {
   if (!toastContainer) {
     toastContainer = document.createElement("div");
     toastContainer.className = "toast-container";
+    toastContainer.setAttribute("aria-live", "polite");
     document.body.appendChild(toastContainer);
   }
 
   // Create toast element
   const toast = document.createElement("div");
   toast.className = `toast toast-${type}`;
+  toast.setAttribute("role", "alert");
+  toast.setAttribute("aria-atomic", "true");
 
   // Set icon based on type
   let icon = "info-circle";
@@ -569,11 +648,11 @@ function showToast(message, type = "info") {
   // Set toast content
   toast.innerHTML = `
     <div class="toast-header">
-      <i class="fas fa-${icon} me-2"></i>
+      <span class="fas fa-${icon} me-2" aria-hidden="true"></span>
       <strong class="me-auto">${
         type.charAt(0).toUpperCase() + type.slice(1)
       }</strong>
-      <button type="button" class="btn-close" aria-label="Close"></button>
+      <button type="button" class="btn-close" aria-label="Close notification"></button>
     </div>
     <div class="toast-body">
       ${message}
@@ -712,7 +791,7 @@ document.addEventListener("keydown", function (e) {
   if (e.ctrlKey && e.key === "f" && !e.shiftKey) {
     e.preventDefault();
     const searchInput = document.querySelector(
-      'input[type="search"], #search-users'
+      'input[type="search"], #search-users, #search'
     );
     if (searchInput) {
       searchInput.focus();
@@ -723,121 +802,141 @@ document.addEventListener("keydown", function (e) {
 /**
  * Handle confirmation dialogs
  */
-document.querySelectorAll(".confirm-action").forEach(function (button) {
-  button.addEventListener("click", function (e) {
-    e.preventDefault();
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll(".confirm-action").forEach(function (button) {
+    button.addEventListener("click", function (e) {
+      e.preventDefault();
 
-    const message =
-      this.dataset.confirmMessage ||
-      "Are you sure you want to perform this action?";
-    const title = this.dataset.confirmTitle || "Confirmation Required";
-    const confirmBtnText = this.dataset.confirmButtonText || "Confirm";
-    const confirmBtnClass = this.dataset.confirmButtonClass || "btn-danger";
-    const cancelBtnText = this.dataset.cancelButtonText || "Cancel";
+      const message =
+        this.dataset.confirmMessage ||
+        "Are you sure you want to perform this action?";
+      const title = this.dataset.confirmTitle || "Confirmation Required";
+      const confirmBtnText = this.dataset.confirmButtonText || "Confirm";
+      const confirmBtnClass = this.dataset.confirmButtonClass || "btn-danger";
+      const cancelBtnText = this.dataset.cancelButtonText || "Cancel";
 
-    // Create backdrop
-    const backdrop = document.createElement("div");
-    backdrop.className = "admin-modal-backdrop";
-    document.body.appendChild(backdrop);
+      // Create backdrop
+      const backdrop = document.createElement("div");
+      backdrop.className = "admin-modal-backdrop";
+      document.body.appendChild(backdrop);
 
-    // Create modal
-    const modal = document.createElement("div");
-    modal.className = "admin-modal";
-    modal.innerHTML = `
-      <div class="admin-modal-header">
-        <h5 class="admin-modal-title">${title}</h5>
-        <button type="button" class="admin-modal-close" aria-label="Close">&times;</button>
-      </div>
-      <div class="admin-modal-body">
-        <p>${message}</p>
-      </div>
-      <div class="admin-modal-footer">
-        <button type="button" class="btn btn-secondary" id="modal-cancel-btn">${cancelBtnText}</button>
-        <button type="button" class="btn ${confirmBtnClass}" id="modal-confirm-btn">${confirmBtnText}</button>
-      </div>
-    `;
+      // Create modal
+      const modal = document.createElement("div");
+      modal.className = "admin-modal";
+      modal.setAttribute("role", "dialog");
+      modal.setAttribute("aria-modal", "true");
+      modal.setAttribute("aria-labelledby", "modal-title");
+      modal.innerHTML = `
+        <div class="admin-modal-header">
+          <h5 class="admin-modal-title" id="modal-title">${title}</h5>
+          <button type="button" class="admin-modal-close" aria-label="Close">&times;</button>
+        </div>
+        <div class="admin-modal-body">
+          <p>${message}</p>
+        </div>
+        <div class="admin-modal-footer">
+          <button type="button" class="btn btn-secondary" id="modal-cancel-btn">${cancelBtnText}</button>
+          <button type="button" class="btn ${confirmBtnClass}" id="modal-confirm-btn">${confirmBtnText}</button>
+        </div>
+      `;
 
-    document.body.appendChild(modal);
+      document.body.appendChild(modal);
 
-    // Show backdrop and modal
-    setTimeout(() => {
-      backdrop.style.display = "block";
-      modal.style.display = "block";
-    }, 10);
-
-    // Handle close button
-    modal.querySelector(".admin-modal-close").addEventListener("click", () => {
-      closeModal();
-    });
-
-    // Handle cancel button
-    document
-      .getElementById("modal-cancel-btn")
-      .addEventListener("click", () => {
-        closeModal();
-      });
-
-    // Handle confirm button
-    document
-      .getElementById("modal-confirm-btn")
-      .addEventListener("click", () => {
-        closeModal(true);
-
-        // Perform the original action
-        const originalAction = this.dataset.action;
-        if (originalAction) {
-          window.location.href = originalAction;
-        } else if (this.tagName === "A") {
-          window.location.href = this.href;
-        } else if (this.form) {
-          this.form.submit();
-        }
-      });
-
-    /**
-     * Close the modal
-     */
-    function closeModal(confirmed = false) {
-      backdrop.style.display = "none";
-      modal.style.display = "none";
-
+      // Show backdrop and modal
       setTimeout(() => {
-        document.body.removeChild(backdrop);
-        document.body.removeChild(modal);
+        backdrop.style.display = "block";
+        modal.style.display = "block";
+        // Focus the confirm button
+        document.getElementById("modal-confirm-btn").focus();
+      }, 10);
 
-        // Restore focus to the button that triggered the modal
-        if (!confirmed) {
-          button.focus();
+      // Handle close button
+      modal
+        .querySelector(".admin-modal-close")
+        .addEventListener("click", () => {
+          closeModal();
+        });
+
+      // Handle cancel button
+      document
+        .getElementById("modal-cancel-btn")
+        .addEventListener("click", () => {
+          closeModal();
+        });
+
+      // Handle confirm button
+      document
+        .getElementById("modal-confirm-btn")
+        .addEventListener("click", () => {
+          closeModal(true);
+
+          // Perform the original action
+          const originalAction = this.dataset.action;
+          if (originalAction) {
+            window.location.href = originalAction;
+          } else if (this.tagName === "A") {
+            window.location.href = this.href;
+          } else if (this.form) {
+            this.form.submit();
+          }
+        });
+
+      // Handle Escape key
+      modal.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+          closeModal();
         }
-      }, 300);
-    }
+      });
+
+      /**
+       * Close the modal
+       */
+      function closeModal(confirmed = false) {
+        backdrop.style.display = "none";
+        modal.style.display = "none";
+
+        setTimeout(() => {
+          document.body.removeChild(backdrop);
+          document.body.removeChild(modal);
+
+          // Restore focus to the button that triggered the modal
+          if (!confirmed) {
+            button.focus();
+          }
+        }, 300);
+      }
+    });
   });
 });
 
 /**
  * Initialize WYSIWYG editors for textareas with class 'richtext'
  */
-document.querySelectorAll("textarea.richtext").forEach(function (textarea) {
-  // Check if we've loaded the editor library
-  if (typeof tinymce !== "undefined") {
-    tinymce.init({
-      target: textarea,
-      height: 300,
-      menubar: false,
-      plugins: [
-        "advlist autolink lists link image charmap print preview anchor",
-        "searchreplace visualblocks code fullscreen",
-        "insertdatetime media table paste code help wordcount",
-      ],
-      toolbar:
-        "undo redo | formatselect | " +
-        "bold italic backcolor | alignleft aligncenter " +
-        "alignright alignjustify | bullist numlist outdent indent | " +
-        "removeformat | help",
-      content_style:
-        "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-    });
-  }
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("textarea.richtext").forEach(function (textarea) {
+    // Check if we've loaded the editor library
+    if (typeof tinymce !== "undefined") {
+      tinymce.init({
+        target: textarea,
+        height: 300,
+        menubar: false,
+        plugins: [
+          "advlist autolink lists link image charmap print preview anchor",
+          "searchreplace visualblocks code fullscreen",
+          "insertdatetime media table paste code help wordcount",
+        ],
+        toolbar:
+          "undo redo | formatselect | " +
+          "bold italic backcolor | alignleft aligncenter " +
+          "alignright alignjustify | bullist numlist outdent indent | " +
+          "removeformat | help",
+        content_style:
+          "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+        // Accessibility improvements
+        a11y_advanced_options: true,
+      });
+    }
+  });
 });
 
 /**
@@ -845,6 +944,7 @@ document.querySelectorAll("textarea.richtext").forEach(function (textarea) {
  */
 document.addEventListener("DOMContentLoaded", function () {
   const lazyImages = [].slice.call(document.querySelectorAll("img.lazy"));
+  if (lazyImages.length === 0) return;
 
   if ("IntersectionObserver" in window) {
     let lazyImageObserver = new IntersectionObserver(function (

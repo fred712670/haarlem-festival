@@ -43,8 +43,7 @@ Route::add('/admin/users', function() {
     $filters = [
         'role' => $_GET['role'] ?? '',
         'startDate' => $_GET['startDate'] ?? '',
-        'endDate' => $_GET['endDate'] ?? '',
-        'status' => $_GET['status'] ?? ''
+        'endDate' => $_GET['endDate'] ?? ''
     ];
     
     $searchTerm = $_GET['search'] ?? '';
@@ -55,7 +54,7 @@ Route::add('/admin/users', function() {
     // Get data for the view
     $viewData = $controller->index($filters, $searchTerm, $sortBy, $sortOrder, $page);
     $viewData['roles'] = $controller->getRoles();
-    $viewData['statuses'] = $controller->getStatuses();
+    // No longer getting statuses as that feature has been removed
     
     require_once(__DIR__ . "/../views/partials/header.php");
     require_once(__DIR__ . "/../views/partials/adminFeatures.php");
@@ -112,7 +111,6 @@ Route::add('/admin/users/edit/([0-9]+)', function($userId) {
     }
     
     $roles = $controller->getRoles();
-    $statuses = $controller->getStatuses();
     
     require_once(__DIR__ . "/../views/partials/header.php");
     require_once(__DIR__ . "/../views/partials/edit.php");
@@ -128,9 +126,8 @@ Route::add('/admin/users/edit/([0-9]+)', function($userId) {
     $fullName = $_POST['fullName'] ?? '';
     $email = $_POST['email'] ?? '';
     $role = $_POST['role'] ?? '';
-    $status = $_POST['status'] ?? 'Active';
     
-    $result = $controller->updateUser($userId, $fullName, $email, $role, $status);
+    $result = $controller->updateUser($userId, $fullName, $email, $role);
     
     if ($result['success']) {
         $_SESSION['success_message'] = $result['message'];

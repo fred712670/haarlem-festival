@@ -3,42 +3,36 @@
         <div class="col-md-6 offset-md-3">
             <div class="card border-danger">
                 <div class="card-header bg-danger text-white">
-                    <h3 class="mb-0">Confirm Delete User</h3>
+                    <h1 class="mb-0 h3">Confirm Delete User</h1>
                 </div>
                 <div class="card-body">
-                    <div class="alert alert-warning">
-                        <i class="fas fa-exclamation-triangle"></i> Warning: This action cannot be undone.
+                    <div class="alert alert-warning" role="alert">
+                        <span class="fas fa-exclamation-triangle" aria-hidden="true"></span> Warning: This action cannot be undone.
                     </div>
                     
                     <p class="lead">Are you sure you want to delete the following user?</p>
                     
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Name:</label>
-                        <p><?= htmlspecialchars($user['FullName']) ?></p>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Email:</label>
-                        <p><?= htmlspecialchars($user['Email']) ?></p>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Role:</label>
-                        <p><?= htmlspecialchars($user['Role']) ?></p>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Registration Date:</label>
-                        <p><?= htmlspecialchars($user['RegisteredDate']) ?></p>
-                    </div>
+                    <dl>
+                        <dt class="form-label fw-bold">Name:</dt>
+                        <dd><?= htmlspecialchars($user['FullName']) ?></dd>
+                        
+                        <dt class="form-label fw-bold">Email:</dt>
+                        <dd><?= htmlspecialchars($user['Email']) ?></dd>
+                        
+                        <dt class="form-label fw-bold">Role:</dt>
+                        <dd><?= htmlspecialchars($user['Role']) ?></dd>
+                        
+                        <dt class="form-label fw-bold">Registration Date:</dt>
+                        <dd><?= htmlspecialchars($user['RegisteredDate']) ?></dd>
+                    </dl>
                     
                     <form action="/admin/users/delete/<?= $user['UserId'] ?>" method="post">
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <a href="/admin/users" class="btn btn-secondary me-md-2">
-                                <i class="fas fa-times"></i> Cancel
+                                <span class="fas fa-times" aria-hidden="true"></span> Cancel
                             </a>
                             <button type="submit" class="btn btn-danger">
-                                <i class="fas fa-trash"></i> Delete User
+                                <span class="fas fa-trash" aria-hidden="true"></span> Delete User
                             </button>
                         </div>
                     </form>

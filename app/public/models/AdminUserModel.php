@@ -37,8 +37,7 @@ class AdminUserModel extends BaseModel
         
         // Build the base query
         $sql = "SELECT UserId, FullName, Email, Role, 
-                IFNULL(DATE_FORMAT(RegisteredDate, '%Y-%m-%d'), 'N/A') as RegisteredDate,
-                Status 
+                IFNULL(DATE_FORMAT(RegisteredDate, '%Y-%m-%d'), 'N/A') as RegisteredDate
                 FROM User WHERE 1=1";
         $params = [];
         
@@ -64,12 +63,6 @@ class AdminUserModel extends BaseModel
                 $sql .= " AND RegisteredDate BETWEEN ? AND ?";
                 $params[] = $filters['startDate'];
                 $params[] = $filters['endDate'];
-            }
-            
-            // Filter by status
-            if (isset($filters['status']) && $filters['status'] !== '') {
-                $sql .= " AND Status = ?";
-                $params[] = $filters['status'];
             }
         }
         
@@ -133,12 +126,6 @@ class AdminUserModel extends BaseModel
                 $params[] = $filters['startDate'];
                 $params[] = $filters['endDate'];
             }
-            
-            // Filter by status
-            if (isset($filters['status']) && $filters['status'] !== '') {
-                $sql .= " AND Status = ?";
-                $params[] = $filters['status'];
-            }
         }
         
         // Execute query
@@ -158,8 +145,7 @@ class AdminUserModel extends BaseModel
     public function getUserById($userId)
     {
         $sql = "SELECT UserId, FullName, Email, Role, 
-                IFNULL(DATE_FORMAT(RegisteredDate, '%Y-%m-%d'), 'N/A') as RegisteredDate,
-                Status 
+                IFNULL(DATE_FORMAT(RegisteredDate, '%Y-%m-%d'), 'N/A') as RegisteredDate
                 FROM User WHERE UserId = ?";
         $stmt = self::$pdo->prepare($sql);
         $stmt->execute([$userId]);
@@ -192,8 +178,8 @@ class AdminUserModel extends BaseModel
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
         
         // Insert new user
-        $sql = "INSERT INTO User (FullName, Email, Password, Role, RegisteredDate, Status) 
-                VALUES (?, ?, ?, ?, NOW(), 'Active')";
+        $sql = "INSERT INTO User (FullName, Email, Password, Role, RegisteredDate) 
+                VALUES (?, ?, ?, ?, NOW())";
         $stmt = self::$pdo->prepare($sql);
         
         try {
@@ -215,10 +201,9 @@ class AdminUserModel extends BaseModel
      * @param string $fullName Updated full name
      * @param string $email Updated email address
      * @param string $role Updated role
-     * @param string $status Updated status
      * @return array Result of the operation
      */
-    public function updateUser($userId, $fullName, $email, $role, $status = 'Active')
+    public function updateUser($userId, $fullName, $email, $role)
     {
         // Check if email already exists for another user
         $checkSql = "SELECT COUNT(*) as count FROM User WHERE Email = ? AND UserId != ?";
@@ -231,11 +216,11 @@ class AdminUserModel extends BaseModel
         }
         
         // Update user
-        $sql = "UPDATE User SET FullName = ?, Email = ?, Role = ?, Status = ? WHERE UserId = ?";
+        $sql = "UPDATE User SET FullName = ?, Email = ?, Role = ? WHERE UserId = ?";
         $stmt = self::$pdo->prepare($sql);
         
         try {
-            $stmt->execute([$fullName, $email, $role, $status, $userId]);
+            $stmt->execute([$fullName, $email, $role, $userId]);
             
             if ($stmt->rowCount() > 0) {
                 return ['success' => true, 'message' => 'User updated successfully.'];
@@ -296,17 +281,6 @@ class AdminUserModel extends BaseModel
                 return ['success' => false, 'message' => 'User not found.'];
             }
         } catch (\PDOException $e) {
-            // If deletion fails due to foreign key constraint
-            if ($e->getCode() == '23000') {
-                // Instead of deleting, update status to Inactive
-                $updateSql = "UPDATE User SET Status = 'Inactive' WHERE UserId = ?";
-                $updateStmt = self::$pdo->prepare($updateSql);
-                $updateStmt->execute([$userId]);
-                
-                if ($updateStmt->rowCount() > 0) {
-                    return ['success' => true, 'message' => 'User deactivated instead of deleted due to existing relationships.'];
-                }
-            }
             return ['success' => false, 'message' => 'Failed to delete user: ' . $e->getMessage()];
         }
     }

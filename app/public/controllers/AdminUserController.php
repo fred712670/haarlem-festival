@@ -98,10 +98,9 @@ class AdminUserController
      * @param string $fullName Updated full name
      * @param string $email Updated email address
      * @param string $role Updated role
-     * @param string $status Updated status
      * @return array Result of the operation
      */
-    public function updateUser($userId, $fullName, $email, $role, $status = 'Active')
+    public function updateUser($userId, $fullName, $email, $role)
     {
         // Validate inputs
         if (empty($userId) || empty($fullName) || empty($email) || empty($role)) {
@@ -117,13 +116,8 @@ class AdminUserController
             return ['success' => false, 'message' => 'Invalid role.'];
         }
 
-        $validStatuses = ['Active', 'Inactive'];
-        if (!in_array($status, $validStatuses)) {
-            return ['success' => false, 'message' => 'Invalid status.'];
-        }
-
         // Update user
-        return $this->adminUserModel->updateUser($userId, $fullName, $email, $role, $status);
+        return $this->adminUserModel->updateUser($userId, $fullName, $email, $role);
     }
 
     /**
@@ -178,15 +172,5 @@ class AdminUserController
     public function getRoles()
     {
         return ['Customer', 'Employee', 'Administrator'];
-    }
-
-    /**
-     * Get available statuses for dropdown
-     * 
-     * @return array List of available statuses
-     */
-    public function getStatuses()
-    {
-        return ['Active', 'Inactive'];
     }
 }
