@@ -42,3 +42,13 @@ Route::add('/deleteItem', function() {
     $reservationController->deleteItem($_POST['itemIndex']);
     header('Location: /cart');
 }, 'post');
+
+Route::add('/payment', function () {
+    require_once __DIR__ . '/../views/pages/payment.php';
+}, 'get');
+
+Route::add('/process-payment', function () {
+    require_once __DIR__ . '/../controllers/OrderController.php';
+    $controller = new OrderController();
+    $controller->createOrder();
+}, 'post');

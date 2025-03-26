@@ -6,7 +6,6 @@ require_once(__DIR__ . "/../controllers/AdminUserController.php");
 
 /**
  * Middleware to check if user is an administrator
- * Redirects to login page if not authenticated or not an admin
  */
 function requireAdmin() {
     // Check if user is logged in
@@ -22,8 +21,6 @@ function requireAdmin() {
         header('Location: /');
         exit();
     }
-    
-    // If we get here, the user is an admin
 }
 
 // Admin Dashboard
@@ -54,11 +51,8 @@ Route::add('/admin/users', function() {
     // Get data for the view
     $viewData = $controller->index($filters, $searchTerm, $sortBy, $sortOrder, $page);
     $viewData['roles'] = $controller->getRoles();
-    // No longer getting statuses as that feature has been removed
     
-    require_once(__DIR__ . "/../views/partials/header.php");
-    require_once(__DIR__ . "/../views/partials/adminFeatures.php");
-    require_once(__DIR__ . "/../views/partials/footer.php");
+    require_once(__DIR__ . "/../views/pages/admin.php");
 }, 'get');
 
 // Form to create a new user
@@ -68,9 +62,7 @@ Route::add('/admin/users/create', function() {
     $controller = new AdminUserController();
     $roles = $controller->getRoles();
     
-    require_once(__DIR__ . "/../views/partials/header.php");
-    require_once(__DIR__ . "/../views/partials/create.php");
-    require_once(__DIR__ . "/../views/partials/footer.php");
+    require_once(__DIR__ . "/../views/pages/create_user.php");
 }, 'get');
 
 // Process new user creation
@@ -112,9 +104,7 @@ Route::add('/admin/users/edit/([0-9]+)', function($userId) {
     
     $roles = $controller->getRoles();
     
-    require_once(__DIR__ . "/../views/partials/header.php");
-    require_once(__DIR__ . "/../views/partials/edit.php");
-    require_once(__DIR__ . "/../views/partials/footer.php");
+    require_once(__DIR__ . "/../views/pages/edit_user.php");
 }, 'get');
 
 // Process user update
@@ -152,9 +142,7 @@ Route::add('/admin/users/reset-password/([0-9]+)', function($userId) {
         exit();
     }
     
-    require_once(__DIR__ . "/../views/partials/header.php");
-    require_once(__DIR__ . "/../views/partials/reset_password.php");
-    require_once(__DIR__ . "/../views/partials/footer.php");
+    require_once(__DIR__ . "/../views/pages/reset_password.php");
 }, 'get');
 
 // Process password reset
@@ -197,9 +185,7 @@ Route::add('/admin/users/delete/([0-9]+)', function($userId) {
         exit();
     }
     
-    require_once(__DIR__ . "/../views/partials/header.php");
-    require_once(__DIR__ . "/../views/partials/delete.php");
-    require_once(__DIR__ . "/../views/partials/footer.php");
+    require_once(__DIR__ . "/../views/pages/delete_user.php");
 }, 'get');
 
 // Process user deletion
