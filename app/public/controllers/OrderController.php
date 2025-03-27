@@ -2,11 +2,28 @@
 require_once 'models/OrderModel.php';
 
 class OrderController {
-    public function createOrder(){
+    public function createOrder() {
+        if (empty($_SESSION['cart']) || empty($_SESSION['userId'])) {
+            die("❌ Order or User not available.");
+        }
+
         $orderModel = new OrderModel();
-        $order = $_SESSION['cart'];
+        $cart = $_SESSION['cart'];
+        $userId = $_SESSION['userId'];
+
+        // Get phone/address from POST
+        $phone = $_POST['phone'] ?? null;
+        $address = $_POST['address'] ?? null;
+
+        // Create order
+        $orderId = $orderModel->createOrder($cart, $phone, $address);
+
+        // Clear cart
         unset($_SESSION['cart']);
-        $orderModel->createOrder($order);
+
+        // Redirect
+        header("Location: /thank-you?orderId=$orderId");
+        exit;
     }
 
 

@@ -56,9 +56,9 @@
                         <?php endforeach; ?>
                         </div>
                         <p>Total: € <span id="totalPrice"><?= htmlspecialchars($totalPrice) ?></span></p>
-                        <button class="btn btn-primary btn-pay" name="createOrder" id="createOrderBtn" <?php echo $isUserLoggedIn ? '' : 'disabled'; ?>>
+                        <a href="/payment" class="btn btn-primary btn-pay" name="createOrder" id="createOrderBtn" <?php echo $isUserLoggedIn ? '' : 'disabled'; ?>>
                             Proceed to payment
-                        </button>
+                        </a>
                         <?php
                         // Calculate total price
                         $totalPrice += $ticket['price'] * $ticket['quantity'];

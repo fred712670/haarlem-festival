@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Mar 25, 2025 at 10:34 AM
--- Server version: 11.5.2-MariaDB-ubu2404
--- PHP Version: 8.2.25
+-- Generation Time: Mar 25, 2025 at 06:16 PM
+-- Server version: 11.6.2-MariaDB-ubu2404
+-- PHP Version: 8.2.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -23,6 +23,7 @@ SET time_zone = "+00:00";
 
 -- --------------------------------------------------------
 
+USE developmentdb;
 --
 -- Table structure for table `Appearances`
 --
@@ -45,6 +46,15 @@ CREATE TABLE `Content` (
   `Content` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
+--
+-- Dumping data for table `Content`
+--
+
+INSERT INTO `Content` (`ContentId`, `EventType`, `Section`, `Content`) VALUES
+(1, 'history', 'overview', 'Haarlem, one of the Netherlands\'s most picturesque cities, is steeped in history and culture. From its cobblestone streets to grand churches, Haarlem offers a glimpse into the past. This walking tour takes you through the city\'s iconic landmarks, blending stories of its vibrant history with breathtaking architecture.'),
+(2, 'history', 'event_detail', 'Embark on an unforgettable journey through Haarlem\'s historic streets with our guided walking tour. This 2.5-hour experience includes visits to the city\'s most renowned landmarks and a 15-minute refreshment break. Perfect for history enthusiasts and curious travelers alike, this tour provides an intimate glimpse into Haarlem\'s cultural and architectural treasures.'),
+(3, 'dance', 'aboutUs', 'At Haarlem Dance, we showcase top-tier dance, house, techno, and trance acts in iconic venues in and around the city of Haarlem. Six world-class DJs will thrill audiences with epic Back2Back sessions on big stages and intimate experimental club sets. So don’t miss out — hop in, join the vibe, and dance the night away.');
+
 -- --------------------------------------------------------
 
 --
@@ -54,11 +64,29 @@ CREATE TABLE `Content` (
 CREATE TABLE `DanceArtist` (
   `ArtistId` int(11) NOT NULL,
   `Name` varchar(100) DEFAULT NULL,
-  `Title` varchar(100) DEFAULT NULL,
   `Genre` varchar(100) DEFAULT NULL,
-  `ImageName` varchar(100) DEFAULT NULL,
-  `Description` varchar(255) DEFAULT NULL
+  `ProfileImageName` varchar(100) DEFAULT NULL,
+  `DetailImageName` varchar(100) DEFAULT NULL,
+  `Description` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+
+--
+-- Dumping data for table `DanceArtist`
+--
+
+INSERT INTO `DanceArtist` (`ArtistId`, `Name`, `Genre`, `ProfileImageName`, `DetailImageName`, `Description`) VALUES
+(7, 'Hardwell', 'Dance & House', 'HardwellProfile.png', 'HardwellDetail.png', NULL),
+(8, 'Armin van Buuren', 'Trance & Techno', 'BuurenProfile.png', 'BuurenDetail.png', NULL),
+(9, 'Martin Garrix', 'Dance & Electronic', 'GarrixProfile.png', 'GarrixDetail.png', NULL),
+(10, 'Tiësto', 'Trance, Techno, Minimal, House & Electronic', 'TiestoProfile.png', 'TiestoDetail.png', 'Tiësto, born Tijs Michiel Verwest on January 17, 1969, in Breda, Netherlands, is a Grammy-winning DJ and one of the most influential figures in the global electronic dance music scene. Rising to prominence with his trance anthems in the early 2000s, Tiësto later evolved his style to include house, electro, and pop influences, cementing his versatility. He was the first DJ to perform at the Olympic Games and continues to headline major festivals worldwide, inspiring generations of producers and fans alike.'),
+(11, 'Nicky Romero', 'Electrohouse & Progressive House', 'RomeroProfile.png', 'RomeroDetail.png', NULL),
+(12, 'Afrojack', 'House', 'AfrojackProfile.png', 'AfrojackDetail.png', 'Afrojack, born Nick van de Wall on September 9, 1987, in Spijkenisse, Netherlands, is a world-renowned DJ, producer, and music entrepreneur. He rose to fame in the early 2010s with his unique electro-house sound and has become one of the most influential figures in electronic dance music.'),
+(13, 'Hardwell', 'Dance & House', 'HardwellProfile.png', 'HardwellDetail.png', NULL),
+(14, 'Armin van Buuren', 'Trance & Techno', 'BuurenProfile.png', 'BuurenDetail.png', NULL),
+(15, 'Martin Garrix', 'Dance & Electronic', 'GarrixProfile.png', 'GarrixDetail.png', NULL),
+(16, 'Tiësto', 'Trance, Techno, Minimal, House & Electronic', 'TiestoProfile.png', 'TiestoDetail.png', 'Tiësto, born Tijs Michiel Verwest on January 17, 1969, in Breda, Netherlands, is a Grammy-winning DJ and one of the most influential figures in the global electronic dance music scene. Rising to prominence with his trance anthems in the early 2000s, Tiësto later evolved his style to include house, electro, and pop influences, cementing his versatility. He was the first DJ to perform at the Olympic Games and continues to headline major festivals worldwide, inspiring generations of producers and fans alike.'),
+(17, 'Nicky Romero', 'Electrohouse & Progressive House', 'RomeroProfile.png', 'RomeroDetail.png', NULL),
+(18, 'Afrojack', 'House', 'AfrojackProfile.png', 'AfrojackDetail.png', 'Afrojack, born Nick van de Wall on September 9, 1987, in Spijkenisse, Netherlands, is a world-renowned DJ, producer, and music entrepreneur. He rose to fame in the early 2010s with his unique electro-house sound and has become one of the most influential figures in electronic dance music.');
 
 -- --------------------------------------------------------
 
@@ -67,8 +95,7 @@ CREATE TABLE `DanceArtist` (
 --
 
 CREATE TABLE `DanceEvent` (
-  `EventId` int(11) NOT NULL,
-  `DanceEventId` int(11) DEFAULT NULL,
+  `DanceEventId` int(11) NOT NULL,
   `Description` varchar(100) DEFAULT NULL,
   `Location` varchar(100) DEFAULT NULL,
   `StartDateTime` datetime DEFAULT NULL,
@@ -81,6 +108,17 @@ CREATE TABLE `DanceEvent` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `DancePerformance`
+--
+
+CREATE TABLE `DancePerformance` (
+  `DanceEventId` int(11) NOT NULL,
+  `DanceArtistId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `DanceSong`
 --
 
@@ -88,10 +126,21 @@ CREATE TABLE `DanceSong` (
   `SongId` int(11) NOT NULL,
   `ArtistId` int(11) DEFAULT NULL,
   `Title` varchar(100) DEFAULT NULL,
+  `ReleaseYear` int(11) DEFAULT NULL,
   `Credits` varchar(255) DEFAULT NULL,
   `Description` varchar(255) DEFAULT NULL,
+  `SongFileName` varchar(100) DEFAULT NULL,
   `ImageName` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+
+--
+-- Dumping data for table `DanceSong`
+--
+
+INSERT INTO `DanceSong` (`SongId`, `ArtistId`, `Title`, `ReleaseYear`, `Credits`, `Description`, `SongFileName`, `ImageName`) VALUES
+(4, NULL, 'Take Over Control', 2010, 'Eva Simons', 'Afrojack’s breakout hit, a global anthem that introduced his electro-house style to the world and catapulted him to international fame.', 'Afrojack_takeovercontrol.mp3', 'Afrojack_1.png'),
+(5, NULL, 'Give Me Everything', 2011, 'Pitbull, Ne-Yo, & Nayer', 'Co-produced by Afrojack, this collaboration with Pitbull topped the Billboard Hot 100 in the U.S. and charted in over 30 countries.', 'Afrojack_givemeeverything.mp3', 'Afrojack_2.png'),
+(6, NULL, 'The Spark', 2013, 'Spree Wilson', 'A feel-good anthem that showcases Afrojack’s ability to blend EDM with pop elements, \"The Spark\" is a motivational track that resonates with audiences beyond the dance floor.', 'Afrojack_thespark.mp3', 'Afrojack_3.png');
 
 -- --------------------------------------------------------
 
@@ -159,10 +208,26 @@ CREATE TABLE `HistoryTour` (
   `LocationId` int(11) DEFAULT NULL,
   `LocationName` varchar(100) DEFAULT NULL,
   `Description` text DEFAULT NULL,
+  `WhyVisit` text DEFAULT NULL,
   `Address` varchar(100) DEFAULT NULL,
   `ImageGenera` varchar(255) DEFAULT NULL,
   `ImageGallery` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+
+--
+-- Dumping data for table `HistoryTour`
+--
+
+INSERT INTO `HistoryTour` (`EventId`, `LocationId`, `LocationName`, `Description`, `WhyVisit`, `Address`, `ImageGenera`, `ImageGallery`) VALUES
+(1, 1, 'Church of St. Bavo', 'The Church of St. Bavo, an iconic Gothic masterpiece in Haarlem, dates back to the 14th century. Known for its towering spire and stunning architecture, it houses the world-famous Müller organ, once played by Mozart himself. A true symbol of Haarlem\'s rich history and grandeur.', 'Experience the magnificent Müller Organ, played by Mozart himself in 1766 and considered one of the world\'s most renowned instruments.||Marvel at the stunning Gothic architecture with its soaring arches, majestic spire, and vibrant stained-glass windows that have inspired visitors for centuries.||Immerse yourself in the rich history of this symbol of Dutch religious and cultural heritage that has hosted countless important events and remains the spiritual heart of Haarlem.', 'Grote Markt, Haarlem', 'st-bavo.png', 'st-bavo5.png,st-bavo1.png,st-bavo2.png,st-bavo3.png,st-bavo4.png'),
+(2, 2, 'Grote Markt', 'The Grote Markt, Haarlem\'s historic main square, is the heart of the city. Surrounded by landmarks like the Town Hall and the Church of St. Bavo, it serves as a vibrant gathering place for markets, events, and cultural celebrations.', 'Experience the vibrant heartbeat of Haarlem at this historic square that has been the city\'s central gathering place since medieval times.||Enjoy the bustling atmosphere with charming cafés, restaurants, and seasonal markets in a picturesque setting surrounded by stunning historic buildings.||Capture breathtaking photos of the iconic St. Bavo Church and Renaissance-style Town Hall that define Haarlem\'s skyline and showcase its Golden Age prosperity.', 'Grote Markt, Haarlem', 'grote-markt.png', 'grote-markt1.png,grote-markt2.png,grote-markt.png,grote-markt3.png,grote-markt4.png'),
+(3, 3, 'De Hallen', 'De Hallen Haarlem, a striking cultural landmark, is home to the Frans Hals Museum\'s contemporary art collection. Located in a historic building on the Grote Markt, it offers a blend of modern creativity and Haarlem\'s rich artistic heritage.', 'Discover contemporary art exhibitions housed in a beautifully preserved historic building with a fascinating architectural contrast between old and new.||Experience the evolution of Dutch and international art through carefully curated collections and rotating exhibitions that showcase emerging and established artists.||Take a break from traditional sightseeing to immerse yourself in modern creativity while still appreciating Haarlem\'s rich cultural heritage in this thoughtfully renovated space.', 'Grote Markt 16, Haarlem', 'de-hallen.png', 'de-hallen1.png,de-hallen2.png,de-hallen.png,de-hallen3.png,de-hallen4.png'),
+(4, 4, 'Proveniershof', 'Proveniershof, a serene 17th-century courtyard in Haarlem, is nestled among picturesque historic houses. Once home to retired tradesmen, it now offers a peaceful escape, showcasing the city\'s rich architectural and cultural heritage.', 'Step back in time as you enter this peaceful 17th-century courtyard hidden away from the bustling city streets, offering a serene escape from urban life.||Experience the unique Dutch \"hofje\" tradition of communal living spaces built for elderly residents through charitable foundations, a social system that predates modern welfare.||Admire the perfectly preserved historic houses, lush garden, and authentic architectural details that offer a glimpse into Haarlem\'s social history and community values.', 'Grote Houtstraat 140, Haarlem', 'proveniershof.png', 'proveniershof1.png,proveniershof2.png,proveniershof.png,proveniershof3.png,proveniershof4.png'),
+(5, 5, 'Jopenkerk', 'Jopenkerk Haarlem, a former church turned brewery, blends history with modern craft beer culture. This unique venue offers visitors a chance to enjoy locally brewed Jopen beers while surrounded by stunning stained-glass windows and Gothic architecture, making it a must-visit landmark.', 'Sample award-winning craft beers made according to historic Haarlem recipes in the unique setting of a repurposed historic church that blends sacred and secular worlds.||Marvel at the stunning transformation of this religious space into a brewery while still preserving its architectural grandeur, soaring ceiling, and beautiful stained-glass windows.||Enjoy the perfect blend of historical appreciation and modern hospitality with excellent food pairings in this truly unique landmark that epitomizes creative adaptive reuse.', 'Gedempte Voldersgracht 2, Haarlem', 'jopenkerk.png', 'jopenkerk1.png,jopenkerk2.png,jopenkerk.png,jopenkerk3.png,jopenkerk4.png'),
+(6, 6, 'Waalse Kerk Haarlem', 'The Waalse Kerk, a charming 14th-century chapel in Haarlem, is renowned for its intimate atmosphere and beautiful acoustics. Once a refuge for French Huguenots, it now serves as a cultural venue for concerts and events.', 'Experience the intimate atmosphere of this historic chapel that once provided refuge for French Huguenots fleeing religious persecution, a testament to Haarlem\'s tradition of tolerance.||Listen to the incredible acoustics that make this venue a favorite for chamber music concerts and cultural performances throughout the year.||Admire the elegant simplicity of this smaller church that offers a more peaceful alternative to the grandeur of St. Bavo, with its own unique charm and historical significance.', 'Begijnhof 30, Haarlem', 'waalse-kerk.png', 'waalse-kerk1.png,waalse-kerk2.png,waalse-kerk.png,waalse-kerk3.png,waalse-kerk4.png'),
+(7, 7, 'Molen de Adriaan', 'Molen de Adriaan, a historic windmill on the banks of the Spaarne River, offers panoramic views of Haarlem. Originally built in 1779, this iconic landmark showcases the Netherlands\' rich milling heritage and provides a fascinating glimpse into traditional Dutch craftsmanship.', 'Climb to the top of this historic windmill for panoramic views of Haarlem and the Spaarne River that you can\'t get anywhere else in the city.||Learn about traditional Dutch milling craftsmanship through interactive exhibits and demonstrations of this iconic symbol of Dutch heritage and industrial history.||Photograph this perfectly reconstructed 18th-century landmark that has become one of Haarlem\'s most recognizable symbols and a testament to Dutch determination and engineering.', 'Papentorenvest 1A, Haarlem', 'molen-adriaan1.png', 'molen-adriaan3.png,molen-adriaan2.png,molen-adriaan4.png,molen-adriaan5.png,molen-adriaan6.png'),
+(8, 8, 'Amsterdamse Poort', 'The Amsterdamse Poort, Haarlem\'s last remaining city gate, is a stunning medieval structure dating back to the 14th century. Once a key entry point to the city, it now stands as a testament to Haarlem\'s rich history and architectural grandeur.', 'Walk through Haarlem\'s last remaining medieval city gate that has stood guard since the 14th century as a testament to the city\'s defensive past and historical importance.||Imagine the countless travelers, merchants, and visitors who passed beneath these arches over more than 600 years of history, connecting Haarlem to Amsterdam and beyond.||Capture stunning photos of this well-preserved Gothic structure that creates a dramatic contrast with the modern city that has grown around it while maintaining its historic integrity.', 'Amsterdamse Poort, Haarlem', 'amsterdamse-poort2.png', 'amsterdamse-poort1.png,amsterdamse-poort2.png,amsterdamse-poort3.png'),
+(9, 9, 'Hof van Bakenes', 'Hof van Bakenes, Haarlem\'s oldest hofje, is a tranquil courtyard dating back to the 14th century. Surrounded by charming historic houses, it offers a peaceful retreat and a glimpse into the city\'s tradition of community living.', 'Discover Haarlem\'s oldest hofje (courtyard) dating back to 1395, offering a glimpse into early Dutch charitable housing traditions that shaped urban development.||Experience the serene atmosphere of this hidden garden courtyard that feels worlds away from the busy streets just steps away, providing a peaceful retreat.||Admire the charming historic houses surrounding the courtyard that have sheltered residents for over six centuries, exemplifying the Dutch commitment to community and social welfare.', 'Bakenessergracht 67, Haarlem', 'hof-van-bakenes.png', 'molen-adriaan3.png,molen-adriaan2.png,molen-adriaan4.png,molen-adriaan5.png,molen-adriaan6.png');
 
 -- --------------------------------------------------------
 
@@ -174,9 +239,9 @@ CREATE TABLE `HistoryTourBooking` (
   `BookingId` int(11) NOT NULL,
   `ScheduleId` int(11) DEFAULT NULL,
   `Language` enum('English','Dutch','Chinese') DEFAULT NULL,
-  `TicketType` enum('Regular','Participant','Family Package Deal') DEFAULT NULL,
+  `TicketType` enum('Regular Participant','Family Package Deal') DEFAULT NULL,
   `Seats` int(11) DEFAULT NULL,
-  `Price` decimal(10,0) DEFAULT NULL,
+  `Price` decimal(10,2) DEFAULT NULL,
   `BookingTime` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
@@ -194,9 +259,55 @@ CREATE TABLE `HistoryTourSchedule` (
   `Language` enum('English','Dutch','Chinese') DEFAULT NULL,
   `GuideId` int(11) DEFAULT NULL,
   `TicketsAvailable` int(11) DEFAULT NULL,
-  `TicketPrice` decimal(10,0) DEFAULT NULL,
-  `FamilyTicketPrice` decimal(10,0) DEFAULT NULL
+  `TicketPrice` decimal(10,2) DEFAULT NULL,
+  `FamilyTicketPrice` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+
+--
+-- Dumping data for table `HistoryTourSchedule`
+--
+
+INSERT INTO `HistoryTourSchedule` (`EventId`, `ScheduleId`, `TourDate`, `TourTime`, `Language`, `GuideId`, `TicketsAvailable`, `TicketPrice`, `FamilyTicketPrice`) VALUES
+(101, 1, '2025-07-24', '10:00:00', 'Dutch', 1, 12, 17.50, 60.00),
+(102, 2, '2025-07-24', '10:00:00', 'English', 3, 12, 17.50, 60.00),
+(103, 3, '2025-07-24', '13:00:00', 'Dutch', 1, 12, 17.50, 60.00),
+(104, 4, '2025-07-24', '13:00:00', 'English', 3, 12, 17.50, 60.00),
+(105, 5, '2025-07-24', '16:00:00', 'Dutch', 1, 12, 17.50, 60.00),
+(106, 6, '2025-07-24', '16:00:00', 'English', 3, 12, 17.50, 60.00),
+(107, 7, '2025-07-25', '10:00:00', 'Dutch', 5, 12, 17.50, 60.00),
+(108, 8, '2025-07-25', '10:00:00', 'English', 7, 12, 17.50, 60.00),
+(109, 9, '2025-07-25', '13:00:00', 'Dutch', 5, 12, 17.50, 60.00),
+(110, 10, '2025-07-25', '13:00:00', 'English', 7, 12, 17.50, 60.00),
+(111, 11, '2025-07-25', '13:00:00', 'Chinese', 9, 12, 17.50, 60.00),
+(112, 12, '2025-07-25', '16:00:00', 'Dutch', 5, 12, 17.50, 60.00),
+(113, 13, '2025-07-25', '16:00:00', 'English', 7, 12, 17.50, 60.00),
+(114, 14, '2025-07-26', '10:00:00', 'Dutch', 5, 12, 17.50, 60.00),
+(115, 15, '2025-07-26', '10:00:00', 'Dutch', 1, 12, 17.50, 60.00),
+(116, 16, '2025-07-26', '10:00:00', 'English', 3, 12, 17.50, 60.00),
+(117, 17, '2025-07-26', '10:00:00', 'English', 7, 12, 17.50, 60.00),
+(118, 18, '2025-07-26', '13:00:00', 'Dutch', 5, 12, 17.50, 60.00),
+(119, 19, '2025-07-26', '13:00:00', 'Dutch', 1, 12, 17.50, 60.00),
+(120, 20, '2025-07-26', '13:00:00', 'English', 3, 12, 17.50, 60.00),
+(121, 21, '2025-07-26', '13:00:00', 'English', 7, 12, 17.50, 60.00),
+(122, 22, '2025-07-26', '13:00:00', 'Chinese', 9, 12, 17.50, 60.00),
+(123, 23, '2025-07-26', '16:00:00', 'Dutch', 5, 12, 17.50, 60.00),
+(124, 24, '2025-07-26', '16:00:00', 'Dutch', 1, 12, 17.50, 60.00),
+(125, 25, '2025-07-27', '10:00:00', 'Dutch', 2, 12, 17.50, 60.00),
+(126, 26, '2025-07-27', '10:00:00', 'Dutch', 5, 12, 17.50, 60.00),
+(127, 27, '2025-07-27', '10:00:00', 'Dutch', 1, 12, 17.50, 60.00),
+(128, 28, '2025-07-27', '10:00:00', 'English', 8, 12, 17.50, 60.00),
+(129, 29, '2025-07-27', '10:00:00', 'English', 3, 12, 17.50, 60.00),
+(130, 30, '2025-07-27', '10:00:00', 'Chinese', 9, 12, 17.50, 60.00),
+(131, 31, '2025-07-27', '13:00:00', 'Dutch', 2, 12, 17.50, 60.00),
+(132, 32, '2025-07-27', '13:00:00', 'Dutch', 5, 12, 17.50, 60.00),
+(133, 33, '2025-07-27', '13:00:00', 'Dutch', 1, 12, 17.50, 60.00),
+(134, 34, '2025-07-27', '13:00:00', 'English', 8, 12, 17.50, 60.00),
+(135, 35, '2025-07-27', '13:00:00', 'English', 3, 12, 17.50, 60.00),
+(136, 36, '2025-07-27', '13:00:00', 'English', 7, 12, 17.50, 60.00),
+(137, 37, '2025-07-27', '13:00:00', 'Chinese', 9, 12, 17.50, 60.00),
+(138, 38, '2025-07-27', '13:00:00', 'Chinese', 6, 12, 17.50, 60.00),
+(139, 39, '2025-07-27', '16:00:00', 'Dutch', 2, 12, 17.50, 60.00),
+(140, 40, '2025-07-27', '16:00:00', 'English', 8, 12, 17.50, 60.00);
 
 -- --------------------------------------------------------
 
@@ -249,45 +360,52 @@ INSERT INTO `JazzArtist` (`ArtistId`, `Name`, `Hashtag`, `ProfileImageName`, `ar
 
 CREATE TABLE `JazzEvent` (
   `EventId` int(11) NOT NULL,
-  `JazzEventId` int(11) DEFAULT NULL,
-  `Duration` datetime DEFAULT NULL,
+  `Description` varchar(255) DEFAULT NULL,
+  `Location` varchar(100) DEFAULT NULL,
   `StartDateTime` datetime DEFAULT NULL,
+  `TimeSlot` varchar(50) DEFAULT NULL,
+  `DurationByMinute` int(11) DEFAULT NULL,
   `TicketsAvailable` int(11) DEFAULT NULL,
-  `Price` int(11) DEFAULT NULL,
-  `StartTime` time DEFAULT NULL,
-  `EndTime` time DEFAULT NULL,
-  `SeatsTotal` int(11) DEFAULT NULL
+  `Price` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 --
 -- Dumping data for table `JazzEvent`
 --
 
-INSERT INTO `JazzEvent` (`EventId`, `JazzEventId`, `Duration`, `StartDateTime`, `TicketsAvailable`, `Price`, `StartTime`, `EndTime`, `SeatsTotal`) VALUES
-(101, 101, NULL, '2023-07-27 18:00:00', 300, 15, '18:00:00', '19:00:00', 300),
-(102, 102, NULL, '2023-07-27 19:30:00', 300, 15, '19:30:00', '20:30:00', 300),
-(103, 103, NULL, '2023-07-27 21:00:00', 300, 15, '21:00:00', '22:00:00', 300),
-(104, 104, NULL, '2023-07-27 18:00:00', 200, 10, '18:00:00', '19:00:00', 200),
-(105, 105, NULL, '2023-07-27 19:30:00', 200, 10, '19:30:00', '20:30:00', 200),
-(106, 106, NULL, '2023-07-27 21:00:00', 200, 10, '21:00:00', '22:00:00', 200),
-(107, 107, NULL, '2023-07-28 18:00:00', 300, 15, '18:00:00', '19:00:00', 300),
-(108, 108, NULL, '2023-07-28 19:30:00', 300, 15, '19:30:00', '20:30:00', 300),
-(109, 109, NULL, '2023-07-28 21:00:00', 300, 15, '21:00:00', '22:00:00', 300),
-(110, 110, NULL, '2023-07-28 18:00:00', 200, 10, '18:00:00', '19:00:00', 200),
-(111, 111, NULL, '2023-07-28 19:30:00', 200, 10, '19:30:00', '20:30:00', 200),
-(112, 112, NULL, '2023-07-28 21:00:00', 200, 10, '21:00:00', '22:00:00', 200),
-(113, 113, NULL, '2023-07-29 18:00:00', 300, 15, '18:00:00', '19:00:00', 300),
-(114, 114, NULL, '2023-07-29 19:30:00', 300, 15, '19:30:00', '20:30:00', 300),
-(115, 115, NULL, '2023-07-29 21:00:00', 300, 15, '21:00:00', '22:00:00', 300),
-(116, 116, NULL, '2023-07-29 18:00:00', 150, 10, '18:00:00', '19:00:00', 150),
-(117, 117, NULL, '2023-07-29 19:30:00', 150, 10, '19:30:00', '20:30:00', 150),
-(118, 118, NULL, '2023-07-29 21:00:00', 150, 10, '21:00:00', '22:00:00', 150),
-(119, 119, NULL, '2023-07-30 15:00:00', 1000, 0, '15:00:00', '16:00:00', 1000),
-(120, 120, NULL, '2023-07-30 16:00:00', 1000, 0, '16:00:00', '17:00:00', 1000),
-(121, 121, NULL, '2023-07-30 17:00:00', 1000, 0, '17:00:00', '18:00:00', 1000),
-(122, 122, NULL, '2023-07-30 18:00:00', 1000, 0, '18:00:00', '19:00:00', 1000),
-(123, 123, NULL, '2023-07-30 19:00:00', 1000, 0, '19:00:00', '20:00:00', 1000),
-(124, 124, NULL, '2023-07-30 20:00:00', 1000, 0, '20:00:00', '21:00:00', 1000);
+INSERT INTO `JazzEvent` (`EventId`, `Description`, `Location`, `StartDateTime`, `TimeSlot`, `DurationByMinute`, `TicketsAvailable`, `Price`) VALUES
+(101, 'Gumbo Kings performance at Patronaat', '1', '2023-07-27 18:00:00', 'Evening', 60, 300, 15),
+(102, 'Evolve performance at Patronaat', '1', '2023-07-27 19:30:00', 'Evening', 60, 300, 15),
+(103, 'Ntjam Rosie performance at Patronaat', '1', '2023-07-27 21:00:00', 'Evening', 60, 300, 15),
+(104, 'Wicked Jazz Sounds performance at Patronaat', '2', '2023-07-27 18:00:00', 'Evening', 60, 200, 10),
+(105, 'Wouter Hamel performance at Patronaat', '2', '2023-07-27 19:30:00', 'Evening', 60, 200, 10),
+(106, 'Jonna Frazer performance at Patronaat', '2', '2023-07-27 21:00:00', 'Evening', 60, 200, 10),
+(107, 'Karsu performance at Patronaat', '1', '2023-07-28 18:00:00', 'Evening', 60, 300, 15),
+(108, 'Uncle Sue performance at Patronaat', '1', '2023-07-28 19:30:00', 'Evening', 60, 300, 15),
+(109, 'Chris Allen performance at Patronaat', '1', '2023-07-28 21:00:00', 'Evening', 60, 300, 15),
+(110, 'Myles Sanko performance at Patronaat', '2', '2023-07-28 18:00:00', 'Evening', 60, 200, 10),
+(111, 'Ilse Huizinga performance at Patronaat', '2', '2023-07-28 19:30:00', 'Evening', 60, 200, 10),
+(112, 'Eric Vloeimans and Hotspot! performance at Patronaat', '2', '2023-07-28 21:00:00', 'Evening', 60, 200, 10),
+(113, 'Gare du Nord performance at Patronaat', '1', '2023-07-29 18:00:00', 'Evening', 60, 300, 15),
+(114, 'Rilan & The Bombadiers performance at Patronaat', '1', '2023-07-29 19:30:00', 'Evening', 60, 300, 15),
+(115, 'Soul Six performance at Patronaat', '1', '2023-07-29 21:00:00', 'Evening', 60, 300, 15),
+(116, 'Han Bennink performance at Patronaat', '3', '2023-07-29 18:00:00', 'Evening', 60, 150, 10),
+(117, 'The Nordanians performance at Patronaat', '3', '2023-07-29 19:30:00', 'Evening', 60, 150, 10),
+(118, 'Lilith Merlot performance at Patronaat', '3', '2023-07-29 21:00:00', 'Evening', 60, 150, 10),
+(119, 'Ruis Soundsystem performance at Grote Markt', '4', '2023-07-30 15:00:00', 'Afternoon', 60, 1000, 0),
+(120, 'Wicked Jazz Sounds performance at Grote Markt', '4', '2023-07-30 16:00:00', 'Afternoon', 60, 1000, 0),
+(121, 'Evolve performance at Grote Markt', '4', '2023-07-30 17:00:00', 'Afternoon', 60, 1000, 0),
+(122, 'The Nordanians performance at Grote Markt', '4', '2023-07-30 18:00:00', 'Evening', 60, 1000, 0),
+(123, 'Gumbo Kings performance at Grote Markt', '4', '2023-07-30 19:00:00', 'Evening', 60, 1000, 0),
+(124, 'Gare du Nord performance at Grote Markt', '4', '2023-07-30 20:00:00', 'Evening', 60, 1000, 0),
+(1001, 'Gumbo Kings at Haarlem Jazz', '1', '2023-07-27 19:00:00', 'Evening', 90, 300, 25),
+(1002, 'Evolve at Haarlem Jazz', '2', '2023-07-27 21:00:00', 'Evening', 90, 200, 20),
+(1003, 'Ntjam Rosie at Haarlem Jazz', '1', '2023-07-28 19:00:00', 'Evening', 90, 300, 25),
+(1004, 'Wicked Jazz Sounds at Haarlem Jazz', '2', '2023-07-28 21:00:00', 'Evening', 90, 200, 20),
+(1005, 'Wouter Hamel at Haarlem Jazz', '1', '2023-07-29 19:00:00', 'Evening', 90, 300, 25),
+(1006, 'Uncle Sue at Haarlem Jazz', '2', '2023-07-29 21:00:00', 'Evening', 90, 200, 20),
+(1007, 'Karsu at Haarlem Jazz', '4', '2023-07-30 15:00:00', 'Afternoon', 60, 1000, 0),
+(1008, 'Jonna Fraser at Haarlem Jazz', '4', '2023-07-30 17:00:00', 'Evening', 60, 1000, 0);
 
 -- --------------------------------------------------------
 
@@ -450,6 +568,17 @@ CREATE TABLE `Order` (
   `Address` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
+--
+-- Dumping data for table `Order`
+--
+
+INSERT INTO `Order` (`OrderId`, `UserId`, `Amount`, `Status`, `OrderDate`, `PhoneNumber`, `Address`) VALUES
+(1, 1, NULL, NULL, '2025-03-25 12:31:18', '0647629759', 'Strada Marului, nr 5'),
+(2, 1, NULL, NULL, '2025-03-25 12:32:01', '0647629759', 'Strada Marului, nr 5'),
+(3, 1, NULL, NULL, '2025-03-25 12:32:05', '0647629759', 'Strada Marului, nr 5'),
+(4, 1, 0, 'Pending', '2025-03-25 12:39:35', '0647629759', 'Strada Marului, nr 5'),
+(5, 1, 0, 'Pending', '2025-03-25 12:41:47', '0647629759', 'Strada Marului, nr 5');
+
 -- --------------------------------------------------------
 
 --
@@ -460,19 +589,34 @@ CREATE TABLE `Restaurant` (
   `RestaurantId` int(11) NOT NULL,
   `EventId` int(11) DEFAULT NULL,
   `CuisineType` varchar(50) DEFAULT NULL,
-  `About` varchar(255) DEFAULT NULL,
+  `Description` varchar(255) DEFAULT NULL,
+  `About` text DEFAULT NULL,
   `Address` varchar(255) DEFAULT NULL,
   `Name` varchar(100) DEFAULT NULL,
   `ImageGallery` varchar(255) DEFAULT NULL,
-  `WorkingHours` varchar(50) DEFAULT NULL,
+  `Image_url` varchar(255) DEFAULT NULL,
+  `WorkingHours` varchar(255) DEFAULT NULL,
   `SessionsAvailable` varchar(100) DEFAULT NULL,
   `FirstStart` datetime DEFAULT NULL,
   `Duration` int(11) DEFAULT NULL,
   `Rating` int(11) DEFAULT NULL,
   `Seats` int(11) DEFAULT NULL,
-  `ReadPrice` int(11) DEFAULT NULL,
+  `ReducedPrice` int(11) DEFAULT NULL,
   `Comment` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+
+--
+-- Dumping data for table `Restaurant`
+--
+
+INSERT INTO `Restaurant` (`RestaurantId`, `EventId`, `CuisineType`, `Description`, `About`, `Address`, `Name`, `ImageGallery`, `Image_url`, `WorkingHours`, `SessionsAvailable`, `FirstStart`, `Duration`, `Rating`, `Seats`, `ReducedPrice`, `Comment`) VALUES
+(1, 1, 'Dutch, Fish, European', 'A cozy café serving Dutch, fish, and European dishes.', 'Welcome to Café De Roemer, where tradition meets innovation! Located in the heart of Haarlem, we specialize in authentic Italian dishes crafted with locally sourced ingredients. Whether you\'re here for a romantic dinner, a family gathering, or a casual meal with friends, our warm ambiance and exquisite menu will ensure an unforgettable dining experience.', 'Botermarkt 17, 2011 XL Haarlem', 'Café de Roemer', 'cafe-de-roemer1.jpg,cafe-de-roemer2.jpg,cafe-de-roemer3.jpg', 'cafe-roemer.jpg', 'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00', '3', '2024-03-09 18:00:00', 2, 4, 35, 18, NULL),
+(2, 2, 'French, Fish, European', 'Fine French dining by the river, specializing in seafood.', 'Welcome to Fris, where tradition meets innovation! Located in the heart of Haarlem, we specialize in authentic Italian dishes crafted with locally sourced ingredients. Whether you\'re here for a romantic dinner, a family gathering, or a casual meal with friends, our warm ambiance and exquisite menu will ensure an unforgettable dining experience.', 'Spaarne 96, 2011 CL Haarlem, Nederland', 'Ratatouille', 'ratatouille1.jpg,ratatouille2.jpg,ratatouille3.jpg', 'ratatouille.jpg', 'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00', '3', '2024-03-09 17:00:00', 2, 4, 52, 23, NULL),
+(3, 3, 'Dutch, Fish, European', 'An elegant dining experience offering Dutch and seafood cuisine.', 'Welcome to Restaurant ML, that blends historical elegance with contemporary flair, offering a Michelin-starred menu that impresses with its creativity and taste. Led by Chef Mark Gratama, the restaurant is celebrated for its innovative dishes that expertly combine traditional techniques with modern culinary artistry.', 'Kleine Houtstraat 70, 2011 DR Haarlem, Nederland', 'Restaurant ML', 'restaurant-ml1.jpg,restaurant-ml2.jpg,restaurant-ml3.jpg', 'restaurant-ml.jpg', 'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00', '2', '2024-03-09 17:00:00', 2, 4, 60, 23, NULL),
+(4, 4, 'Dutch, French, European', 'A blend of Dutch and French flavors in a cozy atmosphere.', 'Welcome to Fris! Nestled in the heart of Haarlem, Fris marries contemporary culinary art with the rich flavors of Dutch cuisine. Perfect for a sophisticated night out, a memorable family dinner, or a delightful gathering with friends, our restaurant offers a warm atmosphere and a menu that caters to discerning palates. Join us at Fris for an exceptional dining adventure where every meal is a celebration of modern gastronomy.', 'Twijnderslaan 7, 2012 BG Haarlem, Nederland', 'Restaurant Fris', 'restaurant-fris1.jpg,restaurant-fris2.jpg,restaurant-fris3.jpg', 'restaurant-fris.jpg', 'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00', '3', '2024-03-09 17:30:00', 2, 4, 45, 23, NULL),
+(5, 5, 'Vegan', 'A fully vegan restaurant with innovative plant-based dishes.', 'Welcome to New Vegas, a culinary gem in the bustling heart of Haarlem at Koningstraat 5. Here, we merge vibrant flavors with an artistic flair to bring you a truly unique dining experience. Our kitchen focuses on innovative international cuisine, with each dish crafted to surprise and delight. ', 'Koningstraat 5, 2011 TB Haarlem', 'New Vegas', 'new-vegas1.jpg,new-vegas2.jpg,new-vegas3.jpg', 'new-vegas.jpg', 'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00', '3', '2024-03-09 17:00:00', 2, 3, 36, 18, NULL),
+(6, 6, 'Dutch, European, Modern', 'A modern take on Dutch and European cuisine in a grand setting.', 'Welcome to Grand Café Brinkmann, a cherished landmark nestled in the heart of Haarlem at Grote Markt 13. Established over a century ago, this iconic café blends rich history with contemporary hospitality. Offering a diverse menu that ranges from classic Dutch favorites to modern culinary delights, Grand Café Brinkmann is perfect for any dining occasion. ', 'Grote Markt 13, 2011 RC Haarlem, Nederland', 'Grand Cafe Brinkman', 'grand-cafe-brinkman1.jpg,grand-cafe-brinkman2.jpg,grand-cafe-brinkman3.jpg', 'grand-cafe-brinkman.jpg', 'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00', '3', '2024-03-09 16:30:00', 2, 3, 100, 18, NULL),
+(7, 7, 'Dutch, Fish, European', 'A French-inspired bistro with fresh seafood and Dutch classics.', 'Welcome to Frenchy Bistro Toujours, your slice of Paris nestled in the charming streets of Haarlem at Oude Groenmarkt 10. This cozy bistro offers a romantic and inviting ambiance, perfect for indulging in the finest French cuisine. At Toujours, we pride ourselves on delivering authentic flavors using high-quality ingredients, paired beautifully with our selection of French wines. ', 'Oude Groenmarkt 10-12, 2011 HL Haarlem, Nederland', 'Urban Frenchy Bistro Toujours', 'urban-frenchy1.jpg,urban-frenchy2.jpg,urban-frenchy3.jpg', 'urban-frenchy.jpg', 'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00', '3', '2024-03-09 17:30:00', 2, 3, 48, 18, NULL);
 
 -- --------------------------------------------------------
 
@@ -502,52 +646,44 @@ CREATE TABLE `TourGuide` (
   `LanguagesSpoken` enum('English','Dutch','Chinese') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
+--
+-- Dumping data for table `TourGuide`
+--
+
+INSERT INTO `TourGuide` (`GuideId`, `FullName`, `ProfileImage`, `LanguagesSpoken`) VALUES
+(1, 'Jan-Willem', 'jan-willem.png', 'Dutch'),
+(2, 'Lisa', 'lisa.png', 'Dutch'),
+(3, 'Frederic', 'frederic.png', 'English'),
+(4, 'Lisa', 'lisa-chinese.png', 'Chinese'),
+(5, 'Annet', 'annet.png', 'Dutch'),
+(6, 'Susan', 'susan.png', 'Chinese'),
+(7, 'William', 'william.png', 'English'),
+(8, 'Deirdre', 'deirdre.png', 'English'),
+(9, 'Kim', 'kim.png', 'Chinese');
+
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `User`
--- (See below for the actual view)
+-- Table structure for table `User`
 --
+
 CREATE TABLE `User` (
-`UserId` int(11)
-,`FullName` varchar(100)
-,`Email` varchar(100)
-,`Password` varchar(255)
-,`Role` varchar(50)
-,`ResetToken` varchar(255)
-,`ResetTokenExpires` datetime
-,`RegisteredDate` datetime
-,`VerifyToken` varchar(100)
-,`VerifyStatus` tinyint(4)
-,`Status` enum('Active','Inactive')
-);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `Users`
---
-
-CREATE TABLE `Users` (
   `UserId` int(11) NOT NULL,
   `FullName` varchar(100) DEFAULT NULL,
   `Email` varchar(100) DEFAULT NULL,
   `Password` varchar(255) DEFAULT NULL,
   `Role` varchar(50) DEFAULT NULL,
-  `ResetToken` varchar(255) DEFAULT NULL,
-  `ResetTokenExpires` datetime DEFAULT NULL,
-  `RegisteredDate` datetime DEFAULT current_timestamp(),
   `VerifyToken` varchar(100) DEFAULT NULL,
   `VerifyStatus` tinyint(4) DEFAULT 0,
-  `Status` enum('Active','Inactive') DEFAULT NULL
+  `ResetTokenExpires` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 --
--- Dumping data for table `Users`
+-- Dumping data for table `User`
 --
 
-INSERT INTO `Users` (`UserId`, `FullName`, `Email`, `Password`, `Role`, `ResetToken`, `ResetTokenExpires`, `RegisteredDate`, `VerifyToken`, `VerifyStatus`, `Status`) VALUES
-(1, 'Alaa', 'aldrobe.nl@gmail.com', '$2y$12$saw3FkkVJrmj/Pqzw8ka6OVZjtfWEXuLPz6zhVK/miDu12.A47qu.', 'Administrator', NULL, NULL, '2025-03-24 19:00:44', NULL, 0, 'Active');
+INSERT INTO `User` (`UserId`, `FullName`, `Email`, `Password`, `Role`, `VerifyToken`, `VerifyStatus`, `ResetTokenExpires`) VALUES
+(1, 'minudenisa29@gmail.com', 'minudenisa29@gmail.com', '$2y$12$jCeTK/mwIeCoFbYa.oLjkuPrwuio8xiOmgrfyKGwZk/KyaFjf4MEm', 'customer', '5dab23b6dc70d349c9d6d898d5eeeada', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -574,16 +710,32 @@ INSERT INTO `Venue` (`VenueId`, `Name`, `Location`, `Address`, `Capacity`, `Desc
 (3, 'Patronaat Third Hall', 'Patronaat', 'Zijlsingel 2, 2013 DN Haarlem', 150, 'The intimate third performance hall of Patronaat'),
 (4, 'Grote Markt', 'Grote Markt', 'Grote Markt, Haarlem', 1000, 'The central market square of Haarlem');
 
--- --------------------------------------------------------
-
 --
--- Structure for view `User`
---
-DROP TABLE IF EXISTS `User`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `User`  AS SELECT `Users`.`UserId` AS `UserId`, `Users`.`FullName` AS `FullName`, `Users`.`Email` AS `Email`, `Users`.`Password` AS `Password`, `Users`.`Role` AS `Role`, `Users`.`ResetToken` AS `ResetToken`, `Users`.`ResetTokenExpires` AS `ResetTokenExpires`, `Users`.`RegisteredDate` AS `RegisteredDate`, `Users`.`VerifyToken` AS `VerifyToken`, `Users`.`VerifyStatus` AS `VerifyStatus`, `Users`.`Status` AS `Status` FROM `Users` ;
 
---
+/*
+this works after filling the danceEvent table
+INSERT INTO DancePerformance (DanceEventId, DanceArtistId) VALUES
+(1, 5),
+(1, 6),
+(2, 4),
+(3, 2),
+(4, 3),
+(5, 1),
+(6, 6),
+(6, 4),
+(6, 5),
+(7, 3),
+(8, 2),
+(9, 1),
+(10, 1),
+(10, 3),
+(10, 2),
+(11, 4),
+(12, 6),
+(13, 5); */
+
+
 -- Indexes for dumped tables
 --
 
@@ -610,7 +762,14 @@ ALTER TABLE `DanceArtist`
 -- Indexes for table `DanceEvent`
 --
 ALTER TABLE `DanceEvent`
-  ADD PRIMARY KEY (`EventId`);
+  ADD PRIMARY KEY (`DanceEventId`);
+
+--
+-- Indexes for table `DancePerformance`
+--
+ALTER TABLE `DancePerformance`
+  ADD PRIMARY KEY (`DanceEventId`,`DanceArtistId`),
+  ADD KEY `DanceArtistId` (`DanceArtistId`);
 
 --
 -- Indexes for table `DanceSong`
@@ -644,12 +803,6 @@ ALTER TABLE `HistoryTourBooking`
 ALTER TABLE `HistoryTourSchedule`
   ADD PRIMARY KEY (`EventId`),
   ADD KEY `GuideId` (`GuideId`);
-
---
--- Indexes for table `JazzArtist`
---
-ALTER TABLE `JazzArtist`
-  ADD PRIMARY KEY (`ArtistId`);
 
 --
 -- Indexes for table `JazzEvent`
@@ -716,8 +869,7 @@ ALTER TABLE `Restaurant`
 ALTER TABLE `Ticket`
   ADD PRIMARY KEY (`TicketId`),
   ADD KEY `OrderId` (`OrderId`),
-  ADD KEY `EventId` (`EventId`),
-  ADD KEY `fk_ticket_pass` (`PassType`);
+  ADD KEY `EventId` (`EventId`);
 
 --
 -- Indexes for table `TourGuide`
@@ -726,11 +878,10 @@ ALTER TABLE `TourGuide`
   ADD PRIMARY KEY (`GuideId`);
 
 --
--- Indexes for table `Users`
+-- Indexes for table `User`
 --
-ALTER TABLE `Users`
-  ADD PRIMARY KEY (`UserId`),
-  ADD UNIQUE KEY `Email` (`Email`);
+ALTER TABLE `User`
+  ADD PRIMARY KEY (`UserId`);
 
 --
 -- Indexes for table `Venue`
@@ -741,6 +892,24 @@ ALTER TABLE `Venue`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `DanceArtist`
+--
+ALTER TABLE `DanceArtist`
+  MODIFY `ArtistId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT for table `DanceEvent`
+--
+ALTER TABLE `DanceEvent`
+  MODIFY `DanceEventId` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `DanceSong`
+--
+ALTER TABLE `DanceSong`
+  MODIFY `SongId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `HistoryTourBooking`
@@ -755,10 +924,22 @@ ALTER TABLE `JazzPass`
   MODIFY `PassId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `Users`
+-- AUTO_INCREMENT for table `Order`
 --
-ALTER TABLE `Users`
-  MODIFY `UserId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+ALTER TABLE `Order`
+  MODIFY `OrderId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `Ticket`
+--
+ALTER TABLE `Ticket`
+  MODIFY `TicketId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `User`
+--
+ALTER TABLE `User`
+  MODIFY `UserId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
@@ -772,10 +953,11 @@ ALTER TABLE `Appearances`
   ADD CONSTRAINT `Appearances_ibfk_2` FOREIGN KEY (`ArtistId`) REFERENCES `DanceArtist` (`ArtistId`);
 
 --
--- Constraints for table `DanceEvent`
+-- Constraints for table `DancePerformance`
 --
-ALTER TABLE `DanceEvent`
-  ADD CONSTRAINT `DanceEvent_ibfk_1` FOREIGN KEY (`EventId`) REFERENCES `Event` (`EventId`);
+ALTER TABLE `DancePerformance`
+  ADD CONSTRAINT `DancePerformance_ibfk_1` FOREIGN KEY (`DanceEventId`) REFERENCES `DanceEvent` (`DanceEventId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `DancePerformance_ibfk_2` FOREIGN KEY (`DanceArtistId`) REFERENCES `DanceArtist` (`ArtistId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `DanceSong`
@@ -802,19 +984,6 @@ ALTER TABLE `JazzEvent`
   ADD CONSTRAINT `JazzEvent_ibfk_1` FOREIGN KEY (`EventId`) REFERENCES `Event` (`EventId`);
 
 --
--- Constraints for table `JazzPerformance`
---
-ALTER TABLE `JazzPerformance`
-  ADD CONSTRAINT `JazzPerformance_ibfk_1` FOREIGN KEY (`JazzEventId`) REFERENCES `JazzEvent` (`EventId`),
-  ADD CONSTRAINT `JazzPerformance_ibfk_2` FOREIGN KEY (`ArtistId`) REFERENCES `JazzArtist` (`ArtistId`);
-
---
--- Constraints for table `JazzTrack`
---
-ALTER TABLE `JazzTrack`
-  ADD CONSTRAINT `JazzTrack_ibfk_1` FOREIGN KEY (`ArtistId`) REFERENCES `JazzArtist` (`ArtistId`);
-
---
 -- Constraints for table `Menu`
 --
 ALTER TABLE `Menu`
@@ -830,15 +999,14 @@ ALTER TABLE `MenuItem`
 -- Constraints for table `Order`
 --
 ALTER TABLE `Order`
-  ADD CONSTRAINT `Order_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `Users` (`UserId`);
+  ADD CONSTRAINT `Order_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `User` (`UserId`);
 
 --
 -- Constraints for table `Ticket`
 --
 ALTER TABLE `Ticket`
   ADD CONSTRAINT `Ticket_ibfk_1` FOREIGN KEY (`OrderId`) REFERENCES `Order` (`OrderId`),
-  ADD CONSTRAINT `Ticket_ibfk_2` FOREIGN KEY (`EventId`) REFERENCES `Event` (`EventId`),
-  ADD CONSTRAINT `fk_ticket_pass` FOREIGN KEY (`PassType`) REFERENCES `Pass` (`PassType`);
+  ADD CONSTRAINT `Ticket_ibfk_2` FOREIGN KEY (`EventId`) REFERENCES `Event` (`EventId`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
