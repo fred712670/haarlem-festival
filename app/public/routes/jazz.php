@@ -6,7 +6,7 @@ require_once __DIR__ . '/../controllers/JazzController.php';
 Route::add('/jazz', function () {
     $controller = new JazzController();
     $data = $controller->index(); // Fetch all jazz data
-    
+
     // Extract data for the view
     $artists = $data['artists'];
     $schedule = $data['schedule'];
@@ -20,12 +20,12 @@ Route::add('/jazz', function () {
 }, 'get');
 
 // Individual artist details page route
-Route::add('/jazz/artist/([0-9]+)', function ($id) {
+// Update this route
+Route::add('/jazz/artist/([0-9]+)/([a-zA-Z0-9-]+)', function ($id, $name) {
     $controller = new JazzController();
-    $artist = $controller->showArtist($id); // Fetch specific artist data
+    $artist = $controller->showArtist($id); // Still find by ID
     
     if (!$artist) {
-        // Handle artist not found
         header("Location: /jazz");
         exit();
     }
@@ -44,5 +44,23 @@ Route::add('/jazz/artist/([0-9]+)', function ($id) {
     
     // Include the artist detail view
     require_once __DIR__ . '/../views/partials/jazz-artist.php';
+}, 'get');
+
+// Keep the old route for backward compatibility
+Route::add('/jazz/artist/([0-9]+)', function ($id) {
+    $controller = new JazzController();
+    $artist = $controller->showArtist($id);
+    
+    if (!$artist) {
+        header("Location: /jazz");
+        exit();
+    }
+    
+    // Create a URL-friendly version of the artist name (slug)
+    $nameSlug = strtolower(str_replace(' ', '-', preg_replace('/[^a-zA-Z0-9\s]/', '', $artist['name'])));
+    
+    // Redirect to the URL with both ID and name
+    header("Location: /jazz/artist/$id/$nameSlug");
+    exit();
 }, 'get');
 ?>
