@@ -19,9 +19,12 @@
                             <label for="fullName" class="form-label">Full Name <span class="required" aria-hidden="true">*</span><span class="visually-hidden">required</span></label>
                             <input type="text" class="form-control" id="fullName" name="fullName" 
                                    value="<?= htmlspecialchars($user['FullName']) ?>" 
-                                   required>
+                                   required
+                                   maxlength="100"
+                                   pattern="^[A-Za-z\s\-'\.]+$"
+                                   title="Please enter a valid name (letters, spaces, hyphens, apostrophes, and periods only)">
                             <div class="invalid-feedback">
-                                Please provide a full name.
+                                Please provide a valid full name.
                             </div>
                         </div>
                         
@@ -29,7 +32,10 @@
                             <label for="email" class="form-label">Email Address <span class="required" aria-hidden="true">*</span><span class="visually-hidden">required</span></label>
                             <input type="email" class="form-control" id="email" name="email" 
                                    value="<?= htmlspecialchars($user['Email']) ?>" 
-                                   required>
+                                   required
+                                   maxlength="255"
+                                   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                   title="Please enter a valid email address">
                             <div class="invalid-feedback">
                                 Please provide a valid email address.
                             </div>
@@ -81,4 +87,3 @@
         </div>
     </div>
 </div>
-
