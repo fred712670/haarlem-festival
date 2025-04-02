@@ -30,6 +30,12 @@
                 <div id="error-message" class="booking-error" style="display: none;"></div>
 
                 <form id="history-booking-form" action="/reserve" method="post">
+
+                    <!-- Hidden inputs to pass restaurant name and address with the form-->
+                    <!--<input type="hidden" name="eventId" value="">-->
+                    <input type="hidden" name="eventId" value="">
+                    <input type="hidden" name="address" value="Church of St. Bavo">
+
                     <div class="booking-field">
                         <label for="date">Select Date:</label>
                         <div class="booking-select-wrapper">
@@ -86,10 +92,10 @@
                     </div>
                     
                     <div id="seats-container" class="booking-field">
-                        <label for="seats">Number of Seats:</label>
+                        <label for="guests">Number of Seats:</label>
                         <div class="booking-quantity">
                             <button type="button" id="decrease-seats" class="booking-quantity-btn">-</button>
-                            <input type="number" name="seats" id="seats" min="1" max="12" value="1">
+                            <input type="number" name="guests" id="seats" min="1" max="12" value="1">
                             <button type="button" id="increase-seats" class="booking-quantity-btn">+</button>
                         </div>
                     </div>
