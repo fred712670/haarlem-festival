@@ -29,7 +29,7 @@
                 <!-- Error message container -->
                 <div id="error-message" class="booking-error" style="display: none;"></div>
 
-                <form id="history-booking-form" action="/Reservation" method="post">
+                <form id="history-booking-form" action="/reserve" method="post">
                     <div class="booking-field">
                         <label for="date">Select Date:</label>
                         <div class="booking-select-wrapper">
