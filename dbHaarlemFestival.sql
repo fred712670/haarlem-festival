@@ -75,19 +75,12 @@ CREATE TABLE `DanceArtist` (
 --
 
 INSERT INTO `DanceArtist` (`ArtistId`, `Name`, `Genre`, `ProfileImageName`, `DetailImageName`, `Description`) VALUES
-(7, 'Hardwell', 'Dance & House', 'HardwellProfile.png', 'HardwellDetail.png', NULL),
-(8, 'Armin van Buuren', 'Trance & Techno', 'BuurenProfile.png', 'BuurenDetail.png', NULL),
-(9, 'Martin Garrix', 'Dance & Electronic', 'GarrixProfile.png', 'GarrixDetail.png', NULL),
+(7, 'Hardwell', 'Dance & House', 'HardwellProfile.png', 'HardwellDetail.png', 'Hardwell, born Robbert van de Corput on January 7, 1988, in Breda, Netherlands, is a globally acclaimed DJ and electronic music producer. Known for his high-energy big room house sound, he topped DJ Mag’s Top 100 DJs list twice and has headlined the world’s biggest festivals.'),
+(8, 'Armin van Buuren', 'Trance & Techno', 'BuurenProfile.png', 'BuurenDetail.png', 'Armin van Buuren, born on December 25, 1976, in Leiden, Netherlands, is one of the most iconic trance DJs and producers in the world. Host of the influential radio show *A State of Trance*, he has shaped the genre with his uplifting productions and legendary live performances.'),
+(9, 'Martin Garrix', 'Dance & Electronic', 'GarrixProfile.png', 'GarrixDetail.png', 'Martin Garrix, born Martijn Garritsen on May 14, 1996, in Amstelveen, Netherlands, is a multi-platinum DJ and producer who rose to fame with his breakout hit “Animals.” Blending progressive house, pop, and future bass, he has become a dominant force in global EDM culture.'),
 (10, 'Tiësto', 'Trance, Techno, Minimal, House & Electronic', 'TiestoProfile.png', 'TiestoDetail.png', 'Tiësto, born Tijs Michiel Verwest on January 17, 1969, in Breda, Netherlands, is a Grammy-winning DJ and one of the most influential figures in the global electronic dance music scene. Rising to prominence with his trance anthems in the early 2000s, Tiësto later evolved his style to include house, electro, and pop influences, cementing his versatility. He was the first DJ to perform at the Olympic Games and continues to headline major festivals worldwide, inspiring generations of producers and fans alike.'),
-(11, 'Nicky Romero', 'Electrohouse & Progressive House', 'RomeroProfile.png', 'RomeroDetail.png', NULL),
+(11, 'Nicky Romero', 'Electrohouse & Progressive House', 'RomeroProfile.png', 'RomeroDetail.png', 'Nicky Romero, born Nick Rotteveel on January 6, 1989, in Amerongen, Netherlands, is a prominent DJ, producer, and founder of Protocol Recordings. Known for tracks like “Toulouse” and collaborations with Avicii and Calvin Harris, he has left a major mark on progressive and electro house.'),
 (12, 'Afrojack', 'House', 'AfrojackProfile.png', 'AfrojackDetail.png', 'Afrojack, born Nick van de Wall on September 9, 1987, in Spijkenisse, Netherlands, is a world-renowned DJ, producer, and music entrepreneur. He rose to fame in the early 2010s with his unique electro-house sound and has become one of the most influential figures in electronic dance music.'),
-(13, 'Hardwell', 'Dance & House', 'HardwellProfile.png', 'HardwellDetail.png', NULL),
-(14, 'Armin van Buuren', 'Trance & Techno', 'BuurenProfile.png', 'BuurenDetail.png', NULL),
-(15, 'Martin Garrix', 'Dance & Electronic', 'GarrixProfile.png', 'GarrixDetail.png', NULL),
-(16, 'Tiësto', 'Trance, Techno, Minimal, House & Electronic', 'TiestoProfile.png', 'TiestoDetail.png', 'Tiësto, born Tijs Michiel Verwest on January 17, 1969, in Breda, Netherlands, is a Grammy-winning DJ and one of the most influential figures in the global electronic dance music scene. Rising to prominence with his trance anthems in the early 2000s, Tiësto later evolved his style to include house, electro, and pop influences, cementing his versatility. He was the first DJ to perform at the Olympic Games and continues to headline major festivals worldwide, inspiring generations of producers and fans alike.'),
-(17, 'Nicky Romero', 'Electrohouse & Progressive House', 'RomeroProfile.png', 'RomeroDetail.png', NULL),
-(18, 'Afrojack', 'House', 'AfrojackProfile.png', 'AfrojackDetail.png', 'Afrojack, born Nick van de Wall on September 9, 1987, in Spijkenisse, Netherlands, is a world-renowned DJ, producer, and music entrepreneur. He rose to fame in the early 2010s with his unique electro-house sound and has become one of the most influential figures in electronic dance music.');
-
 -- --------------------------------------------------------
 
 --
@@ -105,6 +98,22 @@ CREATE TABLE `DanceEvent` (
   `Price` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
+-----------------------------------------------------------
+
+INSERT INTO `DanceEvent` (`DanceEventId`, `Description`, `Location`, `StartDateTime`, `TimeSlot`, `DurationByMinute`, `TicketsAvailable`, `Price`) VALUES
+(1, 'Nicky Romero, Afrojack', 'Lichtfabriek', '2025-07-25 20:00:00', '20:00 - 02:00', 360, 1500, 75),
+(2, 'Tiësto', 'Slachthuis', '2025-07-25 22:00:00', '22:00 - 23:30', 90, 200, 60),
+(3, 'Armin van Buuren', 'XO the Club', '2025-07-25 22:00:00', '22:00 - 23:30', 90, 300, 60),
+(4, 'Martin Garrix', 'Puncher Comedy Club', '2025-07-25 22:00:00', '22:00 - 23:30', 90, 200, 60),
+(5, 'Hardwell', 'Jopenkerk', '2025-07-25 22:00:00', '22:00 - 23:30', 90, 200, 60),
+(6, 'Afrojack, Tiësto, Nicky Romero', 'Caprera Openluchttheater', '2025-07-26 14:00:00', '14:00 - 23:00', 540, 2000, 110),
+(7, 'Martin Garrix', 'Slachthuis', '2025-07-26 18:00:00', '18:00 - 19:30', 90, 300, 60),
+(8, 'Armin van Buuren', 'Jopenkerk', '2025-07-26 19:00:00', '19:00 - 23:00', 240, 1500, 60),
+(9, 'Hardwell', 'XO the Club', '2025-07-26 21:00:00', '21:00 - 22:30', 90, 200, 90),
+(10, 'Hardwell, Martin Garrix, Armin van Buuren', 'Caprera Openluchttheater', '2025-07-27 14:00:00', '14:00 - 23:00', 540, 2000, 110),
+(11, 'Tiësto', 'Lichtfabriek', '2025-07-27 21:00:00', '21:00 - 22:30', 90, 300, 75),
+(12, 'Afrojack', 'Jopenkerk', '2025-07-27 22:00:00', '22:00 - 23:30', 90, 1500, 60),
+(13, 'Nicky Romero', 'Slachthuis', '2025-07-27 23:00:00', '23:00 - 00:30', 90, 200, 60);
 -- --------------------------------------------------------
 
 --
