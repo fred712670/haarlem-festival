@@ -29,7 +29,7 @@ foreach ($danceEvents as $event) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DANCE! - The Haarlem Festival</title>
-    <link rel="stylesheet" href="../../assets/css/dance.css">
+    <link rel="stylesheet" href="assets/css/dance.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
@@ -72,7 +72,7 @@ foreach ($danceEvents as $event) {
         <div class="artist-grid">
             <?php foreach ($artists as $artist): ?>
             <div class="artist-card">
-                <img src="../../assets/img/dance/<?= htmlspecialchars($artist['ProfileImageName']) ?>">
+                <img src="assets/img/dance/<?= htmlspecialchars($artist['ProfileImageName']) ?>">
                 <h3><i><?= htmlspecialchars($artist['Name']) ?></i></h3>
                 <p><i><?= htmlspecialchars($artist['Genre']) ?></i></p>
                 <a href="/dance/artist?id=<?= htmlspecialchars($artist['ArtistId']) ?>">

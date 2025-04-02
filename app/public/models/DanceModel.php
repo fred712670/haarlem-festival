@@ -71,9 +71,48 @@ class DanceModel extends BaseModel
     }
 }
 
-public function getArtistSongs()
+    public function getArtistSongs($artistId)
 {
+    try {
+        $query = "SELECT SongId, Title, ReleaseYear, Credits, Description, SongFileName, ImageName
+          FROM DanceSong
+          WHERE ArtistId = :artistId";
 
+
+        $stmt = self::$pdo->prepare($query);
+        $stmt->bindParam(':artistId', $artistId, PDO::PARAM_INT);
+        $stmt->execute();
+        $songs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        error_log("Fetched songs for artist ID $artistId: " . print_r($songs, true));
+        return $songs ?: [];
+    } catch (Exception $e) {
+        error_log("Error fetching songs for artist $artistId: " . $e->getMessage());
+        return [];
+    }
+}
+
+public function getArtistPerformances($artistId)
+{
+    try {
+        $query = "SELECT de.DanceEventId, de.Description, de.Location, de.StartDateTime,
+                         de.TimeSlot, de.DurationByMinute, de.TicketsAvailable, de.Price
+                  FROM DancePerformance dp
+                  INNER JOIN DanceEvent de ON dp.DanceEventId = de.DanceEventId
+                  WHERE dp.DanceArtistId = :artistId
+                  ORDER BY de.StartDateTime ASC";
+
+        $stmt = self::$pdo->prepare($query);
+        $stmt->bindParam(':artistId', $artistId, PDO::PARAM_INT);
+        $stmt->execute();
+        $performances = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        error_log("Fetched performances for artist ID $artistId: " . print_r($performances, true));
+        return $performances ?: [];
+    } catch (Exception $e) {
+        error_log("Error fetching performances for artist $artistId: " . $e->getMessage());
+        return [];
+    }
 }
 
 }
