@@ -34,31 +34,36 @@
             <?php if ($index % 2 === 0): ?>
                 <div class="song-content">
                     <h3>"<?= htmlspecialchars($song['Title']) ?>" (<?= htmlspecialchars($song['ReleaseYear']) ?>)</h3>
-                    <p>Feat. <?= htmlspecialchars($song['Credits']) ?></p>
+                    <?php if (!empty($song['Credits'])): ?>
+                        <p>Feat. <?= htmlspecialchars($song['Credits']) ?></p>
+                    <?php endif; ?>
                     <p><?= htmlspecialchars($song['Description']) ?></p>
                     <audio controls>
-                        <source src="../../assets/audio/<?= htmlspecialchars($song['SongFileName']) ?>" type="audio/mpeg">
+                        <source src="/assets/audio/<?= htmlspecialchars($song['SongFileName']) ?>" type="audio/mpeg">
                     </audio>
                 </div>
-                <img src="../../assets/img/dance/<?= htmlspecialchars($song['ImageName']) ?>" 
+                <img src="/assets/img/dance/<?= htmlspecialchars($song['ImageName']) ?>" 
                      alt="<?= htmlspecialchars($song['Title']) ?>" 
                      class="song-image">
             <?php else: ?>
-                <img src="../../assets/img/dance/<?= htmlspecialchars($song['ImageName']) ?>" 
+                <img src="/assets/img/dance/<?= htmlspecialchars($song['ImageName']) ?>" 
                      alt="<?= htmlspecialchars($song['Title']) ?>" 
                      class="song-image">
                 <div class="song-content">
                     <h3>"<?= htmlspecialchars($song['Title']) ?>" (<?= htmlspecialchars($song['ReleaseYear']) ?>)</h3>
-                    <p>Feat. <?= htmlspecialchars($song['Credits']) ?></p>
+                    <?php if (!empty($song['Credits'])): ?>
+                        <p>Feat. <?= htmlspecialchars($song['Credits']) ?></p>
+                    <?php endif; ?>
                     <p><?= htmlspecialchars($song['Description']) ?></p>
                     <audio controls>
-                        <source src="../../assets/audio/<?= htmlspecialchars($song['SongFileName']) ?>" type="audio/mpeg">
+                        <source src="/assets/audio/<?= htmlspecialchars($song['SongFileName']) ?>" type="audio/mpeg">
                     </audio>
                 </div>
             <?php endif; ?>
         </div>
     <?php endforeach; ?>
 </section>
+
 
 
         <section id="tickets" class="shows">
@@ -80,6 +85,5 @@
     </div>
 </section>
 
-   
     </body>
 </html>
