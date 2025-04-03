@@ -33,7 +33,8 @@
 
                     <!-- Hidden inputs to pass restaurant name and address with the form-->
                     <!--<input type="hidden" name="eventId" value="">-->
-                    <input type="hidden" name="eventId" value="">
+                    <input type="hidden" name="eventId" value="10">
+                    <input type="hidden" name="name" value="History Tour">
                     <input type="hidden" name="address" value="Church of St. Bavo">
 
                     <div class="booking-field">
@@ -81,6 +82,7 @@
                         <div class="booking-radio-group">
                             <div class="booking-radio">
                                 <input type="radio" id="regular" name="ticket_type" value="Regular Participant" checked>
+                                <input type="hidden" name="price" value="17.50">
                                 <label for="regular">Regular Participant (€17.50)</label>
                             </div>
                             

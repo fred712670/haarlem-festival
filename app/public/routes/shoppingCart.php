@@ -18,9 +18,9 @@ Route::add('/create/order', function()  {
 
 Route::add('/reserve', function() {
 
-    print_r($_POST);
+    //print_r($_POST);
 
-    /*$reservationController = new ReservationController();
+    $reservationController = new ReservationController();
     $validation = $reservationController->createReservation($_POST);
     
     if($validation != true){
@@ -28,7 +28,7 @@ Route::add('/reserve', function() {
     }
     else{
         header('Location: /cart');
-    }*/
+    };
 
 }, 'post');
 
