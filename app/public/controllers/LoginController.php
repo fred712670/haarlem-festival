@@ -3,33 +3,30 @@
 class LoginController
 {
     public function login()
-    {
-        $userModel = new UserModel();
+{
+    $userModel = new UserModel();
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
+    $user = $userModel->login($username);
 
-        $username = trim($_POST['username']);  // Get the entered username and remove extra spaces
-        $password = trim($_POST['password']);  // Get the entered password and remove extra spaces
-
-        $user = $userModel->login($username);
-
-        // Debug: Log the user data to see what we're getting
-        error_log("Login attempt for: " . $username);
-        if ($user) {
-            error_log("User found: " . json_encode($user));
+    if ($user && password_verify($password, $user['Password'])) {
+        // Store all necessary session variables
+        $_SESSION['user'] = $user['FullName'];
+        $_SESSION['userId'] = $user['UserId'];
+        $_SESSION['role'] = $user['Role'];
+        $_SESSION['email'] = $user['Email'];
+        
+        // Redirect based on role
+        if (strtolower($_SESSION['role']) === strtolower('Administrator')) {
+            header('Location: /admin/users');
         } else {
-            error_log("No user found with this username");
+            header('Location: /');
         }
-
-        if ($user && password_verify($password, $user['Password'])) {  // Check if user exists and password is correct
-            // Store essential user information in session
-            $_SESSION['user'] = $user['FullName'];  // Store the username in session
-            $_SESSION['userId'] = $user['UserId'];
-            header('Location: '. '/'); // Direct user to index page
-            exit;
-        } else {
-            $error = "Your login credentials are incorrect.";
-            require(__DIR__ . "/../views/pages/login.php");
-            //exit;
-        }   
-    }
+        exit();
+    } else {
+        $error = "Your login credentials are incorrect.";
+        require(__DIR__ . "/../views/pages/login.php");
+    }   
+}
 }
 ?>

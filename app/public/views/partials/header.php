@@ -24,7 +24,13 @@
         </button>
     </div>
     <ul class="nav-links">
-        <li><a href="/profile"><i class="fas fa-user"></i> <span class="link-text">Profile</span></a></li>
+    <li>
+    <?php if(isset($_SESSION['role']) && $_SESSION['role'] == 'Administrator'): ?>
+        <a href="/admin"><i class="fas fa-user-shield"></i> <span class="link-text">Admin</span></a>
+    <?php else: ?>
+        <a href="/profile"><i class="fas fa-user"></i> <span class="link-text">Profile</span></a>
+    <?php endif; ?>
+</li>
         <li><a href="/cart"><i class="fas fa-shopping-cart"></i> <span class="link-text">Cart</span></a></li>
         <li><a href="/"><i class="fas fa-home"></i> <span class="link-text">Home</span></a></li>
         <li><a href="/yummy"><i class="fas fa-utensils"></i> <span class="link-text">Yummy!</span></a></li>
