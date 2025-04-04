@@ -65,9 +65,9 @@
                     </div>
                     
                     <div class="booking-field">
-                        <label for="language">Select Language:</label>
+                        <label for="ticketType">Select Language:</label>
                         <div class="booking-select-wrapper">
-                            <select name="language" id="language" required>
+                            <select name="ticketType" id="language" required>
                                 <option value="">Select Language</option>
                                 <option value="English">English</option>
                                 <option value="Dutch">Dutch</option>
