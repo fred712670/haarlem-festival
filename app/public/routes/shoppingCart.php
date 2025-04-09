@@ -10,6 +10,7 @@ Route::add('/cart', function()  {
 
 Route::add('/create/order', function()  {
     $orderController = new OrderController();
+    //print_r($_SESSION['cart']);
 
     $orderController->createOrder();
     

@@ -16,7 +16,7 @@ class OrderController {
         $address = $_POST['address'] ?? null;
 
         // Create order
-        $orderId = $orderModel->createOrder($cart, $phone, $address);
+        $orderId = $orderModel->createOrder($cart, $userId, $phone, $address);
 
         // Clear cart
         unset($_SESSION['cart']);

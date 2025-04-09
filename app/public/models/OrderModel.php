@@ -3,7 +3,7 @@ require_once(__DIR__ . "/BaseModel.php");
 
 class OrderModel extends BaseModel {
 
-    public function createOrder($order, $phone = null, $address = null){
+    public function createOrder($order, $userId, $phone = null, $address = null){
         // Insert the order into the 'orders' table
         $orderQuery = "INSERT INTO `Order` (UserId, OrderDate, PhoneNumber, Address)
                     VALUES (:UserId, :OrderDate, :PhoneNumber, :Address)";
@@ -12,7 +12,7 @@ class OrderModel extends BaseModel {
         $null = null;
 
         $stmt = self::$pdo->prepare($orderQuery);
-        $stmt->bindParam(':UserId', $_SESSION['userId']);
+        $stmt->bindParam(':UserId', $userId);
         $stmt->bindParam(':OrderDate', $currentDateTime);
         $stmt->bindParam(':PhoneNumber', $phone);
         $stmt->bindParam(':Address', $address);
@@ -32,7 +32,7 @@ class OrderModel extends BaseModel {
                 $stmt = self::$pdo->prepare($ticketQuery);
                 $stmt->bindParam(':OrderId', $orderId);
                 $stmt->bindParam(':Price', $ticket['price']);
-                $stmt->bindParam(':PassType', $null);  // Set PassType as null or another default value
+                $stmt->bindParam(':PassType', $ticket['ticketType']);
                 $stmt->bindParam(':IsValid', $isValid);
                 $stmt->bindParam(':EventId', $ticket['eventId']);
                 $stmt->execute();
@@ -43,7 +43,7 @@ class OrderModel extends BaseModel {
 
     public function getUserOrders($userId){
         $orderQuery = "
-        SELECT o.OrderId, o.OrderDate, o.Status, t.TicketId, t.Price, t.PassType, t.IsValid, t.EventId, e.Name AS EventName
+        SELECT o.OrderId, o.OrderDate, o.Status, t.TicketId, t.Price, t.PassType, t.IsValid, t.EventId, e.EventType
         FROM `Order` o
         LEFT JOIN Ticket t ON o.OrderId = t.OrderId
         LEFT JOIN Event e ON t.EventId = e.EventId

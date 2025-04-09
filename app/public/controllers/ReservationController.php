@@ -43,7 +43,7 @@ class ReservationController {
             'description' => $postData["name"],
             'location' => $postData["address"],
             'dateTime' => "Reservation for " . htmlspecialchars($postData['date']) . " at " . htmlspecialchars($postData['time']),
-            'ticketType' => "Ticket type: " . htmlspecialchars($postData["ticketType"]),
+            'ticketType' => $postData["ticketType"],
             'price' => $price,
             'quantity' => (int)$postData['guests']
             ];
