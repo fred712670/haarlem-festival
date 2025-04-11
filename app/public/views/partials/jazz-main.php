@@ -32,8 +32,7 @@
                             <a href="/jazz/artist/<?= htmlspecialchars($artist['id']) ?>" class="read-more" aria-label="Read more about <?= htmlspecialchars($artist['name']) ?>">Read More</a>
                         </div>
                     </div>
-                    <h3><?= htmlspecialchars($artist['name']) ?></h3>
-                    
+                    <h3><?= htmlspecialchars($artist['name']) ?></h3>    
                 </div>
             <?php endforeach; ?>
         </div>

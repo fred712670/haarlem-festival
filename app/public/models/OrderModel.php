@@ -71,7 +71,7 @@ class OrderModel extends BaseModel {
                 'PassType' => $reservation['PassType'],
                 'IsValid' => $reservation['IsValid'],
                 'EventId' => $reservation['EventId'],
-                'EventName' => $reservation['EventName']  // Event name from the Event table
+                'EventName' => $reservation['Name']  // Event name from the Event table
             ];
         }
 

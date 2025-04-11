@@ -3,7 +3,7 @@
         'name' => 'denisa/haarlem-festival',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'e4f063902c066efda692b0a17100f24c2e9250fc',
+        'reference' => '5b36a333639651e0d1a571bea1a124a7884e700f',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -31,7 +31,7 @@
         'denisa/haarlem-festival' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'e4f063902c066efda692b0a17100f24c2e9250fc',
+            'reference' => '5b36a333639651e0d1a571bea1a124a7884e700f',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

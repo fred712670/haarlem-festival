@@ -1,38 +1,3 @@
-<?php
-require __DIR__ . '../../../vendor/autoload.php';
-
-use Dompdf\Dompdf;
-use BaconQrCode\Writer;
-use BaconQrCode\Renderer\ImageRenderer;
-use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
-use BaconQrCode\Renderer\RendererStyle\RendererStyle;
-
-// === Generate QR Code ===
-try {
-    $renderer = new ImageRenderer(
-        new RendererStyle(200),
-        new ImagickImageBackEnd()
-    );
-    $writer = new Writer($renderer);
-    $qrCode = $writer->writeString('Hello from baconQrCode!');
-    file_put_contents('qrcode-test.png', $qrCode);
-    echo "✅ QR Code generated: qrcode-test.png<br>";
-} catch (Exception $e) {
-    echo "❌ QR Code error: " . $e->getMessage() . "<br>";
-}
-
-// === Generate PDF ===
-try {
-    $dompdf = new Dompdf();
-    $dompdf->loadHtml('<h1>Hello from dompdf</h1><p>PDF test successful!</p>');
-    $dompdf->setPaper('A4', 'portrait');
-    $dompdf->render();
-    file_put_contents('pdf-test.pdf', $dompdf->output());
-    echo "✅ PDF generated: pdf-test.pdf<br>";
-} catch (Exception $e) {
-    echo "❌ PDF generation error: " . $e->getMessage() . "<br>";
-}
-?>
 <div class="container">
     <h1 class="mb-4" id="h1-MyOrders">My Orders</h1>
     <?php if (!empty($orders)): ?>
