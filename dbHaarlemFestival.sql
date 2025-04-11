@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Mar 25, 2025 at 06:16 PM
--- Server version: 11.6.2-MariaDB-ubu2404
--- PHP Version: 8.2.27
+-- Generation Time: Apr 08, 2025 at 12:49 PM
+-- Server version: 11.5.2-MariaDB-ubu2404
+-- PHP Version: 8.2.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -23,7 +23,6 @@ SET time_zone = "+00:00";
 
 -- --------------------------------------------------------
 
-USE developmentdb;
 --
 -- Table structure for table `Appearances`
 --
@@ -75,12 +74,13 @@ CREATE TABLE `DanceArtist` (
 --
 
 INSERT INTO `DanceArtist` (`ArtistId`, `Name`, `Genre`, `ProfileImageName`, `DetailImageName`, `Description`) VALUES
-(7, 'Hardwell', 'Dance & House', 'HardwellProfile.png', 'HardwellDetail.png', 'Hardwell, born Robbert van de Corput on January 7, 1988, in Breda, Netherlands, is a globally acclaimed DJ and electronic music producer. Known for his high-energy big room house sound, he topped DJ Mag’s Top 100 DJs list twice and has headlined the world’s biggest festivals.'),
-(8, 'Armin van Buuren', 'Trance & Techno', 'BuurenProfile.png', 'BuurenDetail.png', 'Armin van Buuren, born on December 25, 1976, in Leiden, Netherlands, is one of the most iconic trance DJs and producers in the world. Host of the influential radio show *A State of Trance*, he has shaped the genre with his uplifting productions and legendary live performances.'),
-(9, 'Martin Garrix', 'Dance & Electronic', 'GarrixProfile.png', 'GarrixDetail.png', 'Martin Garrix, born Martijn Garritsen on May 14, 1996, in Amstelveen, Netherlands, is a multi-platinum DJ and producer who rose to fame with his breakout hit “Animals.” Blending progressive house, pop, and future bass, he has become a dominant force in global EDM culture.'),
-(10, 'Tiësto', 'Trance, Techno, Minimal, House & Electronic', 'TiestoProfile.png', 'TiestoDetail.png', 'Tiësto, born Tijs Michiel Verwest on January 17, 1969, in Breda, Netherlands, is a Grammy-winning DJ and one of the most influential figures in the global electronic dance music scene. Rising to prominence with his trance anthems in the early 2000s, Tiësto later evolved his style to include house, electro, and pop influences, cementing his versatility. He was the first DJ to perform at the Olympic Games and continues to headline major festivals worldwide, inspiring generations of producers and fans alike.'),
-(11, 'Nicky Romero', 'Electrohouse & Progressive House', 'RomeroProfile.png', 'RomeroDetail.png', 'Nicky Romero, born Nick Rotteveel on January 6, 1989, in Amerongen, Netherlands, is a prominent DJ, producer, and founder of Protocol Recordings. Known for tracks like “Toulouse” and collaborations with Avicii and Calvin Harris, he has left a major mark on progressive and electro house.'),
-(12, 'Afrojack', 'House', 'AfrojackProfile.png', 'AfrojackDetail.png', 'Afrojack, born Nick van de Wall on September 9, 1987, in Spijkenisse, Netherlands, is a world-renowned DJ, producer, and music entrepreneur. He rose to fame in the early 2010s with his unique electro-house sound and has become one of the most influential figures in electronic dance music.'),
+(1, 'Hardwell', 'Dance & House', 'HardwellProfile.png', 'HardwellDetail.png', 'Hardwell, born Robbert van de Corput on January 7, 1988, in Breda, Netherlands, is a globally acclaimed DJ and electronic music producer. Known for his high-energy big room house sound, he topped DJ Mag’s Top 100 DJs list twice and has headlined the world’s biggest festivals.'),
+(2, 'Armin van Buuren', 'Trance & Techno', 'BuurenProfile.png', 'BuurenDetail.png', 'Armin van Buuren, born on December 25, 1976, in Leiden, Netherlands, is one of the most iconic trance DJs and producers in the world. Host of the influential radio show *A State of Trance*, he has shaped the genre with his uplifting productions and legendary live performances.'),
+(3, 'Martin Garrix', 'Dance & Electronic', 'GarrixProfile.png', 'GarrixDetail.png', 'Martin Garrix, born Martijn Garritsen on May 14, 1996, in Amstelveen, Netherlands, is a multi-platinum DJ and producer who rose to fame with his breakout hit “Animals.” Blending progressive house, pop, and future bass, he has become a dominant force in global EDM culture.'),
+(4, 'Tiësto', 'Trance, Techno, Minimal, House & Electronic', 'TiestoProfile.png', 'TiestoDetail.png', 'Tiësto, born Tijs Michiel Verwest on January 17, 1969, in Breda, Netherlands, is a Grammy-winning DJ and one of the most influential figures in the global electronic dance music scene. Rising to prominence with his trance anthems in the early 2000s, Tiësto later evolved his style to include house, electro, and pop influences, cementing his versatility. He was the first DJ to perform at the Olympic Games and continues to headline major festivals worldwide, inspiring generations of producers and fans alike.'),
+(5, 'Nicky Romero', 'Electrohouse & Progressive House', 'RomeroProfile.png', 'RomeroDetail.png', 'Nicky Romero, born Nick Rotteveel on January 6, 1989, in Amerongen, Netherlands, is a prominent DJ, producer, and founder of Protocol Recordings. Known for tracks like “Toulouse” and collaborations with Avicii and Calvin Harris, he has left a major mark on progressive and electro house.'),
+(6, 'Afrojack', 'House', 'AfrojackProfile.png', 'AfrojackDetail.png', 'Afrojack, born Nick van de Wall on September 9, 1987, in Spijkenisse, Netherlands, is a world-renowned DJ, producer, and music entrepreneur. He rose to fame in the early 2010s with his unique electro-house sound and has become one of the most influential figures in electronic dance music.');
+
 -- --------------------------------------------------------
 
 --
@@ -89,6 +89,7 @@ INSERT INTO `DanceArtist` (`ArtistId`, `Name`, `Genre`, `ProfileImageName`, `Det
 
 CREATE TABLE `DanceEvent` (
   `DanceEventId` int(11) NOT NULL,
+  `EventId` int(11) NOT NULL,
   `Description` varchar(100) DEFAULT NULL,
   `Location` varchar(100) DEFAULT NULL,
   `StartDateTime` datetime DEFAULT NULL,
@@ -98,22 +99,25 @@ CREATE TABLE `DanceEvent` (
   `Price` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
------------------------------------------------------------
+--
+-- Dumping data for table `DanceEvent`
+--
 
-INSERT INTO `DanceEvent` (`DanceEventId`, `Description`, `Location`, `StartDateTime`, `TimeSlot`, `DurationByMinute`, `TicketsAvailable`, `Price`) VALUES
-(1, 'Nicky Romero, Afrojack', 'Lichtfabriek', '2025-07-25 20:00:00', '20:00 - 02:00', 360, 1500, 75),
-(2, 'Tiësto', 'Slachthuis', '2025-07-25 22:00:00', '22:00 - 23:30', 90, 200, 60),
-(3, 'Armin van Buuren', 'XO the Club', '2025-07-25 22:00:00', '22:00 - 23:30', 90, 300, 60),
-(4, 'Martin Garrix', 'Puncher Comedy Club', '2025-07-25 22:00:00', '22:00 - 23:30', 90, 200, 60),
-(5, 'Hardwell', 'Jopenkerk', '2025-07-25 22:00:00', '22:00 - 23:30', 90, 200, 60),
-(6, 'Afrojack, Tiësto, Nicky Romero', 'Caprera Openluchttheater', '2025-07-26 14:00:00', '14:00 - 23:00', 540, 2000, 110),
-(7, 'Martin Garrix', 'Slachthuis', '2025-07-26 18:00:00', '18:00 - 19:30', 90, 300, 60),
-(8, 'Armin van Buuren', 'Jopenkerk', '2025-07-26 19:00:00', '19:00 - 23:00', 240, 1500, 60),
-(9, 'Hardwell', 'XO the Club', '2025-07-26 21:00:00', '21:00 - 22:30', 90, 200, 90),
-(10, 'Hardwell, Martin Garrix, Armin van Buuren', 'Caprera Openluchttheater', '2025-07-27 14:00:00', '14:00 - 23:00', 540, 2000, 110),
-(11, 'Tiësto', 'Lichtfabriek', '2025-07-27 21:00:00', '21:00 - 22:30', 90, 300, 75),
-(12, 'Afrojack', 'Jopenkerk', '2025-07-27 22:00:00', '22:00 - 23:30', 90, 1500, 60),
-(13, 'Nicky Romero', 'Slachthuis', '2025-07-27 23:00:00', '23:00 - 00:30', 90, 200, 60);
+INSERT INTO `DanceEvent` (`DanceEventId`, `EventId`, `Description`, `Location`, `StartDateTime`, `TimeSlot`, `DurationByMinute`, `TicketsAvailable`, `Price`) VALUES
+(1, 8, 'Nicky Romero, Afrojack', 'Lichtfabriek', '2025-07-25 20:00:00', '20:00 - 02:00', 360, 1500, 75),
+(2, 9, 'Tiësto', 'Slachthuis', '2025-07-25 22:00:00', '22:00 - 23:30', 90, 200, 60),
+(3, 10, 'Armin van Buuren', 'XO the Club', '2025-07-25 22:00:00', '22:00 - 23:30', 90, 300, 60),
+(4, 11, 'Martin Garrix', 'Puncher Comedy Club', '2025-07-25 22:00:00', '22:00 - 23:30', 90, 200, 60),
+(5, 12, 'Hardwell', 'Jopenkerk', '2025-07-25 22:00:00', '22:00 - 23:30', 90, 200, 60),
+(6, 13, 'Afrojack, Tiësto, Nicky Romero', 'Caprera Openluchttheater', '2025-07-26 14:00:00', '14:00 - 23:00', 540, 2000, 110),
+(7, 14, 'Martin Garrix', 'Slachthuis', '2025-07-26 18:00:00', '18:00 - 19:30', 90, 300, 60),
+(8, 15, 'Armin van Buuren', 'Jopenkerk', '2025-07-26 19:00:00', '19:00 - 23:00', 240, 1500, 60),
+(9, 16, 'Hardwell', 'XO the Club', '2025-07-26 21:00:00', '21:00 - 22:30', 90, 200, 90),
+(10, 17, 'Hardwell, Martin Garrix, Armin van Buuren', 'Caprera Openluchttheater', '2025-07-27 14:00:00', '14:00 - 23:00', 540, 2000, 110),
+(11, 18, 'Tiësto', 'Lichtfabriek', '2025-07-27 21:00:00', '21:00 - 22:30', 90, 300, 75),
+(12, 19, 'Afrojack', 'Jopenkerk', '2025-07-27 22:00:00', '22:00 - 23:30', 90, 1500, 60),
+(13, 20, 'Nicky Romero', 'Slachthuis', '2025-07-27 23:00:00', '23:00 - 00:30', 90, 200, 60);
+
 -- --------------------------------------------------------
 
 --
@@ -142,15 +146,6 @@ CREATE TABLE `DanceSong` (
   `ImageName` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
---
--- Dumping data for table `DanceSong`
---
-
-INSERT INTO `DanceSong` (`SongId`, `ArtistId`, `Title`, `ReleaseYear`, `Credits`, `Description`, `SongFileName`, `ImageName`) VALUES
-(4, NULL, 'Take Over Control', 2010, 'Eva Simons', 'Afrojack’s breakout hit, a global anthem that introduced his electro-house style to the world and catapulted him to international fame.', 'Afrojack_takeovercontrol.mp3', 'Afrojack_1.png'),
-(5, NULL, 'Give Me Everything', 2011, 'Pitbull, Ne-Yo, & Nayer', 'Co-produced by Afrojack, this collaboration with Pitbull topped the Billboard Hot 100 in the U.S. and charted in over 30 countries.', 'Afrojack_givemeeverything.mp3', 'Afrojack_2.png'),
-(6, NULL, 'The Spark', 2013, 'Spree Wilson', 'A feel-good anthem that showcases Afrojack’s ability to blend EDM with pop elements, \"The Spark\" is a motivational track that resonates with audiences beyond the dance floor.', 'Afrojack_thespark.mp3', 'Afrojack_3.png');
-
 -- --------------------------------------------------------
 
 --
@@ -159,52 +154,75 @@ INSERT INTO `DanceSong` (`SongId`, `ArtistId`, `Title`, `ReleaseYear`, `Credits`
 
 CREATE TABLE `Event` (
   `EventId` int(11) NOT NULL,
-  `Description` varchar(255) DEFAULT NULL,
-  `Location` varchar(100) DEFAULT NULL,
-  `StartDateTime` datetime DEFAULT NULL,
-  `TimeSlot` varchar(50) DEFAULT NULL,
-  `DurationByMinute` int(11) DEFAULT NULL,
-  `TicketsAvailable` int(11) DEFAULT NULL,
-  `Price` int(11) DEFAULT NULL
+  `EventType` enum('DanceEvent','JazzEvent','Restaurant','HistoryTour') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 --
 -- Dumping data for table `Event`
 --
 
-INSERT INTO `Event` (`EventId`, `Description`, `Location`, `StartDateTime`, `TimeSlot`, `DurationByMinute`, `TicketsAvailable`, `Price`) VALUES
-(101, 'Gumbo Kings performance at Patronaat', '1', '2023-07-27 18:00:00', 'Evening', 60, 300, 15),
-(102, 'Evolve performance at Patronaat', '1', '2023-07-27 19:30:00', 'Evening', 60, 300, 15),
-(103, 'Ntjam Rosie performance at Patronaat', '1', '2023-07-27 21:00:00', 'Evening', 60, 300, 15),
-(104, 'Wicked Jazz Sounds performance at Patronaat', '2', '2023-07-27 18:00:00', 'Evening', 60, 200, 10),
-(105, 'Wouter Hamel performance at Patronaat', '2', '2023-07-27 19:30:00', 'Evening', 60, 200, 10),
-(106, 'Jonna Frazer performance at Patronaat', '2', '2023-07-27 21:00:00', 'Evening', 60, 200, 10),
-(107, 'Karsu performance at Patronaat', '1', '2023-07-28 18:00:00', 'Evening', 60, 300, 15),
-(108, 'Uncle Sue performance at Patronaat', '1', '2023-07-28 19:30:00', 'Evening', 60, 300, 15),
-(109, 'Chris Allen performance at Patronaat', '1', '2023-07-28 21:00:00', 'Evening', 60, 300, 15),
-(110, 'Myles Sanko performance at Patronaat', '2', '2023-07-28 18:00:00', 'Evening', 60, 200, 10),
-(111, 'Ilse Huizinga performance at Patronaat', '2', '2023-07-28 19:30:00', 'Evening', 60, 200, 10),
-(112, 'Eric Vloeimans and Hotspot! performance at Patronaat', '2', '2023-07-28 21:00:00', 'Evening', 60, 200, 10),
-(113, 'Gare du Nord performance at Patronaat', '1', '2023-07-29 18:00:00', 'Evening', 60, 300, 15),
-(114, 'Rilan & The Bombadiers performance at Patronaat', '1', '2023-07-29 19:30:00', 'Evening', 60, 300, 15),
-(115, 'Soul Six performance at Patronaat', '1', '2023-07-29 21:00:00', 'Evening', 60, 300, 15),
-(116, 'Han Bennink performance at Patronaat', '3', '2023-07-29 18:00:00', 'Evening', 60, 150, 10),
-(117, 'The Nordanians performance at Patronaat', '3', '2023-07-29 19:30:00', 'Evening', 60, 150, 10),
-(118, 'Lilith Merlot performance at Patronaat', '3', '2023-07-29 21:00:00', 'Evening', 60, 150, 10),
-(119, 'Ruis Soundsystem performance at Grote Markt', '4', '2023-07-30 15:00:00', 'Afternoon', 60, 1000, 0),
-(120, 'Wicked Jazz Sounds performance at Grote Markt', '4', '2023-07-30 16:00:00', 'Afternoon', 60, 1000, 0),
-(121, 'Evolve performance at Grote Markt', '4', '2023-07-30 17:00:00', 'Afternoon', 60, 1000, 0),
-(122, 'The Nordanians performance at Grote Markt', '4', '2023-07-30 18:00:00', 'Evening', 60, 1000, 0),
-(123, 'Gumbo Kings performance at Grote Markt', '4', '2023-07-30 19:00:00', 'Evening', 60, 1000, 0),
-(124, 'Gare du Nord performance at Grote Markt', '4', '2023-07-30 20:00:00', 'Evening', 60, 1000, 0),
-(1001, 'Gumbo Kings at Haarlem Jazz', '1', '2023-07-27 19:00:00', 'Evening', 90, 300, 25),
-(1002, 'Evolve at Haarlem Jazz', '2', '2023-07-27 21:00:00', 'Evening', 90, 200, 20),
-(1003, 'Ntjam Rosie at Haarlem Jazz', '1', '2023-07-28 19:00:00', 'Evening', 90, 300, 25),
-(1004, 'Wicked Jazz Sounds at Haarlem Jazz', '2', '2023-07-28 21:00:00', 'Evening', 90, 200, 20),
-(1005, 'Wouter Hamel at Haarlem Jazz', '1', '2023-07-29 19:00:00', 'Evening', 90, 300, 25),
-(1006, 'Uncle Sue at Haarlem Jazz', '2', '2023-07-29 21:00:00', 'Evening', 90, 200, 20),
-(1007, 'Karsu at Haarlem Jazz', '4', '2023-07-30 15:00:00', 'Afternoon', 60, 1000, 0),
-(1008, 'Jonna Fraser at Haarlem Jazz', '4', '2023-07-30 17:00:00', 'Evening', 60, 1000, 0);
+INSERT INTO `Event` (`EventId`, `EventType`) VALUES
+(1, 'Restaurant'),
+(2, 'Restaurant'),
+(3, 'Restaurant'),
+(4, 'Restaurant'),
+(5, 'Restaurant'),
+(6, 'Restaurant'),
+(7, 'Restaurant'),
+(8, 'DanceEvent'),
+(9, 'DanceEvent'),
+(10, 'DanceEvent'),
+(11, 'DanceEvent'),
+(12, 'DanceEvent'),
+(13, 'DanceEvent'),
+(14, 'DanceEvent'),
+(15, 'DanceEvent'),
+(16, 'DanceEvent'),
+(17, 'DanceEvent'),
+(18, 'DanceEvent'),
+(19, 'DanceEvent'),
+(20, 'DanceEvent'),
+(21, 'JazzEvent'),
+(22, 'JazzEvent'),
+(23, 'JazzEvent'),
+(24, 'JazzEvent'),
+(25, 'JazzEvent'),
+(26, 'JazzEvent'),
+(27, 'JazzEvent'),
+(28, 'JazzEvent'),
+(29, 'JazzEvent'),
+(30, 'JazzEvent'),
+(31, 'JazzEvent'),
+(32, 'JazzEvent'),
+(33, 'JazzEvent'),
+(34, 'JazzEvent'),
+(35, 'JazzEvent'),
+(36, 'JazzEvent'),
+(37, 'JazzEvent'),
+(38, 'JazzEvent'),
+(39, 'JazzEvent'),
+(40, 'JazzEvent'),
+(41, 'JazzEvent'),
+(42, 'JazzEvent'),
+(43, 'JazzEvent'),
+(44, 'JazzEvent'),
+(45, 'JazzEvent'),
+(46, 'JazzEvent'),
+(47, 'JazzEvent'),
+(48, 'JazzEvent'),
+(49, 'JazzEvent'),
+(50, 'JazzEvent'),
+(51, 'JazzEvent'),
+(52, 'JazzEvent'),
+(53, 'HistoryTour'),
+(54, 'HistoryTour'),
+(55, 'HistoryTour'),
+(56, 'HistoryTour'),
+(57, 'HistoryTour'),
+(58, 'HistoryTour'),
+(59, 'HistoryTour'),
+(60, 'HistoryTour'),
+(61, 'HistoryTour');
 
 -- --------------------------------------------------------
 
@@ -213,8 +231,9 @@ INSERT INTO `Event` (`EventId`, `Description`, `Location`, `StartDateTime`, `Tim
 --
 
 CREATE TABLE `HistoryTour` (
+  `HistoryTourId` int(11) NOT NULL,
   `EventId` int(11) NOT NULL,
-  `LocationId` int(11) DEFAULT NULL,
+  `LocationId` int(11) NOT NULL,
   `LocationName` varchar(100) DEFAULT NULL,
   `Description` text DEFAULT NULL,
   `WhyVisit` text DEFAULT NULL,
@@ -227,16 +246,16 @@ CREATE TABLE `HistoryTour` (
 -- Dumping data for table `HistoryTour`
 --
 
-INSERT INTO `HistoryTour` (`EventId`, `LocationId`, `LocationName`, `Description`, `WhyVisit`, `Address`, `ImageGenera`, `ImageGallery`) VALUES
-(1, 1, 'Church of St. Bavo', 'The Church of St. Bavo, an iconic Gothic masterpiece in Haarlem, dates back to the 14th century. Known for its towering spire and stunning architecture, it houses the world-famous Müller organ, once played by Mozart himself. A true symbol of Haarlem\'s rich history and grandeur.', 'Experience the magnificent Müller Organ, played by Mozart himself in 1766 and considered one of the world\'s most renowned instruments.||Marvel at the stunning Gothic architecture with its soaring arches, majestic spire, and vibrant stained-glass windows that have inspired visitors for centuries.||Immerse yourself in the rich history of this symbol of Dutch religious and cultural heritage that has hosted countless important events and remains the spiritual heart of Haarlem.', 'Grote Markt, Haarlem', 'st-bavo.png', 'st-bavo5.png,st-bavo1.png,st-bavo2.png,st-bavo3.png,st-bavo4.png'),
-(2, 2, 'Grote Markt', 'The Grote Markt, Haarlem\'s historic main square, is the heart of the city. Surrounded by landmarks like the Town Hall and the Church of St. Bavo, it serves as a vibrant gathering place for markets, events, and cultural celebrations.', 'Experience the vibrant heartbeat of Haarlem at this historic square that has been the city\'s central gathering place since medieval times.||Enjoy the bustling atmosphere with charming cafés, restaurants, and seasonal markets in a picturesque setting surrounded by stunning historic buildings.||Capture breathtaking photos of the iconic St. Bavo Church and Renaissance-style Town Hall that define Haarlem\'s skyline and showcase its Golden Age prosperity.', 'Grote Markt, Haarlem', 'grote-markt.png', 'grote-markt1.png,grote-markt2.png,grote-markt.png,grote-markt3.png,grote-markt4.png'),
-(3, 3, 'De Hallen', 'De Hallen Haarlem, a striking cultural landmark, is home to the Frans Hals Museum\'s contemporary art collection. Located in a historic building on the Grote Markt, it offers a blend of modern creativity and Haarlem\'s rich artistic heritage.', 'Discover contemporary art exhibitions housed in a beautifully preserved historic building with a fascinating architectural contrast between old and new.||Experience the evolution of Dutch and international art through carefully curated collections and rotating exhibitions that showcase emerging and established artists.||Take a break from traditional sightseeing to immerse yourself in modern creativity while still appreciating Haarlem\'s rich cultural heritage in this thoughtfully renovated space.', 'Grote Markt 16, Haarlem', 'de-hallen.png', 'de-hallen1.png,de-hallen2.png,de-hallen.png,de-hallen3.png,de-hallen4.png'),
-(4, 4, 'Proveniershof', 'Proveniershof, a serene 17th-century courtyard in Haarlem, is nestled among picturesque historic houses. Once home to retired tradesmen, it now offers a peaceful escape, showcasing the city\'s rich architectural and cultural heritage.', 'Step back in time as you enter this peaceful 17th-century courtyard hidden away from the bustling city streets, offering a serene escape from urban life.||Experience the unique Dutch \"hofje\" tradition of communal living spaces built for elderly residents through charitable foundations, a social system that predates modern welfare.||Admire the perfectly preserved historic houses, lush garden, and authentic architectural details that offer a glimpse into Haarlem\'s social history and community values.', 'Grote Houtstraat 140, Haarlem', 'proveniershof.png', 'proveniershof1.png,proveniershof2.png,proveniershof.png,proveniershof3.png,proveniershof4.png'),
-(5, 5, 'Jopenkerk', 'Jopenkerk Haarlem, a former church turned brewery, blends history with modern craft beer culture. This unique venue offers visitors a chance to enjoy locally brewed Jopen beers while surrounded by stunning stained-glass windows and Gothic architecture, making it a must-visit landmark.', 'Sample award-winning craft beers made according to historic Haarlem recipes in the unique setting of a repurposed historic church that blends sacred and secular worlds.||Marvel at the stunning transformation of this religious space into a brewery while still preserving its architectural grandeur, soaring ceiling, and beautiful stained-glass windows.||Enjoy the perfect blend of historical appreciation and modern hospitality with excellent food pairings in this truly unique landmark that epitomizes creative adaptive reuse.', 'Gedempte Voldersgracht 2, Haarlem', 'jopenkerk.png', 'jopenkerk1.png,jopenkerk2.png,jopenkerk.png,jopenkerk3.png,jopenkerk4.png'),
-(6, 6, 'Waalse Kerk Haarlem', 'The Waalse Kerk, a charming 14th-century chapel in Haarlem, is renowned for its intimate atmosphere and beautiful acoustics. Once a refuge for French Huguenots, it now serves as a cultural venue for concerts and events.', 'Experience the intimate atmosphere of this historic chapel that once provided refuge for French Huguenots fleeing religious persecution, a testament to Haarlem\'s tradition of tolerance.||Listen to the incredible acoustics that make this venue a favorite for chamber music concerts and cultural performances throughout the year.||Admire the elegant simplicity of this smaller church that offers a more peaceful alternative to the grandeur of St. Bavo, with its own unique charm and historical significance.', 'Begijnhof 30, Haarlem', 'waalse-kerk.png', 'waalse-kerk1.png,waalse-kerk2.png,waalse-kerk.png,waalse-kerk3.png,waalse-kerk4.png'),
-(7, 7, 'Molen de Adriaan', 'Molen de Adriaan, a historic windmill on the banks of the Spaarne River, offers panoramic views of Haarlem. Originally built in 1779, this iconic landmark showcases the Netherlands\' rich milling heritage and provides a fascinating glimpse into traditional Dutch craftsmanship.', 'Climb to the top of this historic windmill for panoramic views of Haarlem and the Spaarne River that you can\'t get anywhere else in the city.||Learn about traditional Dutch milling craftsmanship through interactive exhibits and demonstrations of this iconic symbol of Dutch heritage and industrial history.||Photograph this perfectly reconstructed 18th-century landmark that has become one of Haarlem\'s most recognizable symbols and a testament to Dutch determination and engineering.', 'Papentorenvest 1A, Haarlem', 'molen-adriaan1.png', 'molen-adriaan3.png,molen-adriaan2.png,molen-adriaan4.png,molen-adriaan5.png,molen-adriaan6.png'),
-(8, 8, 'Amsterdamse Poort', 'The Amsterdamse Poort, Haarlem\'s last remaining city gate, is a stunning medieval structure dating back to the 14th century. Once a key entry point to the city, it now stands as a testament to Haarlem\'s rich history and architectural grandeur.', 'Walk through Haarlem\'s last remaining medieval city gate that has stood guard since the 14th century as a testament to the city\'s defensive past and historical importance.||Imagine the countless travelers, merchants, and visitors who passed beneath these arches over more than 600 years of history, connecting Haarlem to Amsterdam and beyond.||Capture stunning photos of this well-preserved Gothic structure that creates a dramatic contrast with the modern city that has grown around it while maintaining its historic integrity.', 'Amsterdamse Poort, Haarlem', 'amsterdamse-poort2.png', 'amsterdamse-poort1.png,amsterdamse-poort2.png,amsterdamse-poort3.png'),
-(9, 9, 'Hof van Bakenes', 'Hof van Bakenes, Haarlem\'s oldest hofje, is a tranquil courtyard dating back to the 14th century. Surrounded by charming historic houses, it offers a peaceful retreat and a glimpse into the city\'s tradition of community living.', 'Discover Haarlem\'s oldest hofje (courtyard) dating back to 1395, offering a glimpse into early Dutch charitable housing traditions that shaped urban development.||Experience the serene atmosphere of this hidden garden courtyard that feels worlds away from the busy streets just steps away, providing a peaceful retreat.||Admire the charming historic houses surrounding the courtyard that have sheltered residents for over six centuries, exemplifying the Dutch commitment to community and social welfare.', 'Bakenessergracht 67, Haarlem', 'hof-van-bakenes.png', 'molen-adriaan3.png,molen-adriaan2.png,molen-adriaan4.png,molen-adriaan5.png,molen-adriaan6.png');
+INSERT INTO `HistoryTour` (`HistoryTourId`, `EventId`, `LocationId`, `LocationName`, `Description`, `WhyVisit`, `Address`, `ImageGenera`, `ImageGallery`) VALUES
+(1, 53, 1, 'Church of St. Bavo', 'The Church of St. Bavo, an iconic Gothic masterpiece in Haarlem, dates back to the 14th century. Known for its towering spire and stunning architecture, it houses the world-famous Müller organ, once played by Mozart himself. A true symbol of Haarlem\'s rich history and grandeur.', 'Experience the magnificent Müller Organ, played by Mozart himself in 1766 and considered one of the world\'s most renowned instruments.||Marvel at the stunning Gothic architecture with its soaring arches, majestic spire, and vibrant stained-glass windows that have inspired visitors for centuries.||Immerse yourself in the rich history of this symbol of Dutch religious and cultural heritage that has hosted countless important events and remains the spiritual heart of Haarlem.', 'Grote Markt, Haarlem', 'st-bavo.png', 'st-bavo5.png,st-bavo1.png,st-bavo2.png,st-bavo3.png,st-bavo4.png'),
+(2, 54, 2, 'Grote Markt', 'The Grote Markt, Haarlem\'s historic main square, is the heart of the city. Surrounded by landmarks like the Town Hall and the Church of St. Bavo, it serves as a vibrant gathering place for markets, events, and cultural celebrations.', 'Experience the vibrant heartbeat of Haarlem at this historic square that has been the city\'s central gathering place since medieval times.||Enjoy the bustling atmosphere with charming cafés, restaurants, and seasonal markets in a picturesque setting surrounded by stunning historic buildings.||Capture breathtaking photos of the iconic St. Bavo Church and Renaissance-style Town Hall that define Haarlem\'s skyline and showcase its Golden Age prosperity.', 'Grote Markt, Haarlem', 'grote-markt.png', 'grote-markt1.png,grote-markt2.png,grote-markt.png,grote-markt3.png,grote-markt4.png'),
+(3, 55, 3, 'De Hallen', 'De Hallen Haarlem, a striking cultural landmark, is home to the Frans Hals Museum\'s contemporary art collection. Located in a historic building on the Grote Markt, it offers a blend of modern creativity and Haarlem\'s rich artistic heritage.', 'Discover contemporary art exhibitions housed in a beautifully preserved historic building with a fascinating architectural contrast between old and new.||Experience the evolution of Dutch and international art through carefully curated collections and rotating exhibitions that showcase emerging and established artists.||Take a break from traditional sightseeing to immerse yourself in modern creativity while still appreciating Haarlem\'s rich cultural heritage in this thoughtfully renovated space.', 'Grote Markt 16, Haarlem', 'de-hallen.png', 'de-hallen1.png,de-hallen2.png,de-hallen.png,de-hallen3.png,de-hallen4.png'),
+(4, 56, 4, 'Proveniershof', 'Proveniershof, a serene 17th-century courtyard in Haarlem, is nestled among picturesque historic houses. Once home to retired tradesmen, it now offers a peaceful escape, showcasing the city\'s rich architectural and cultural heritage.', 'Step back in time as you enter this peaceful 17th-century courtyard hidden away from the bustling city streets, offering a serene escape from urban life.||Experience the unique Dutch \"hofje\" tradition of communal living spaces built for elderly residents through charitable foundations, a social system that predates modern welfare.||Admire the perfectly preserved historic houses, lush garden, and authentic architectural details that offer a glimpse into Haarlem\'s social history and community values.', 'Grote Houtstraat 140, Haarlem', 'proveniershof.png', 'proveniershof1.png,proveniershof2.png,proveniershof.png,proveniershof3.png,proveniershof4.png'),
+(5, 57, 5, 'Jopenkerk', 'Jopenkerk Haarlem, a former church turned brewery, blends history with modern craft beer culture. This unique venue offers visitors a chance to enjoy locally brewed Jopen beers while surrounded by stunning stained-glass windows and Gothic architecture, making it a must-visit landmark.', 'Sample award-winning craft beers made according to historic Haarlem recipes in the unique setting of a repurposed historic church that blends sacred and secular worlds.||Marvel at the stunning transformation of this religious space into a brewery while still preserving its architectural grandeur, soaring ceiling, and beautiful stained-glass windows.||Enjoy the perfect blend of historical appreciation and modern hospitality with excellent food pairings in this truly unique landmark that epitomizes creative adaptive reuse.', 'Gedempte Voldersgracht 2, Haarlem', 'jopenkerk.png', 'jopenkerk1.png,jopenkerk2.png,jopenkerk.png,jopenkerk3.png,jopenkerk4.png'),
+(6, 58, 6, 'Waalse Kerk Haarlem', 'The Waalse Kerk, a charming 14th-century chapel in Haarlem, is renowned for its intimate atmosphere and beautiful acoustics. Once a refuge for French Huguenots, it now serves as a cultural venue for concerts and events.', 'Experience the intimate atmosphere of this historic chapel that once provided refuge for French Huguenots fleeing religious persecution, a testament to Haarlem\'s tradition of tolerance.||Listen to the incredible acoustics that make this venue a favorite for chamber music concerts and cultural performances throughout the year.||Admire the elegant simplicity of this smaller church that offers a more peaceful alternative to the grandeur of St. Bavo, with its own unique charm and historical significance.', 'Begijnhof 30, Haarlem', 'waalse-kerk.png', 'waalse-kerk1.png,waalse-kerk2.png,waalse-kerk.png,waalse-kerk3.png,waalse-kerk4.png'),
+(7, 59, 7, 'Molen de Adriaan', 'Molen de Adriaan, a historic windmill on the banks of the Spaarne River, offers panoramic views of Haarlem. Originally built in 1779, this iconic landmark showcases the Netherlands\' rich milling heritage and provides a fascinating glimpse into traditional Dutch craftsmanship.', 'Climb to the top of this historic windmill for panoramic views of Haarlem and the Spaarne River that you can\'t get anywhere else in the city.||Learn about traditional Dutch milling craftsmanship through interactive exhibits and demonstrations of this iconic symbol of Dutch heritage and industrial history.||Photograph this perfectly reconstructed 18th-century landmark that has become one of Haarlem\'s most recognizable symbols and a testament to Dutch determination and engineering.', 'Papentorenvest 1A, Haarlem', 'molen-adriaan1.png', 'molen-adriaan3.png,molen-adriaan2.png,molen-adriaan4.png,molen-adriaan5.png,molen-adriaan6.png'),
+(8, 60, 8, 'Amsterdamse Poort', 'The Amsterdamse Poort, Haarlem\'s last remaining city gate, is a stunning medieval structure dating back to the 14th century. Once a key entry point to the city, it now stands as a testament to Haarlem\'s rich history and architectural grandeur.', 'Walk through Haarlem\'s last remaining medieval city gate that has stood guard since the 14th century as a testament to the city\'s defensive past and historical importance.||Imagine the countless travelers, merchants, and visitors who passed beneath these arches over more than 600 years of history, connecting Haarlem to Amsterdam and beyond.||Capture stunning photos of this well-preserved Gothic structure that creates a dramatic contrast with the modern city that has grown around it while maintaining its historic integrity.', 'Amsterdamse Poort, Haarlem', 'amsterdamse-poort2.png', 'amsterdamse-poort1.png,amsterdamse-poort2.png,amsterdamse-poort3.png'),
+(9, 61, 9, 'Hof van Bakenes', 'Hof van Bakenes, Haarlem\'s oldest hofje, is a tranquil courtyard dating back to the 14th century. Surrounded by charming historic houses, it offers a peaceful retreat and a glimpse into the city\'s tradition of community living.', 'Discover Haarlem\'s oldest hofje (courtyard) dating back to 1395, offering a glimpse into early Dutch charitable housing traditions that shaped urban development.||Experience the serene atmosphere of this hidden garden courtyard that feels worlds away from the busy streets just steps away, providing a peaceful retreat.||Admire the charming historic houses surrounding the courtyard that have sheltered residents for over six centuries, exemplifying the Dutch commitment to community and social welfare.', 'Bakenessergracht 67, Haarlem', 'hof-van-bakenes.png', 'molen-adriaan3.png,molen-adriaan2.png,molen-adriaan4.png,molen-adriaan5.png,molen-adriaan6.png');
 
 -- --------------------------------------------------------
 
@@ -368,6 +387,7 @@ INSERT INTO `JazzArtist` (`ArtistId`, `Name`, `Hashtag`, `ProfileImageName`, `ar
 --
 
 CREATE TABLE `JazzEvent` (
+  `JazzEventId` int(11) NOT NULL,
   `EventId` int(11) NOT NULL,
   `Description` varchar(255) DEFAULT NULL,
   `Location` varchar(100) DEFAULT NULL,
@@ -382,39 +402,39 @@ CREATE TABLE `JazzEvent` (
 -- Dumping data for table `JazzEvent`
 --
 
-INSERT INTO `JazzEvent` (`EventId`, `Description`, `Location`, `StartDateTime`, `TimeSlot`, `DurationByMinute`, `TicketsAvailable`, `Price`) VALUES
-(101, 'Gumbo Kings performance at Patronaat', '1', '2023-07-27 18:00:00', 'Evening', 60, 300, 15),
-(102, 'Evolve performance at Patronaat', '1', '2023-07-27 19:30:00', 'Evening', 60, 300, 15),
-(103, 'Ntjam Rosie performance at Patronaat', '1', '2023-07-27 21:00:00', 'Evening', 60, 300, 15),
-(104, 'Wicked Jazz Sounds performance at Patronaat', '2', '2023-07-27 18:00:00', 'Evening', 60, 200, 10),
-(105, 'Wouter Hamel performance at Patronaat', '2', '2023-07-27 19:30:00', 'Evening', 60, 200, 10),
-(106, 'Jonna Frazer performance at Patronaat', '2', '2023-07-27 21:00:00', 'Evening', 60, 200, 10),
-(107, 'Karsu performance at Patronaat', '1', '2023-07-28 18:00:00', 'Evening', 60, 300, 15),
-(108, 'Uncle Sue performance at Patronaat', '1', '2023-07-28 19:30:00', 'Evening', 60, 300, 15),
-(109, 'Chris Allen performance at Patronaat', '1', '2023-07-28 21:00:00', 'Evening', 60, 300, 15),
-(110, 'Myles Sanko performance at Patronaat', '2', '2023-07-28 18:00:00', 'Evening', 60, 200, 10),
-(111, 'Ilse Huizinga performance at Patronaat', '2', '2023-07-28 19:30:00', 'Evening', 60, 200, 10),
-(112, 'Eric Vloeimans and Hotspot! performance at Patronaat', '2', '2023-07-28 21:00:00', 'Evening', 60, 200, 10),
-(113, 'Gare du Nord performance at Patronaat', '1', '2023-07-29 18:00:00', 'Evening', 60, 300, 15),
-(114, 'Rilan & The Bombadiers performance at Patronaat', '1', '2023-07-29 19:30:00', 'Evening', 60, 300, 15),
-(115, 'Soul Six performance at Patronaat', '1', '2023-07-29 21:00:00', 'Evening', 60, 300, 15),
-(116, 'Han Bennink performance at Patronaat', '3', '2023-07-29 18:00:00', 'Evening', 60, 150, 10),
-(117, 'The Nordanians performance at Patronaat', '3', '2023-07-29 19:30:00', 'Evening', 60, 150, 10),
-(118, 'Lilith Merlot performance at Patronaat', '3', '2023-07-29 21:00:00', 'Evening', 60, 150, 10),
-(119, 'Ruis Soundsystem performance at Grote Markt', '4', '2023-07-30 15:00:00', 'Afternoon', 60, 1000, 0),
-(120, 'Wicked Jazz Sounds performance at Grote Markt', '4', '2023-07-30 16:00:00', 'Afternoon', 60, 1000, 0),
-(121, 'Evolve performance at Grote Markt', '4', '2023-07-30 17:00:00', 'Afternoon', 60, 1000, 0),
-(122, 'The Nordanians performance at Grote Markt', '4', '2023-07-30 18:00:00', 'Evening', 60, 1000, 0),
-(123, 'Gumbo Kings performance at Grote Markt', '4', '2023-07-30 19:00:00', 'Evening', 60, 1000, 0),
-(124, 'Gare du Nord performance at Grote Markt', '4', '2023-07-30 20:00:00', 'Evening', 60, 1000, 0),
-(1001, 'Gumbo Kings at Haarlem Jazz', '1', '2023-07-27 19:00:00', 'Evening', 90, 300, 25),
-(1002, 'Evolve at Haarlem Jazz', '2', '2023-07-27 21:00:00', 'Evening', 90, 200, 20),
-(1003, 'Ntjam Rosie at Haarlem Jazz', '1', '2023-07-28 19:00:00', 'Evening', 90, 300, 25),
-(1004, 'Wicked Jazz Sounds at Haarlem Jazz', '2', '2023-07-28 21:00:00', 'Evening', 90, 200, 20),
-(1005, 'Wouter Hamel at Haarlem Jazz', '1', '2023-07-29 19:00:00', 'Evening', 90, 300, 25),
-(1006, 'Uncle Sue at Haarlem Jazz', '2', '2023-07-29 21:00:00', 'Evening', 90, 200, 20),
-(1007, 'Karsu at Haarlem Jazz', '4', '2023-07-30 15:00:00', 'Afternoon', 60, 1000, 0),
-(1008, 'Jonna Fraser at Haarlem Jazz', '4', '2023-07-30 17:00:00', 'Evening', 60, 1000, 0);
+INSERT INTO `JazzEvent` (`JazzEventId`, `EventId`, `Description`, `Location`, `StartDateTime`, `TimeSlot`, `DurationByMinute`, `TicketsAvailable`, `Price`) VALUES
+(1, 21, 'Gumbo Kings performance at Patronaat', '1', '2023-07-27 18:00:00', 'Evening', 60, 300, 15),
+(2, 22, 'Evolve performance at Patronaat', '1', '2023-07-27 19:30:00', 'Evening', 60, 300, 15),
+(3, 23, 'Ntjam Rosie performance at Patronaat', '1', '2023-07-27 21:00:00', 'Evening', 60, 300, 15),
+(4, 24, 'Wicked Jazz Sounds performance at Patronaat', '2', '2023-07-27 18:00:00', 'Evening', 60, 200, 10),
+(5, 25, 'Wouter Hamel performance at Patronaat', '2', '2023-07-27 19:30:00', 'Evening', 60, 200, 10),
+(6, 26, 'Jonna Frazer performance at Patronaat', '2', '2023-07-27 21:00:00', 'Evening', 60, 200, 10),
+(7, 27, 'Karsu performance at Patronaat', '1', '2023-07-28 18:00:00', 'Evening', 60, 300, 15),
+(8, 28, 'Uncle Sue performance at Patronaat', '1', '2023-07-28 19:30:00', 'Evening', 60, 300, 15),
+(9, 29, 'Chris Allen performance at Patronaat', '1', '2023-07-28 21:00:00', 'Evening', 60, 300, 15),
+(10, 30, 'Myles Sanko performance at Patronaat', '2', '2023-07-28 18:00:00', 'Evening', 60, 200, 10),
+(11, 31, 'Ilse Huizinga performance at Patronaat', '2', '2023-07-28 19:30:00', 'Evening', 60, 200, 10),
+(12, 32, 'Eric Vloeimans and Hotspot! performance at Patronaat', '2', '2023-07-28 21:00:00', 'Evening', 60, 200, 10),
+(13, 33, 'Gare du Nord performance at Patronaat', '1', '2023-07-29 18:00:00', 'Evening', 60, 300, 15),
+(14, 34, 'Rilan & The Bombadiers performance at Patronaat', '1', '2023-07-29 19:30:00', 'Evening', 60, 300, 15),
+(15, 35, 'Soul Six performance at Patronaat', '1', '2023-07-29 21:00:00', 'Evening', 60, 300, 15),
+(16, 36, 'Han Bennink performance at Patronaat', '3', '2023-07-29 18:00:00', 'Evening', 60, 150, 10),
+(17, 37, 'The Nordanians performance at Patronaat', '3', '2023-07-29 19:30:00', 'Evening', 60, 150, 10),
+(18, 38, 'Lilith Merlot performance at Patronaat', '3', '2023-07-29 21:00:00', 'Evening', 60, 150, 10),
+(19, 39, 'Ruis Soundsystem performance at Grote Markt', '4', '2023-07-30 15:00:00', 'Afternoon', 60, 1000, 0),
+(20, 40, 'Wicked Jazz Sounds performance at Grote Markt', '4', '2023-07-30 16:00:00', 'Afternoon', 60, 1000, 0),
+(21, 41, 'Evolve performance at Grote Markt', '4', '2023-07-30 17:00:00', 'Afternoon', 60, 1000, 0),
+(22, 42, 'The Nordanians performance at Grote Markt', '4', '2023-07-30 18:00:00', 'Evening', 60, 1000, 0),
+(23, 43, 'Gumbo Kings performance at Grote Markt', '4', '2023-07-30 19:00:00', 'Evening', 60, 1000, 0),
+(24, 44, 'Gare du Nord performance at Grote Markt', '4', '2023-07-30 20:00:00', 'Evening', 60, 1000, 0),
+(25, 45, 'Gumbo Kings at Haarlem Jazz', '1', '2023-07-27 19:00:00', 'Evening', 90, 300, 25),
+(26, 46, 'Evolve at Haarlem Jazz', '2', '2023-07-27 21:00:00', 'Evening', 90, 200, 20),
+(27, 47, 'Ntjam Rosie at Haarlem Jazz', '1', '2023-07-28 19:00:00', 'Evening', 90, 300, 25),
+(28, 48, 'Wicked Jazz Sounds at Haarlem Jazz', '2', '2023-07-28 21:00:00', 'Evening', 90, 200, 20),
+(29, 49, 'Wouter Hamel at Haarlem Jazz', '1', '2023-07-29 19:00:00', 'Evening', 90, 300, 25),
+(30, 50, 'Uncle Sue at Haarlem Jazz', '2', '2023-07-29 21:00:00', 'Evening', 90, 200, 20),
+(31, 51, 'Karsu at Haarlem Jazz', '4', '2023-07-30 15:00:00', 'Afternoon', 60, 1000, 0),
+(32, 52, 'Jonna Fraser at Haarlem Jazz', '4', '2023-07-30 17:00:00', 'Evening', 60, 1000, 0);
 
 -- --------------------------------------------------------
 
@@ -586,7 +606,8 @@ INSERT INTO `Order` (`OrderId`, `UserId`, `Amount`, `Status`, `OrderDate`, `Phon
 (2, 1, NULL, NULL, '2025-03-25 12:32:01', '0647629759', 'Strada Marului, nr 5'),
 (3, 1, NULL, NULL, '2025-03-25 12:32:05', '0647629759', 'Strada Marului, nr 5'),
 (4, 1, 0, 'Pending', '2025-03-25 12:39:35', '0647629759', 'Strada Marului, nr 5'),
-(5, 1, 0, 'Pending', '2025-03-25 12:41:47', '0647629759', 'Strada Marului, nr 5');
+(5, 1, 0, 'Pending', '2025-03-25 12:41:47', '0647629759', 'Strada Marului, nr 5'),
+(10, 2, NULL, NULL, '2025-04-02 14:48:13', 'fred', '123432142');
 
 -- --------------------------------------------------------
 
@@ -596,7 +617,7 @@ INSERT INTO `Order` (`OrderId`, `UserId`, `Amount`, `Status`, `OrderDate`, `Phon
 
 CREATE TABLE `Restaurant` (
   `RestaurantId` int(11) NOT NULL,
-  `EventId` int(11) DEFAULT NULL,
+  `EventId` int(11) NOT NULL,
   `CuisineType` varchar(50) DEFAULT NULL,
   `Description` varchar(255) DEFAULT NULL,
   `About` text DEFAULT NULL,
@@ -692,7 +713,8 @@ CREATE TABLE `User` (
 --
 
 INSERT INTO `User` (`UserId`, `FullName`, `Email`, `Password`, `Role`, `VerifyToken`, `VerifyStatus`, `ResetTokenExpires`) VALUES
-(1, 'minudenisa29@gmail.com', 'minudenisa29@gmail.com', '$2y$12$jCeTK/mwIeCoFbYa.oLjkuPrwuio8xiOmgrfyKGwZk/KyaFjf4MEm', 'customer', '5dab23b6dc70d349c9d6d898d5eeeada', 0, NULL);
+(1, 'minudenisa29@gmail.com', 'minudenisa29@gmail.com', '$2y$12$jCeTK/mwIeCoFbYa.oLjkuPrwuio8xiOmgrfyKGwZk/KyaFjf4MEm', 'customer', '5dab23b6dc70d349c9d6d898d5eeeada', 0, NULL),
+(2, 'fred', 'fred@gmail.com', '$2y$12$GT9ax8mzyqThc.wksKuy8OwasAKug4NBbMcjE/FW/XGS2LH0ZrBPm', 'customer', '2721408a3149f413b2f14143e9ab32a4', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -720,31 +742,6 @@ INSERT INTO `Venue` (`VenueId`, `Name`, `Location`, `Address`, `Capacity`, `Desc
 (4, 'Grote Markt', 'Grote Markt', 'Grote Markt, Haarlem', 1000, 'The central market square of Haarlem');
 
 --
-
-
-/*
-this works after filling the danceEvent table
-INSERT INTO DancePerformance (DanceEventId, DanceArtistId) VALUES
-(1, 5),
-(1, 6),
-(2, 4),
-(3, 2),
-(4, 3),
-(5, 1),
-(6, 6),
-(6, 4),
-(6, 5),
-(7, 3),
-(8, 2),
-(9, 1),
-(10, 1),
-(10, 3),
-(10, 2),
-(11, 4),
-(12, 6),
-(13, 5); */
-
-
 -- Indexes for dumped tables
 --
 
@@ -771,7 +768,8 @@ ALTER TABLE `DanceArtist`
 -- Indexes for table `DanceEvent`
 --
 ALTER TABLE `DanceEvent`
-  ADD PRIMARY KEY (`DanceEventId`);
+  ADD PRIMARY KEY (`DanceEventId`),
+  ADD KEY `EventId` (`EventId`);
 
 --
 -- Indexes for table `DancePerformance`
@@ -797,7 +795,8 @@ ALTER TABLE `Event`
 -- Indexes for table `HistoryTour`
 --
 ALTER TABLE `HistoryTour`
-  ADD PRIMARY KEY (`EventId`);
+  ADD PRIMARY KEY (`HistoryTourId`),
+  ADD KEY `EventId` (`EventId`);
 
 --
 -- Indexes for table `HistoryTourBooking`
@@ -817,7 +816,8 @@ ALTER TABLE `HistoryTourSchedule`
 -- Indexes for table `JazzEvent`
 --
 ALTER TABLE `JazzEvent`
-  ADD PRIMARY KEY (`EventId`);
+  ADD PRIMARY KEY (`JazzEventId`),
+  ADD KEY `EventId` (`EventId`);
 
 --
 -- Indexes for table `JazzPass`
@@ -870,7 +870,8 @@ ALTER TABLE `Order`
 -- Indexes for table `Restaurant`
 --
 ALTER TABLE `Restaurant`
-  ADD PRIMARY KEY (`RestaurantId`);
+  ADD PRIMARY KEY (`RestaurantId`),
+  ADD KEY `EventId` (`EventId`);
 
 --
 -- Indexes for table `Ticket`
@@ -906,13 +907,13 @@ ALTER TABLE `Venue`
 -- AUTO_INCREMENT for table `DanceArtist`
 --
 ALTER TABLE `DanceArtist`
-  MODIFY `ArtistId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `ArtistId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `DanceEvent`
 --
 ALTER TABLE `DanceEvent`
-  MODIFY `DanceEventId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `DanceEventId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `DanceSong`
@@ -921,10 +922,28 @@ ALTER TABLE `DanceSong`
   MODIFY `SongId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT for table `Event`
+--
+ALTER TABLE `Event`
+  MODIFY `EventId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+
+--
+-- AUTO_INCREMENT for table `HistoryTour`
+--
+ALTER TABLE `HistoryTour`
+  MODIFY `HistoryTourId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
 -- AUTO_INCREMENT for table `HistoryTourBooking`
 --
 ALTER TABLE `HistoryTourBooking`
   MODIFY `BookingId` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `JazzEvent`
+--
+ALTER TABLE `JazzEvent`
+  MODIFY `JazzEventId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `JazzPass`
@@ -936,19 +955,25 @@ ALTER TABLE `JazzPass`
 -- AUTO_INCREMENT for table `Order`
 --
 ALTER TABLE `Order`
-  MODIFY `OrderId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `OrderId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `Restaurant`
+--
+ALTER TABLE `Restaurant`
+  MODIFY `RestaurantId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `Ticket`
 --
 ALTER TABLE `Ticket`
-  MODIFY `TicketId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `TicketId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `User`
 --
 ALTER TABLE `User`
-  MODIFY `UserId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `UserId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
@@ -962,6 +987,12 @@ ALTER TABLE `Appearances`
   ADD CONSTRAINT `Appearances_ibfk_2` FOREIGN KEY (`ArtistId`) REFERENCES `DanceArtist` (`ArtistId`);
 
 --
+-- Constraints for table `DanceEvent`
+--
+ALTER TABLE `DanceEvent`
+  ADD CONSTRAINT `DanceEvent_ibfk_1` FOREIGN KEY (`EventId`) REFERENCES `Event` (`EventId`);
+
+--
 -- Constraints for table `DancePerformance`
 --
 ALTER TABLE `DancePerformance`
@@ -973,6 +1004,12 @@ ALTER TABLE `DancePerformance`
 --
 ALTER TABLE `DanceSong`
   ADD CONSTRAINT `DanceSong_ibfk_1` FOREIGN KEY (`ArtistId`) REFERENCES `DanceArtist` (`ArtistId`);
+
+--
+-- Constraints for table `HistoryTour`
+--
+ALTER TABLE `HistoryTour`
+  ADD CONSTRAINT `HistoryTour_ibfk_1` FOREIGN KEY (`EventId`) REFERENCES `Event` (`EventId`);
 
 --
 -- Constraints for table `HistoryTourBooking`
@@ -1009,6 +1046,12 @@ ALTER TABLE `MenuItem`
 --
 ALTER TABLE `Order`
   ADD CONSTRAINT `Order_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `User` (`UserId`);
+
+--
+-- Constraints for table `Restaurant`
+--
+ALTER TABLE `Restaurant`
+  ADD CONSTRAINT `Restaurant_ibfk_1` FOREIGN KEY (`EventId`) REFERENCES `Event` (`EventId`);
 
 --
 -- Constraints for table `Ticket`

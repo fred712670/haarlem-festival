@@ -57,7 +57,7 @@
                         <?php endforeach; ?>
                         </div>
                         <p>Total: € <span id="totalPrice"><?= htmlspecialchars($totalPrice) ?></span></p>
-                        <a href="/payment" class="btn btn-primary btn-pay" name="createOrder" id="createOrderBtn" <?php echo $isUserLoggedIn ? '' : 'disabled'; ?>>
+                        <a href="/create/order" class="btn btn-primary btn-pay" name="createOrder" id="createOrderBtn" <?php echo $isUserLoggedIn ? '' : 'disabled'; ?>>
                             Proceed to payment
                         </a>
                         <?php
