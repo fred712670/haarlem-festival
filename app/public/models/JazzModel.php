@@ -340,7 +340,11 @@ class JazzModel extends BaseModel
                         v.Location as location,
                         v.Address as address,
                         v.Capacity as capacity,
-                        v.Description as description
+                        v.Description as description,
+                        v.Email,
+                        v.OfficePhone,
+                        v.OfficeHours,
+                        v.InfoPhone
                     FROM Venue v
                     WHERE v.VenueId IN (1, 2, 3, 4)
                     ORDER BY v.VenueId";
@@ -350,7 +354,7 @@ class JazzModel extends BaseModel
             
             $venues = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
-            // Fetch venue contact information from database
+            // Process venues to create contact structure
             return $this->enrichVenueData($venues);
         } catch (Exception $e) {
             error_log("Error fetching venue details: " . $e->getMessage());
@@ -358,33 +362,26 @@ class JazzModel extends BaseModel
         }
     }
 
-    /**
-     * Enrich venue data with additional information from the database
-     * 
-     * @param array $venues Base venue data
-     * @return array Enhanced venue data
-     */
     private function enrichVenueData($venues)
     {
         try {
-            // will be added to database and fetched from there once we merge the data base 
+            // Since the contact information is now part of the Venue table,
+            // we just need to format it into the 'contact' array structure
             foreach ($venues as &$venue) {
-                if (strpos($venue['location'], 'Patronaat') !== false) {
+                // Only add contact info if at least email is available
+                if (!empty($venue['Email'])) {
                     $venue['contact'] = [
-                        'email' => 'info@patronaat.nl',
-                        'office_phone' => '023 - 517 58 50',
-                        'office_hours' => '10:00 - 17:00',
-                        'info_phone' => '023 - 517 58 58',
-                        'info_description' => 'cash desk/information number'
+                        'email' => $venue['Email'],
+                        'office_phone' => $venue['OfficePhone'],
+                        'office_hours' => $venue['OfficeHours'],
+                        'info_phone' => $venue['InfoPhone']
                     ];
-                } else if ($venue['name'] == 'Grote Markt') {
-                    $venue['contact'] = [
-                        'email' => 'info@haarlemjazz.nl',
-                        'office_phone' => '023 - 551 47 32',
-                        'office_hours' => '9:00 - 17:00',
-                        'info_phone' => '023 - 551 47 35',
-                        'info_description' => 'festival information'
-                    ];
+                    
+                    // Remove the original columns to keep the structure clean
+                    unset($venue['Email']);
+                    unset($venue['OfficePhone']);
+                    unset($venue['OfficeHours']);
+                    unset($venue['InfoPhone']);
                 }
             }
             
@@ -394,27 +391,28 @@ class JazzModel extends BaseModel
             return $venues; // Return original venues if enrichment fails
         }
     }
+    
     private function getArtistTracks($artistId)
-{
-    try {
-        $query = "SELECT 
-        t.TrackId as id,
-        t.Title as title,
-        t.ReleaseYear as release_year,
-        t.Description as description,
-        t.audio_file as audio_file
-    FROM JazzTrack t
-    WHERE t.ArtistId = :artistId
-    ORDER BY t.ReleaseYear DESC, t.Title";
-        
-        $stmt = self::$pdo->prepare($query);
-        $stmt->bindParam(':artistId', $artistId, PDO::PARAM_INT);
-        $stmt->execute();
-        
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (Exception $e) {
-        error_log("Error fetching artist tracks: " . $e->getMessage());
-        return [];
+    {
+        try {
+            $query = "SELECT 
+                t.TrackId as id,
+                t.Title as title,
+                t.ReleaseYear as release_year,
+                t.Description as description,
+                t.audio_file as audio_file
+            FROM JazzTrack t
+            WHERE t.ArtistId = :artistId
+            ORDER BY t.ReleaseYear DESC, t.Title";
+                
+            $stmt = self::$pdo->prepare($query);
+            $stmt->bindParam(':artistId', $artistId, PDO::PARAM_INT);
+            $stmt->execute();
+            
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            error_log("Error fetching artist tracks: " . $e->getMessage());
+            return [];
+        }
     }
-}
 }
