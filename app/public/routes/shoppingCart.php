@@ -19,17 +19,17 @@ Route::add('/create/order', function()  {
 
 Route::add('/reserve', function() {
 
-    //print_r($_POST);
+    print_r($_POST);
 
-    $reservationController = new ReservationController();
-    $validation = $reservationController->createReservation($_POST);
+    //$reservationController = new ReservationController();
+    //$validation = $reservationController->createReservation($_POST);
     
-    if($validation != true){
+    /*if($validation != true){
         //redirect to restaurant and read SESSION ERROR
     }
     else{
         header('Location: /cart');
-    };
+    };*/
 
 }, 'post');
 
