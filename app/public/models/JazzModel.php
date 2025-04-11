@@ -4,48 +4,34 @@ require_once __DIR__ . '/BaseModel.php';
 class JazzModel extends BaseModel
 {
     /**
-     * Get all jazz artists with their details
+     * Get all jazz artists 
      * 
      * @return array All jazz artists
      */
     public function getAllArtists()
     {
         try {
+        
             $query = "SELECT 
                         ja.ArtistId as id,
                         ja.Name as name,
-                        ja.Hashtag as hashtag,
                         ja.ProfileImageName as image,
-                        ja.artistGallery,
-                        ja.Description as description,
-                        ja.short_description,
-                        ja.musical_style,
-                        ja.career_highlights,
-                        MIN(je.StartDateTime) as performance_time,
-                        v.Name as stage
+                        ja.short_description
                     FROM JazzArtist ja
-                    LEFT JOIN JazzPerformance jp ON ja.ArtistId = jp.ArtistId
-                    LEFT JOIN JazzEvent je ON jp.JazzEventId = je.JazzEventId
-                    LEFT JOIN Event e ON je.EventId = e.EventId
-                    LEFT JOIN Venue v ON je.Location = CAST(v.VenueId AS CHAR)
-                    GROUP BY ja.ArtistId
                     ORDER BY ja.Name";
             
             $stmt = self::$pdo->prepare($query);
             $stmt->execute();
             
-            $artists = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            
-            return $artists;
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
             error_log("Error fetching jazz artists: " . $e->getMessage());
             return [];
         }
     }
-
     
     /**
-     * Get a specific artist by ID
+     * Get a specific artist by ID with all details needed for the artist page
      * 
      * @param int $id Artist ID
      * @return array|null Artist data or null if not found
@@ -53,26 +39,18 @@ class JazzModel extends BaseModel
     public function getArtistById($id)
     {
         try {
+            // Query only the fields needed for the artist detail page
             $query = "SELECT 
                         ja.ArtistId as id,
                         ja.Name as name,
-                        ja.Hashtag as hashtag,
                         ja.ProfileImageName as image,
                         ja.artistGallery,
                         ja.Description as description,
                         ja.short_description,
                         ja.musical_style,
-                        ja.career_highlights,
-                        MIN(je.StartDateTime) as performance_time,
-                        v.Name as stage,
-                        je.Price as price
+                        ja.career_highlights
                     FROM JazzArtist ja
-                    LEFT JOIN JazzPerformance jp ON ja.ArtistId = jp.ArtistId
-                    LEFT JOIN JazzEvent je ON jp.JazzEventId = je.JazzEventId
-                    LEFT JOIN Event e ON je.EventId = e.EventId
-                    LEFT JOIN Venue v ON je.Location = CAST(v.VenueId AS CHAR)
-                    WHERE ja.ArtistId = :id
-                    GROUP BY ja.ArtistId";
+                    WHERE ja.ArtistId = :id";
             
             $stmt = self::$pdo->prepare($query);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
@@ -84,13 +62,31 @@ class JazzModel extends BaseModel
                 return null;
             }
             
-            // Generate short description if not available
-            if (empty($artist['short_description'])) {
-                $artist['short_description'] = $this->generatePreviewText($artist['description']);
+            // Process gallery images - simple approach based on database structure AI MADE
+            if (!empty($artist['artistGallery'])) {
+                // If it's just a single image in the database
+                if (strpos($artist['artistGallery'], '[') === false && strpos($artist['artistGallery'], ',') === false) {
+                    $artist['gallery'] = [$artist['image'], $artist['artistGallery']];
+                } else {
+                    // Try to parse as JSON
+                    $galleryImages = json_decode($artist['artistGallery'], true);
+                    
+                    // If not JSON, treat as comma-separated
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        $galleryImages = explode(',', $artist['artistGallery']);
+                    }
+                    
+                    // Ensure profile image is included
+                    array_unshift($galleryImages, $artist['image']);
+                    $artist['gallery'] = $galleryImages;
+                }
+            } else {
+                // Just use the profile image if no gallery
+                $artist['gallery'] = [$artist['image']];
             }
             
-            // Enrich the artist data with related information
-            $artist = $this->enrichArtistData($artist, $id);
+            // Get tracks in a separate query
+            $artist['tracks'] = $this->getArtistTracks($id);
             
             return $artist;
         } catch (Exception $e) {
@@ -100,78 +96,32 @@ class JazzModel extends BaseModel
     }
 
     /**
-     * Enrich artist data with related information like tracks and gallery
+     * Get artist tracks
      * 
-     * @param array $artist Base artist data
-     * @param int $artistId Artist ID
-     * @return array Enhanced artist data
+     * @param int $artistId The artist ID
+     * @return array Track list
      */
-    private function enrichArtistData($artist, $artistId)
-    {
-        // Get artist gallery
-        $artist['gallery'] = $this->getArtistGallery($artistId, $artist['image']);
-        
-        // Get artist tracks
-        $artist['tracks'] = $this->getArtistTracks($artistId);
-        
-        return $artist;
-    }
-
-    /**
-     * Helper function to generate a preview text from a longer description
-     * 
-     * @param string $description Full description text
-     * @param int $length Maximum length of preview
-     * @return string Shortened preview text
-     */
-    private function generatePreviewText($description, $length = 150)
-    {
-        if (strlen($description) <= $length) {
-            return $description;
-        }
-        
-        $preview = substr($description, 0, $length);
-        return rtrim($preview, ".,;:!? \t\n\r\0\x0B") . '...';
-    }
-
-    private function getArtistGallery($artistId, $defaultImage)
+    private function getArtistTracks($artistId)
     {
         try {
-            $query = "SELECT artistGallery FROM JazzArtist WHERE ArtistId = :artistId";
-            
+            $query = "SELECT 
+                t.TrackId as id,
+                t.Title as title,
+                t.ReleaseYear as release_year,
+                t.Description as description,
+                t.audio_file as audio_file
+            FROM JazzTrack t
+            WHERE t.ArtistId = :artistId
+            ORDER BY t.ReleaseYear DESC, t.Title";
+                
             $stmt = self::$pdo->prepare($query);
             $stmt->bindParam(':artistId', $artistId, PDO::PARAM_INT);
             $stmt->execute();
             
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            
-            if ($result && !empty($result['artistGallery'])) {
-                // If stored as JSON
-                $galleryImages = json_decode($result['artistGallery'], true);
-                
-                // If decode failed, it might be comma-separated
-                if (json_last_error() !== JSON_ERROR_NONE) {
-                    $galleryImages = explode(',', $result['artistGallery']);
-                }
-                
-                // Make sure we have an array
-                if (!is_array($galleryImages)) {
-                    $galleryImages = [$result['artistGallery']];
-                }
-                
-                // Add the default image if it's not already included
-                if (!in_array($defaultImage, $galleryImages)) {
-                    array_unshift($galleryImages, $defaultImage);
-                }
-                
-                return $galleryImages;
-            }
-            
-            // Return just the default image if no gallery was found
-            return [$defaultImage];
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
-            error_log("Error fetching artist gallery: " . $e->getMessage());
-            return [$defaultImage];
+            error_log("Error fetching artist tracks: " . $e->getMessage());
+            return [];
         }
     }
 
@@ -184,31 +134,8 @@ class JazzModel extends BaseModel
     public function getSchedule($artistId = null)
     {
         try {
-            $events = $this->fetchEventData($artistId);
-            
-            if (empty($events)) {
-                return [];
-            }
-            
-            // Always organize by days, even for a single artist
-            return $this->organizeEventsByDay($events);
-        } catch (Exception $e) {
-            error_log("Error fetching schedule: " . $e->getMessage());
-            return [];
-        }
-    }
-
-    /**
-     * Fetch raw event data from database
-     * 
-     * @param int|null $artistId Optional artist ID to filter events
-     * @return array Raw event data
-     */
-    private function fetchEventData($artistId = null)
-    {
-        try {
+            // Simplified query with only fields needed for the schedule view
             $query = "SELECT 
-                        e.EventId,
                         DATE(je.StartDateTime) as date,
                         DAYNAME(je.StartDateTime) as day_name,
                         DAY(je.StartDateTime) as day_number,
@@ -217,10 +144,12 @@ class JazzModel extends BaseModel
                         ADDTIME(TIME(je.StartDateTime), SEC_TO_TIME(je.DurationByMinute * 60)) as end_time,
                         ja.ArtistId as artist_id,
                         ja.Name as artist_name,
-                        v.VenueId as venue_id,
                         v.Name as venue_name,
-                        v.Location as venue_location,
-                        je.Price as price
+                        je.Price as price,
+                        CASE 
+                            WHEN je.Price = 0 THEN 'All Jazz events on this day are free.'
+                            ELSE 'A day pass will cover all the Jazz events on this day.'
+                        END as remarks
                     FROM JazzEvent je
                     JOIN Event e ON je.EventId = e.EventId
                     JOIN JazzPerformance jp ON je.JazzEventId = jp.JazzEventId
@@ -244,82 +173,63 @@ class JazzModel extends BaseModel
             $stmt->execute();
             $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
-            // Add remarks based on the event price
-            foreach ($events as &$event) {
-                if ((float)$event['price'] === 0.0) {
-                    // Free event
-                    $event['remarks'] = 'All Jazz events on this day are free.';                   
-                } else  {
-                    // paid event
-                    $event['remarks'] = 'A day pass will cover all the Jazz events on this day.';
-                } 
+            if (empty($events)) {
+                return [];
             }
             
-            return $events;
+            // Organize events by day
+            $scheduleByDay = [];
+            foreach ($events as $event) {
+                $dateKey = date('Y-m-d', strtotime($event['date']));
+                
+                if (!isset($scheduleByDay[$dateKey])) {
+                    $scheduleByDay[$dateKey] = [
+                        'date' => $event['date'],
+                        'day_name' => $event['day_name'],
+                        'day_number' => $event['day_number'],
+                        'month_name' => $event['month_name'],
+                        'events' => []
+                    ];
+                }
+                
+                $scheduleByDay[$dateKey]['events'][] = $event;
+            }
+            
+            return $scheduleByDay;
         } catch (Exception $e) {
-            error_log("Error fetching event data: " . $e->getMessage());
+            error_log("Error fetching schedule: " . $e->getMessage());
             return [];
         }
     }
 
     /**
-     * Organize events by day
-     * 
-     * @param array $events Raw event data
-     * @return array Events organized by day
-     */
-    private function organizeEventsByDay($events)
-    {
-        $scheduleByDay = [];
-        
-        foreach ($events as $event) {
-            $dateKey = date('Y-m-d', strtotime($event['date']));
-            
-            if (!isset($scheduleByDay[$dateKey])) {
-                $scheduleByDay[$dateKey] = [
-                    'date' => $event['date'],
-                    'day_name' => $event['day_name'],
-                    'day_number' => $event['day_number'],
-                    'month_name' => $event['month_name'],
-                    'events' => []
-                ];
-            }
-            
-            $scheduleByDay[$dateKey]['events'][] = $event;
-        }
-        
-        return $scheduleByDay;
-    }
-
-    /**
-     * Get ticket information for the festival
+     * Get ticket information for the festival directly from JazzPass table
      * 
      * @return array Ticket types and pricing
      */
     public function getTicketInfo()
     {
         try {
-            // Get the pass information from the database
-            $query = "SELECT * FROM JazzPass";
+            $query = "SELECT 
+                        PassId as id,
+                        DisplayName as title,
+                        ShortDescription as description,
+                        BasePrice as price,
+                        Featured as featured
+                      FROM JazzPass";
+                      
             $stmt = self::$pdo->prepare($query);
             $stmt->execute();
             
-            // Format the data for the frontend
-            $formattedInfo = [];
+            $tickets = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
-            while ($pass = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $ticketInfo = [
-                    'id' => $pass['PassId'],
-                    'title' => $pass['DisplayName'],
-                    'description' => $pass['ShortDescription'],
-                    'price' => (float)$pass['BasePrice'],
-                    'featured' => (bool)$pass['Featured']
-                ];
-                
-                $formattedInfo[] = $ticketInfo;
+            // Convert numeric strings to proper types
+            foreach ($tickets as &$ticket) {
+                $ticket['price'] = (float)$ticket['price'];
+                $ticket['featured'] = (bool)$ticket['featured'];
             }
             
-            return $formattedInfo;
+            return $tickets;
         } catch (Exception $e) {
             error_log("Error retrieving ticket information: " . $e->getMessage());
             return [];
@@ -327,57 +237,32 @@ class JazzModel extends BaseModel
     }
 
     /**
-     * Get venue information with detailed contact information
+     * Get venue information with only fields needed for the venue view
      * 
      * @return array Venue details
      */
     public function getVenueDetails()
-{
-    try {
-        $query = "SELECT 
-                    VenueId as id,
-                    Name as name,
-                    Location as location,
-                    Address as address,
-                    Capacity as capacity,
-                    Description as description,
-                    Email as contact_email,
-                    OfficePhone as contact_office_phone,
-                    OfficeHours as contact_office_hours,
-                    InfoPhone as contact_info_phone
-                FROM Venue
-                ORDER BY VenueId";
-        
-        $stmt = self::$pdo->prepare($query);
-        $stmt->execute();
-        
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (Exception $e) {
-        error_log("Error fetching venue details: " . $e->getMessage());
-        return [];
-    }
-}
-    
-    private function getArtistTracks($artistId)
     {
         try {
             $query = "SELECT 
-                t.TrackId as id,
-                t.Title as title,
-                t.ReleaseYear as release_year,
-                t.Description as description,
-                t.audio_file as audio_file
-            FROM JazzTrack t
-            WHERE t.ArtistId = :artistId
-            ORDER BY t.ReleaseYear DESC, t.Title";
-                
+                        VenueId as id,
+                        Name as name,
+                        Address as address,
+                        Capacity as capacity,
+                        Description as description,
+                        Email as contact_email,
+                        OfficePhone as contact_office_phone,
+                        OfficeHours as contact_office_hours,
+                        InfoPhone as contact_info_phone
+                    FROM Venue
+                    ORDER BY VenueId";
+            
             $stmt = self::$pdo->prepare($query);
-            $stmt->bindParam(':artistId', $artistId, PDO::PARAM_INT);
             $stmt->execute();
             
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
-            error_log("Error fetching artist tracks: " . $e->getMessage());
+            error_log("Error fetching venue details: " . $e->getMessage());
             return [];
         }
     }
