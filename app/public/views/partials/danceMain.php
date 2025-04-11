@@ -29,7 +29,7 @@ foreach ($danceEvents as $event) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DANCE! - The Haarlem Festival</title>
-    <link rel="stylesheet" href="../../assets/css/dance.css">
+    <link rel="stylesheet" href="assets/css/dance.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
@@ -72,7 +72,7 @@ foreach ($danceEvents as $event) {
         <div class="artist-grid">
             <?php foreach ($artists as $artist): ?>
             <div class="artist-card">
-                <img src="../../assets/img/dance/<?= htmlspecialchars($artist['ProfileImageName']) ?>">
+                <img src="assets/img/dance/<?= htmlspecialchars($artist['ProfileImageName']) ?>">
                 <h3><i><?= htmlspecialchars($artist['Name']) ?></i></h3>
                 <p><i><?= htmlspecialchars($artist['Genre']) ?></i></p>
                 <a href="/dance/artist?id=<?= htmlspecialchars($artist['ArtistId']) ?>">
@@ -108,12 +108,65 @@ foreach ($danceEvents as $event) {
     <section id="passes">
         <h2>PASSES</h2>
         <div class="passes-grid">
-            <div class="pass"> <h3>Weekend All-Access</h3> <p>€250.00</p> <button class="small-button">Purchase</button> </div>
-            <div class="pass"> <h3>Friday Access</h3> <p>€125.00</p> <button class="small-button">Purchase</button> </div>
-            <div class="pass"> <h3>Saturday Access</h3> <p>€150.00</p> <button class="small-button">Purchase</button> </div>
-            <div class="pass"> <h3>Sunday Access</h3> <p>€150.00</p> <button class="small-button">Purchase</button> </div>
-        </div>
-    </section>
+            <div class="pass">
+            <form action="reserve" method="POST">
+                <input type="hidden" name="eventId" value="20">
+                <!--Some values should be pulled using eventid-->
+                <input type="hidden" name="name" value="Dance Event">
+                <h3>Weekend All-Access</h3>
+                <input type="hidden" name="address" value="Dance Event Stage">
+                <p name="price" value="250.00">€250.00</p>
+                <input type="hidden" name="date" value="2025-06-24">
+                <input type="hidden" name="time" value="00:00">
+                <input type="hidden" name="ticketType" value="WeekendPass">
+                <input type="hidden" name="guests" value="1">
+                <button type="submit" class="small-button">Purchase</button>
+            </form>
+            </div>
+            <div class="pass">
+                <form action="reserve" method="POST">
+                <input type="hidden" name="eventId" value="20">
+                <input type="hidden" name="name" value="Dance Event">
+                <input type="hidden" name="address" value="Dance Event Stage">
+                <h3>Friday Access</h3>
+                <p name="price" value="125.00">€125.00</p>
+                <input type="hidden" name="date" value="2025-06-21">
+                <input type="hidden" name="time" value="00:00">
+                <input type="hidden" name="ticketType" value="DayPass">
+                <input type="hidden" name="guests" value="1">
+                <button type="submit" class="small-button">Purchase</button>
+                </form>
+            </div>
+            <div class="pass">
+                <form action="reserve" method="POST">
+                <input type="hidden" name="eventId" value="20">
+                <input type="hidden" name="name" value="Dance Event">
+                <input type="hidden" name="address" value="Dance Event Stage">
+                <h3>Saturday Access</h3>
+                <p name="price" value="150.00">€150.00</p>
+                <input type="hidden" name="date" value="2025-06-22">
+                <input type="hidden" name="time" value="00:00">
+                <input type="hidden" name="ticketType" value="DayPass">
+                <input type="hidden" name="guests" value="1">
+                <button type="submit" class="small-button">Purchase</button>
+                </form>
+            </div>
+            <div class="pass">
+                <form action="reserve" method="POST">
+                <input type="hidden" name="eventId" value="20">
+                <input type="hidden" name="name" value="Dance Event">
+                <input type="hidden" name="address" value="Dance Event Stage">
+                <h3>Sunday Access</h3>
+                <p name="price" value="150.00">€150.00</p>
+                <input type="hidden" name="date" value="2025-06-23">
+                <input type="hidden" name="time" value="00:00">
+                <input type="hidden" name="ticketType" value="DayPass">
+                <input type="hidden" name="guests" value="1">
+                <button type="submit" class="small-button">Purchase</button>
+                </form>
+            </div>
+        </section>
+
 
     <?php require_once __DIR__ . '/../partials/danceBooker.php'; ?>
 

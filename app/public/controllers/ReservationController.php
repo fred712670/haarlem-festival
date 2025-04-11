@@ -31,12 +31,20 @@ class ReservationController {
             $_SESSION['reservationErrors'] = $errors;
             return false; 
         } else {
+
+            $price = 0;
+
+            if(isset($postData["price"])){
+                $price = $postData["price"];
+            }
+
             $ticket = [
             'eventId' => $postData["eventId"],
-            'description' => $postData["restaurantName"],
-            'location' => $postData["restaurantAddress"],
+            'description' => $postData["name"],
+            'location' => $postData["address"],
             'dateTime' => "Reservation for " . htmlspecialchars($postData['date']) . " at " . htmlspecialchars($postData['time']),
-            'price' => 0,
+            'ticketType' => "Ticket type: " . htmlspecialchars($postData["ticketType"]),
+            'price' => $price,
             'quantity' => (int)$postData['guests']
             ];
 

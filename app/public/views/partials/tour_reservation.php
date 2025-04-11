@@ -29,7 +29,14 @@
                 <!-- Error message container -->
                 <div id="error-message" class="booking-error" style="display: none;"></div>
 
-                <form id="history-booking-form" action="/Reservation" method="post">
+                <form id="history-booking-form" action="/reserve" method="post">
+
+                    <!-- Hidden inputs to pass restaurant name and address with the form-->
+                    <!--<input type="hidden" name="eventId" value="">-->
+                    <input type="hidden" name="eventId" value="10">
+                    <input type="hidden" name="name" value="History Tour">
+                    <input type="hidden" name="address" value="Church of St. Bavo">
+
                     <div class="booking-field">
                         <label for="date">Select Date:</label>
                         <div class="booking-select-wrapper">
@@ -58,9 +65,9 @@
                     </div>
                     
                     <div class="booking-field">
-                        <label for="language">Select Language:</label>
+                        <label for="ticketType">Select Language:</label>
                         <div class="booking-select-wrapper">
-                            <select name="language" id="language" required>
+                            <select name="ticketType" id="language" required>
                                 <option value="">Select Language</option>
                                 <option value="English">English</option>
                                 <option value="Dutch">Dutch</option>
@@ -75,6 +82,7 @@
                         <div class="booking-radio-group">
                             <div class="booking-radio">
                                 <input type="radio" id="regular" name="ticket_type" value="Regular Participant" checked>
+                                <input type="hidden" name="price" value="17.50">
                                 <label for="regular">Regular Participant (€17.50)</label>
                             </div>
                             
@@ -86,10 +94,10 @@
                     </div>
                     
                     <div id="seats-container" class="booking-field">
-                        <label for="seats">Number of Seats:</label>
+                        <label for="guests">Number of Seats:</label>
                         <div class="booking-quantity">
                             <button type="button" id="decrease-seats" class="booking-quantity-btn">-</button>
-                            <input type="number" name="seats" id="seats" min="1" max="12" value="1">
+                            <input type="number" name="guests" id="seats" min="1" max="12" value="1">
                             <button type="button" id="increase-seats" class="booking-quantity-btn">+</button>
                         </div>
                     </div>

@@ -21,6 +21,8 @@ Route::get('/dance/artist', function () {
 
     $model = new DanceModel();
     $artist = $model->getArtist($id);
+    $songs = $model->getArtistSongs($id);
+    $performances = $model->getArtistPerformances($id);
 
     if (!$artist) {
         die("Artist not found.");

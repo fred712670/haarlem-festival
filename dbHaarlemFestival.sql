@@ -24,7 +24,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 USE developmentdb;
-
 --
 -- Table structure for table `Appearances`
 --
@@ -76,18 +75,12 @@ CREATE TABLE `DanceArtist` (
 --
 
 INSERT INTO `DanceArtist` (`ArtistId`, `Name`, `Genre`, `ProfileImageName`, `DetailImageName`, `Description`) VALUES
-(7, 'Hardwell', 'Dance & House', 'HardwellProfile.png', 'HardwellDetail.png', NULL),
-(8, 'Armin van Buuren', 'Trance & Techno', 'BuurenProfile.png', 'BuurenDetail.png', NULL),
-(9, 'Martin Garrix', 'Dance & Electronic', 'GarrixProfile.png', 'GarrixDetail.png', NULL),
+(7, 'Hardwell', 'Dance & House', 'HardwellProfile.png', 'HardwellDetail.png', 'Hardwell, born Robbert van de Corput on January 7, 1988, in Breda, Netherlands, is a globally acclaimed DJ and electronic music producer. Known for his high-energy big room house sound, he topped DJ Mag’s Top 100 DJs list twice and has headlined the world’s biggest festivals.'),
+(8, 'Armin van Buuren', 'Trance & Techno', 'BuurenProfile.png', 'BuurenDetail.png', 'Armin van Buuren, born on December 25, 1976, in Leiden, Netherlands, is one of the most iconic trance DJs and producers in the world. Host of the influential radio show *A State of Trance*, he has shaped the genre with his uplifting productions and legendary live performances.'),
+(9, 'Martin Garrix', 'Dance & Electronic', 'GarrixProfile.png', 'GarrixDetail.png', 'Martin Garrix, born Martijn Garritsen on May 14, 1996, in Amstelveen, Netherlands, is a multi-platinum DJ and producer who rose to fame with his breakout hit “Animals.” Blending progressive house, pop, and future bass, he has become a dominant force in global EDM culture.'),
 (10, 'Tiësto', 'Trance, Techno, Minimal, House & Electronic', 'TiestoProfile.png', 'TiestoDetail.png', 'Tiësto, born Tijs Michiel Verwest on January 17, 1969, in Breda, Netherlands, is a Grammy-winning DJ and one of the most influential figures in the global electronic dance music scene. Rising to prominence with his trance anthems in the early 2000s, Tiësto later evolved his style to include house, electro, and pop influences, cementing his versatility. He was the first DJ to perform at the Olympic Games and continues to headline major festivals worldwide, inspiring generations of producers and fans alike.'),
-(11, 'Nicky Romero', 'Electrohouse & Progressive House', 'RomeroProfile.png', 'RomeroDetail.png', NULL),
+(11, 'Nicky Romero', 'Electrohouse & Progressive House', 'RomeroProfile.png', 'RomeroDetail.png', 'Nicky Romero, born Nick Rotteveel on January 6, 1989, in Amerongen, Netherlands, is a prominent DJ, producer, and founder of Protocol Recordings. Known for tracks like “Toulouse” and collaborations with Avicii and Calvin Harris, he has left a major mark on progressive and electro house.'),
 (12, 'Afrojack', 'House', 'AfrojackProfile.png', 'AfrojackDetail.png', 'Afrojack, born Nick van de Wall on September 9, 1987, in Spijkenisse, Netherlands, is a world-renowned DJ, producer, and music entrepreneur. He rose to fame in the early 2010s with his unique electro-house sound and has become one of the most influential figures in electronic dance music.'),
-(13, 'Hardwell', 'Dance & House', 'HardwellProfile.png', 'HardwellDetail.png', NULL),
-(14, 'Armin van Buuren', 'Trance & Techno', 'BuurenProfile.png', 'BuurenDetail.png', NULL),
-(15, 'Martin Garrix', 'Dance & Electronic', 'GarrixProfile.png', 'GarrixDetail.png', NULL),
-(16, 'Tiësto', 'Trance, Techno, Minimal, House & Electronic', 'TiestoProfile.png', 'TiestoDetail.png', 'Tiësto, born Tijs Michiel Verwest on January 17, 1969, in Breda, Netherlands, is a Grammy-winning DJ and one of the most influential figures in the global electronic dance music scene. Rising to prominence with his trance anthems in the early 2000s, Tiësto later evolved his style to include house, electro, and pop influences, cementing his versatility. He was the first DJ to perform at the Olympic Games and continues to headline major festivals worldwide, inspiring generations of producers and fans alike.'),
-(17, 'Nicky Romero', 'Electrohouse & Progressive House', 'RomeroProfile.png', 'RomeroDetail.png', NULL),
-(18, 'Afrojack', 'House', 'AfrojackProfile.png', 'AfrojackDetail.png', 'Afrojack, born Nick van de Wall on September 9, 1987, in Spijkenisse, Netherlands, is a world-renowned DJ, producer, and music entrepreneur. He rose to fame in the early 2010s with his unique electro-house sound and has become one of the most influential figures in electronic dance music.');
 -- --------------------------------------------------------
 
 --
@@ -105,6 +98,22 @@ CREATE TABLE `DanceEvent` (
   `Price` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
+-----------------------------------------------------------
+
+INSERT INTO `DanceEvent` (`DanceEventId`, `Description`, `Location`, `StartDateTime`, `TimeSlot`, `DurationByMinute`, `TicketsAvailable`, `Price`) VALUES
+(1, 'Nicky Romero, Afrojack', 'Lichtfabriek', '2025-07-25 20:00:00', '20:00 - 02:00', 360, 1500, 75),
+(2, 'Tiësto', 'Slachthuis', '2025-07-25 22:00:00', '22:00 - 23:30', 90, 200, 60),
+(3, 'Armin van Buuren', 'XO the Club', '2025-07-25 22:00:00', '22:00 - 23:30', 90, 300, 60),
+(4, 'Martin Garrix', 'Puncher Comedy Club', '2025-07-25 22:00:00', '22:00 - 23:30', 90, 200, 60),
+(5, 'Hardwell', 'Jopenkerk', '2025-07-25 22:00:00', '22:00 - 23:30', 90, 200, 60),
+(6, 'Afrojack, Tiësto, Nicky Romero', 'Caprera Openluchttheater', '2025-07-26 14:00:00', '14:00 - 23:00', 540, 2000, 110),
+(7, 'Martin Garrix', 'Slachthuis', '2025-07-26 18:00:00', '18:00 - 19:30', 90, 300, 60),
+(8, 'Armin van Buuren', 'Jopenkerk', '2025-07-26 19:00:00', '19:00 - 23:00', 240, 1500, 60),
+(9, 'Hardwell', 'XO the Club', '2025-07-26 21:00:00', '21:00 - 22:30', 90, 200, 90),
+(10, 'Hardwell, Martin Garrix, Armin van Buuren', 'Caprera Openluchttheater', '2025-07-27 14:00:00', '14:00 - 23:00', 540, 2000, 110),
+(11, 'Tiësto', 'Lichtfabriek', '2025-07-27 21:00:00', '21:00 - 22:30', 90, 300, 75),
+(12, 'Afrojack', 'Jopenkerk', '2025-07-27 22:00:00', '22:00 - 23:30', 90, 1500, 60),
+(13, 'Nicky Romero', 'Slachthuis', '2025-07-27 23:00:00', '23:00 - 00:30', 90, 200, 60);
 -- --------------------------------------------------------
 
 --
@@ -373,7 +382,6 @@ CREATE TABLE `JazzEvent` (
 -- Dumping data for table `JazzEvent`
 --
 
-
 INSERT INTO `JazzEvent` (`EventId`, `Description`, `Location`, `StartDateTime`, `TimeSlot`, `DurationByMinute`, `TicketsAvailable`, `Price`) VALUES
 (101, 'Gumbo Kings performance at Patronaat', '1', '2023-07-27 18:00:00', 'Evening', 60, 300, 15),
 (102, 'Evolve performance at Patronaat', '1', '2023-07-27 19:30:00', 'Evening', 60, 300, 15),
@@ -407,6 +415,8 @@ INSERT INTO `JazzEvent` (`EventId`, `Description`, `Location`, `StartDateTime`, 
 (1006, 'Uncle Sue at Haarlem Jazz', '2', '2023-07-29 21:00:00', 'Evening', 90, 200, 20),
 (1007, 'Karsu at Haarlem Jazz', '4', '2023-07-30 15:00:00', 'Afternoon', 60, 1000, 0),
 (1008, 'Jonna Fraser at Haarlem Jazz', '4', '2023-07-30 17:00:00', 'Evening', 60, 1000, 0);
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `JazzPass`
@@ -1011,166 +1021,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-=======
-  OrderId INT PRIMARY KEY,
-  UserId INT,
-  Amount INT,
-  Status VARCHAR(50),
-  OrderDate DATETIME,
-  PhoneNumber VARCHAR(20),
-  Address VARCHAR(255),
-  FOREIGN KEY (UserId) REFERENCES Users(UserId)
-);
-
--- Creating the Event table
-CREATE TABLE Event (
-  EventId INT PRIMARY KEY,
-  Description VARCHAR(255),
-  Location VARCHAR(100),
-  StartDateTime DATETIME,
-  TimeSlot VARCHAR(50),
-  DurationByMinute INT,
-  TicketsAvailable INT,
-  Price INT
-);
-
-CREATE TABLE Ticket (
-  TicketId INT PRIMARY KEY,
-  OrderId INT,
-  Price INT,
-  PassType ENUM('SingleUse', 'DayPass', 'WeekendPass'),
-  IsValid TINYINT(1),
-  EventId INT,
-  FOREIGN KEY (OrderId) REFERENCES `Order`(OrderId),
-  FOREIGN KEY (EventId) REFERENCES Event(EventId)
-);
-
--- Creating the DanceEvent table
-CREATE TABLE DanceEvent (
-  EventId INT PRIMARY KEY,
-  DanceEventId INT,
-  Description VARCHAR(100),
-  Location VARCHAR(100),
-  StartDateTime DATETIME,
-  TimeSlot VARCHAR(100),
-  DurationByMinute INT,
-  TicketsAvailable INT,
-  Price INT,
-  FOREIGN KEY (EventId) REFERENCES Event(EventId)
-);
-
--- Creating the JazzEvent table
-CREATE TABLE JazzEvent (
-  EventId INT PRIMARY KEY,
-  JazzEventId INT,
-  Duration DATETIME,
-  StartDateTime DATETIME,
-  TicketsAvailable INT,
-  Price INT,
-  StartTime TIME,
-  EndTime TIME,
-  SeatsTotal INT,
-  FOREIGN KEY (EventId) REFERENCES Event(EventId)
-);
-
--- Creating the DanceArtist table
-CREATE TABLE DanceArtist (
-  ArtistId INT PRIMARY KEY,
-  Name VARCHAR(100),
-  Title VARCHAR(100),
-  Genre VARCHAR(100),
-  ImageName VARCHAR(100),
-  Description VARCHAR(255)
-);
-
--- Creating the JazzArtist table
-CREATE TABLE JazzArtist (
-  ArtistId INT PRIMARY KEY,
-  Name VARCHAR(100),
-  Hashtag VARCHAR(100),
-  ProfileImageName VARCHAR(100),
-  BannerImageName VARCHAR(100),
-  Description VARCHAR(255)
-);
-
--- Creating the JazzPerformance table
-CREATE TABLE JazzPerformance (
-  JazzEventId INT,
-  ArtistId INT,
-  FOREIGN KEY (JazzEventId) REFERENCES JazzEvent(EventId),
-  FOREIGN KEY (ArtistId) REFERENCES JazzArtist(ArtistId)
-);
-
--- Creating the DanceSong table
-CREATE TABLE DanceSong (
-  SongId INT PRIMARY KEY,
-  ArtistId INT,
-  Title VARCHAR(100),
-  Credits VARCHAR(255),
-  Description VARCHAR(255),
-  ImageName VARCHAR(100),
-  FOREIGN KEY (ArtistId) REFERENCES DanceArtist(ArtistId)
-);
-
--- Creating the JazzTrack table
-CREATE TABLE JazzTrack (
-  TrackId INT PRIMARY KEY,
-  ArtistId INT,
-  Title VARCHAR(100),
-  Credits VARCHAR(100),
-  Description VARCHAR(255),
-  ReleaseYear DATE,
-  FOREIGN KEY (ArtistId) REFERENCES JazzArtist(ArtistId)
-);
-
--- Creating the Appearances table
-CREATE TABLE Appearances (
-  EventId INT,
-  ArtistId INT,
-  FOREIGN KEY (EventId) REFERENCES Event(EventId),
-  FOREIGN KEY (ArtistId) REFERENCES DanceArtist(ArtistId)
-);
-
--- Creating the Venue table
-CREATE TABLE Venue (
-  VenueId INT PRIMARY KEY,
-  Name VARCHAR(100),
-  Location VARCHAR(100),
-  Address VARCHAR(100),
-  Capacity INT,
-  Description VARCHAR(255)
-);
-
--- Creating the TourGuide table
-CREATE TABLE TourGuide (
-  GuideId INT PRIMARY KEY,
-  FullName VARCHAR(100),
-  ProfileImage VARCHAR(255),
-  LanguagesSpoken ENUM('English', 'Dutch', 'Chinese')
-);
-
--- Creating the HistoryTourSchedule table
-CREATE TABLE HistoryTourSchedule (
-  EventId INT PRIMARY KEY,
-  ScheduleId INT,
-  TourDate DATE,
-  TourTime TIME,
-  Language ENUM('English', 'Dutch', 'Chinese'),
-  GuideId INT,
-  TicketsAvailable INT,
-  TicketPrice DECIMAL,
-  FamilyTicketPrice DECIMAL,
-  FOREIGN KEY (GuideId) REFERENCES TourGuide(GuideId)
-);
-
--- Creating the HistoryTourBooking table
-CREATE TABLE HistoryTourBooking (
-  BookingId INT AUTO_INCREMENT PRIMARY KEY,
-  ScheduleId INT,
-  Language ENUM('English', 'Dutch', 'Chinese'),
-  TicketType ENUM('Regular', 'Participant', 'Family Package Deal'),
-  Seats INT,
-  Price DECIMAL,
-  BookingTime DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (ScheduleId) REFERENCES HistoryTourSchedule(EventId)
-);
