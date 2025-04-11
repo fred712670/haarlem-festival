@@ -332,65 +332,31 @@ class JazzModel extends BaseModel
      * @return array Venue details
      */
     public function getVenueDetails()
-    {
-        try {
-            $query = "SELECT 
-                        v.VenueId as id,
-                        v.Name as name,
-                        v.Location as location,
-                        v.Address as address,
-                        v.Capacity as capacity,
-                        v.Description as description,
-                        v.Email,
-                        v.OfficePhone,
-                        v.OfficeHours,
-                        v.InfoPhone
-                    FROM Venue v
-                    WHERE v.VenueId IN (1, 2, 3, 4)
-                    ORDER BY v.VenueId";
-            
-            $stmt = self::$pdo->prepare($query);
-            $stmt->execute();
-            
-            $venues = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            
-            // Process venues to create contact structure
-            return $this->enrichVenueData($venues);
-        } catch (Exception $e) {
-            error_log("Error fetching venue details: " . $e->getMessage());
-            return [];
-        }
+{
+    try {
+        $query = "SELECT 
+                    VenueId as id,
+                    Name as name,
+                    Location as location,
+                    Address as address,
+                    Capacity as capacity,
+                    Description as description,
+                    Email as contact_email,
+                    OfficePhone as contact_office_phone,
+                    OfficeHours as contact_office_hours,
+                    InfoPhone as contact_info_phone
+                FROM Venue
+                ORDER BY VenueId";
+        
+        $stmt = self::$pdo->prepare($query);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        error_log("Error fetching venue details: " . $e->getMessage());
+        return [];
     }
-
-    private function enrichVenueData($venues)
-    {
-        try {
-            // Since the contact information is now part of the Venue table,
-            // we just need to format it into the 'contact' array structure
-            foreach ($venues as &$venue) {
-                // Only add contact info if at least email is available
-                if (!empty($venue['Email'])) {
-                    $venue['contact'] = [
-                        'email' => $venue['Email'],
-                        'office_phone' => $venue['OfficePhone'],
-                        'office_hours' => $venue['OfficeHours'],
-                        'info_phone' => $venue['InfoPhone']
-                    ];
-                    
-                    // Remove the original columns to keep the structure clean
-                    unset($venue['Email']);
-                    unset($venue['OfficePhone']);
-                    unset($venue['OfficeHours']);
-                    unset($venue['InfoPhone']);
-                }
-            }
-            
-            return $venues;
-        } catch (Exception $e) {
-            error_log("Error enriching venue data: " . $e->getMessage());
-            return $venues; // Return original venues if enrichment fails
-        }
-    }
+}
     
     private function getArtistTracks($artistId)
     {
