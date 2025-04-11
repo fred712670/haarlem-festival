@@ -14,7 +14,7 @@ Route::add('/create/order', function()  {
 
     $orderController->createOrder();
     
-    header('Location: /profile');
+    //header('Location: /profile');
 });
 
 Route::add('/reserve', function() {

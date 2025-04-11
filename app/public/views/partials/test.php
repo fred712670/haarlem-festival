@@ -16,44 +16,34 @@ $imgSrc = 'file://' . realpath($svgPath);
 
 // === Generate QR SVG File ===
 try {
+    // Generate the QR code as an SVG string in memory.
     $renderer = new ImageRenderer(
-        new RendererStyle(200),
-        new SvgImageBackEnd()
+        new RendererStyle(200),   // Set size to 200x200 pixels (adjust as needed)
+        new SvgImageBackEnd()       // Use the SVG backend
     );
     $writer = new Writer($renderer);
-    $qrSvg = $writer->writeString('https://haarlemfestival.local');
-
-    file_put_contents($svgPath, $qrSvg);
-    echo "✅ QR SVG saved<br>";
-} catch (Exception $e) {
-    echo "❌ QR Error: " . $e->getMessage();
-    exit;
-}
-
-// === Generate PDF with <img> ===
-try {
-    // Instantiate and configure Dompdf
-    $dompdf = new Dompdf();
-
-    // Read the raw SVG file content
-    $svgContent = file_get_contents($imgSrc);
-
-    // Encode as data URI so Dompdf can embed it
-    $svgDataURI = 'data:image/svg+xml;base64,' . base64_encode($svgContent);
-
-    // Build the HTML that Dompdf will convert
+    
+    // Replace 'Your QR Code Content Here' with the data you want encoded.
+    $svgQrCode = $writer->writeString('Your QR Code Content Here');
+    
+    // Convert the SVG to a Base64 data URI for embedding.
+    $svgDataURI = 'data:image/svg+xml;base64,' . base64_encode($svgQrCode);
+    
+    // Build the HTML for Dompdf. The QR code is inserted via the data URI.
     $html = "
-    <h1>Haarlem Festival Ticket</h1>
-    <p>Scan the QR code below:</p>
-    <img src=\"$svgDataURI\" width=\"200\" height=\"200\" />
+        <h1>Haarlem Festival Ticket</h1>
+        <p>Scan the QR code below:</p>
+        <img src=\"$svgDataURI\" width=\"200\" height=\"200\" />
     ";
-
-    // Load the HTML, set paper size/orientation, and render
+    
+    // Create and configure the PDF.
+    $dompdf = new Dompdf();
     $dompdf->loadHtml($html);
     $dompdf->setPaper('A4', 'portrait');
     $dompdf->render();
-
+    
     file_put_contents($pdfPath, $dompdf->output());
+    
     echo "✅ PDF created at: $pdfPath<br>";
 } catch (Exception $e) {
     echo "❌ PDF Error: " . $e->getMessage();
