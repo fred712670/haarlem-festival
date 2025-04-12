@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../lib/Route.php';
 require_once __DIR__ . '/../controllers/JazzController.php';
+require_once __DIR__ . '/../controllers/ReservationController.php';
 
 // Main Jazz Festival page route
 Route::add('/jazz', function () {
@@ -20,7 +21,6 @@ Route::add('/jazz', function () {
 }, 'get');
 
 // Individual artist details page route
-// Update this route
 Route::add('/jazz/artist/([0-9]+)/([a-zA-Z0-9-]+)', function ($id, $name) {
     $controller = new JazzController();
     $artist = $controller->showArtist($id); // Still find by ID
@@ -63,4 +63,13 @@ Route::add('/jazz/artist/([0-9]+)', function ($id) {
     header("Location: /jazz/artist/$id/$nameSlug");
     exit();
 }, 'get');
-?>
+Route::add('/jazz', function () {
+    $controller = new JazzController();
+    $data = $controller->index(); // Fetch all jazz data
+    
+    // Extract data for the view
+    extract($data); // This creates variables from the array keys
+    
+    // Include the page view
+    require_once __DIR__ . '/../views/pages/jazz.php';
+}, 'get');
