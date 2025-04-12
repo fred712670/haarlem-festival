@@ -19,12 +19,12 @@
                     <div class="venue-info">
                         <p><strong>Capacity:</strong> <?= htmlspecialchars($venue['capacity']) ?> people</p>
                         
-                        <?php if (!empty($venue['contact'])): ?>
+                        <?php if (!empty($venue['contact_email'])): ?>
                             <div class="venue-contact">
                                 <h4>Contact Information</h4>
-                                <p><i class="fas fa-envelope"></i> Email: <?= htmlspecialchars($venue['contact']['email']) ?></p>
-                                <p><i class="fas fa-phone"></i> Phone: <?= htmlspecialchars($venue['contact']['office_phone']) ?> (office) - during office hours <?= htmlspecialchars($venue['contact']['office_hours']) ?></p>
-                                <p><i class="fas fa-info-circle"></i> Information: <?= htmlspecialchars($venue['contact']['info_phone']) ?> (<?= htmlspecialchars($venue['contact']['info_description']) ?>)</p>
+                                <p><i class="fas fa-envelope"></i> Email: <?= htmlspecialchars($venue['contact_email']) ?></p>
+                                <p><i class="fas fa-phone"></i> Phone: <?= htmlspecialchars($venue['contact_office_phone']) ?> (office) - during office hours <?= htmlspecialchars($venue['contact_office_hours']) ?></p>
+                                <p><i class="fas fa-info-circle"></i> Information: <?= htmlspecialchars($venue['contact_info_phone']) ?></p>
                             </div>
                         <?php endif; ?>
                     </div>
