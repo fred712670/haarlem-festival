@@ -134,7 +134,7 @@ class JazzModel extends BaseModel
     public function getSchedule($artistId = null)
     {
         try {
-            // Simplified query with only fields needed for the schedule view
+            
             $query = "SELECT 
                         DATE(je.StartDateTime) as date,
                         DAYNAME(je.StartDateTime) as day_name,
