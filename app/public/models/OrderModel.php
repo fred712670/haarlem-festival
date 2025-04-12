@@ -176,7 +176,17 @@ public function getEventDetails($eventId) {
                 'EventName' => $reservation['Name']  // Event name from the Event table.
             ];
         }
-
         return $orders;
     }
+
+    public function validateTicket($ticketId) {
+        // Update the ticket to mark it as used (set IsValid = 0)
+        $query = "UPDATE Ticket SET IsValid = 0 WHERE TicketId = :ticketId AND IsValid = 1";
+        $stmt = self::$pdo->prepare($query);
+        $stmt->bindParam(':ticketId', $ticketId, PDO::PARAM_INT);
+        $stmt->execute();
+        // Return true if a ticket row was updated.
+        return $stmt->rowCount() > 0;
+    }
+    
 }

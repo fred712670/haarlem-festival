@@ -130,24 +130,23 @@ private function generateTicketPdfs($orderResult) {
             $eventName = isset($eventDetails['Name']) ? htmlspecialchars($eventDetails['Name']) : 'Event';
         
             // --- Secure QR Code Generation ---
-            $secret = $_ENV["QR_SECRETKEY"];
+            $secret = $_ENV["QR_SECRETKEY"]; // Retrieve the secret key
             if (!$secret) {
-                throw new Exception("Secret key not defined. Please set the QR_SECRET_KEY environment variable.");
+                throw new Exception("Secret key not defined. Please set the QRSECRET_KEY environment variable.");
             }
             $signature = hash_hmac('sha256', $ticketId, $secret);
             $rawData = $ticketId . '|' . $signature;
-            $qrContent = base64_encode($rawData);
+            $qrContent = base64_encode($rawData); // This is the content to encode in the QR
+
+            // Optionally, for debugging:
+            // error_log("QR Content: " . $qrContent);
             // --- End Secure QR Code Generation ---
-        
+
             // Generate the QR code (using SVG backend).
             $renderer = new ImageRenderer(
-                new RendererStyle(200),
+                new RendererStyle(200), // QR code size.
                 new SvgImageBackEnd()
             );
-            $writer = new Writer($renderer);
-            $svgQrCode = $writer->writeString($qrContent);
-            $svgDataURI = 'data:image/svg+xml;base64,' . base64_encode($svgQrCode);
-        
             $writer = new Writer($renderer);
             $svgQrCode = $writer->writeString($qrContent);
             $svgDataURI = 'data:image/svg+xml;base64,' . base64_encode($svgQrCode);
@@ -197,5 +196,38 @@ private function generateTicketPdfs($orderResult) {
         echo "PDF generated: " . htmlspecialchars($pdf) . "<br>";
     }
 }
+
+// In OrderController.php
+
+public function validateTicket($qrContent) {
+    // Decode the QR content (expected to be a base64-encoded string)
+    $decoded = base64_decode($qrContent);
+    $parts = explode("|", $decoded);
+    if (count($parts) !== 2) {
+        throw new Exception("Invalid QR code format.");
+    }
+    $ticketId = $parts[0];
+    $providedSignature = $parts[1];
+
+    // Retrieve the secret key
+    $secret = $_ENV["QR_SECRETKEY"];
+    if (!$secret) {
+        throw new Exception("Secret key not defined. Please set the QRSECRET_KEY environment variable.");
+    }
+    // Recompute the HMAC signature.
+    $expectedSignature = hash_hmac('sha256', $ticketId, $secret);
+    if (!hash_equals($expectedSignature, $providedSignature)) {
+        return ['success' => false, 'message' => 'Signature does not match.'];
+    }
+
+    // Call the model to update the ticket's validity.
+    $orderModel = new OrderModel();
+    $updated = $orderModel->validateTicket($ticketId);
+    if ($updated) {
+        return ['success' => true, 'message' => 'Ticket validated successfully.'];
+    }
+    return ['success' => false, 'message' => 'Ticket validation failed or ticket already used.'];
+}
+
 }
 
