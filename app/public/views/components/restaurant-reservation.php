@@ -16,7 +16,7 @@ function renderRestaurantReservation($restaurant) {
                 <input type="hidden" name="eventId" value="<?= htmlspecialchars($restaurant['EventId']) ?>">
                 <input type="hidden" name="name" value="<?= htmlspecialchars($restaurant['Name']) ?>">
                 <input type="hidden" name="address" value="<?= htmlspecialchars($restaurant['Address']) ?>">
-                <input type="hidden" name="ticketType" value="Reservation">
+                <input type="hidden" name="ticketType" value="SingleUse">
 
                 <label for="guests">Number of guests:</label>
                 <input type="number" id="guests" name="guests" min="1" max="12"<?= $restaurant['Seats'] ?> value="2">

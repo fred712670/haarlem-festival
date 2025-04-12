@@ -11,10 +11,10 @@
         <div class="card-body">
             <!-- Loop through each ticket in the order -->
             <?php foreach ($order['tickets'] as $ticket): ?>
-            <div class="ticket-info mb-3">
+            <div class="ticket-info mb-3">  
                 <h6>Ticket ID: <?= $ticket['TicketId'] ?></h6>
                 <p><strong>Price:</strong> €<?= $ticket['Price'] ?> <br><strong>Pass Type:</strong> <?= $ticket['PassType'] ?? 'N/A' ?></p>
-                <p><strong>Event Name:</strong> <?= $ticket['EventName'] ?> <br><strong>Status:</strong> <?= $ticket['IsValid'] == 1 ? 'Valid' : 'Invalid' ?></p>
+                <p><strong>Status:</strong> <?= $ticket['IsValid'] == 1 ? 'Valid' : 'Invalid' ?></p>
                 <hr>
             </div>
             <?php endforeach; ?>

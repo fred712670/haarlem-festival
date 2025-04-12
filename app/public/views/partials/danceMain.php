@@ -18,7 +18,6 @@ foreach ($danceEvents as $event) {
     elseif ($date === '2025-07-26') $saturday[] = $event;
     elseif ($date === '2025-07-27') $sunday[] = $event;
 }
-print_r($danceEvents)
 ?>
 
 

@@ -6,7 +6,7 @@
         <div class="ticket-options">
             <div class="ticket-card">
                 <form action="/reserve" method="post">
-                    <input type="hidden" name="eventId" value="200">
+                    <input type="hidden" name="eventId" value="25">
                     <input type="hidden" name="name" value="Jazz Event">
                     <input type="hidden" name="address" value="Jazz Event Stage">
                     <h3>Single Performances</h3>
@@ -27,7 +27,7 @@
             
             <div class="ticket-card">
                 <form action="/reserve" method="post">
-                    <input type="hidden" name="eventId" value="300">
+                    <input type="hidden" name="eventId" value="26">
                     <input type="hidden" name="name" value="Jazz Event">
                     <input type="hidden" name="address" value="Jazz Event Stage">
                     <h3>Day Pass</h3>
@@ -48,7 +48,7 @@
             
             <div class="ticket-card featured">
                 <form action="/reserve" method="post">
-                    <input type="hidden" name="eventId" value="300">
+                    <input type="hidden" name="eventId" value="27">
                     <input type="hidden" name="name" value="Jazz Event">
                     <input type="hidden" name="address" value="Jazz Event Stage">
                     <h3>Weekend Pass (Thu-Sat)</h3>

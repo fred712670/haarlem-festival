@@ -33,9 +33,10 @@
 
                     <!-- Hidden inputs to pass restaurant name and address with the form-->
                     <!--<input type="hidden" name="eventId" value="">-->
-                    <input type="hidden" name="eventId" value="10">
+                    <input type="hidden" name="eventId" value="null">
                     <input type="hidden" name="name" value="History Tour">
                     <input type="hidden" name="address" value="Church of St. Bavo">
+                    <input type="hidden" name="ticketType" value="SingleUse">
 
                     <div class="booking-field">
                         <label for="date">Select Date:</label>
@@ -67,7 +68,7 @@
                     <div class="booking-field">
                         <label for="ticketType">Select Language:</label>
                         <div class="booking-select-wrapper">
-                            <select name="ticketType" id="language" required>
+                            <select id="language" required>
                                 <option value="">Select Language</option>
                                 <option value="English">English</option>
                                 <option value="Dutch">Dutch</option>

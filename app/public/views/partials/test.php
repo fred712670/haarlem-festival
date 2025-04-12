@@ -1,50 +1,65 @@
-<?php
-require_once __DIR__ . '../../../../vendor/autoload.php';
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>QR Code Scanner Test</title>
+    <!-- Include the html5-qrcode library from a CDN -->
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 20px;
+      }
+      #qr-reader {
+        width: 300px;
+        margin: 0 auto;
+      }
+      #result {
+        font-size: 20px;
+        margin-top: 20px;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>QR Code Scanner Test</h1>
+    <div id="qr-reader"></div>
+    <div id="result">Waiting for scan...</div>
 
+    <script>
+      // Called when a QR code is successfully scanned.
+      function onScanSuccess(decodedText, decodedResult) {
+        try {
+          // Our QR code content is expected to be a base64 encoded string in the format: ticketId|signature
+          var decoded = atob(decodedText);
+          var parts = decoded.split("|");
+          if(parts.length < 2) {
+            throw new Error("Invalid QR content format.");
+          }
+          var ticketId = parts[0];
 
-use Dompdf\Dompdf;
-use Dompdf\Options;
-use BaconQrCode\Renderer\ImageRenderer;
-use BaconQrCode\Renderer\Image\SvgImageBackEnd;
-use BaconQrCode\Renderer\RendererStyle\RendererStyle;
-use BaconQrCode\Writer;
+          // Stop scanning to prevent duplicate reads.
+          html5QrcodeScanner.clear();
 
-// === Paths
-$svgPath = __DIR__ . '/../../../public/assets/orders/tickets/qrcode.svg';
-$pdfPath = __DIR__ . '/../../../public/assets/orders/tickets/festival_qr.pdf';
-$imgSrc = 'file://' . realpath($svgPath);
-
-// === Generate QR SVG File ===
-try {
-    // Generate the QR code as an SVG string in memory.
-    $renderer = new ImageRenderer(
-        new RendererStyle(200),   // Set size to 200x200 pixels (adjust as needed)
-        new SvgImageBackEnd()       // Use the SVG backend
-    );
-    $writer = new Writer($renderer);
-    
-    // Replace 'Your QR Code Content Here' with the data you want encoded.
-    $svgQrCode = $writer->writeString('Your QR Code Content Here');
-    
-    // Convert the SVG to a Base64 data URI for embedding.
-    $svgDataURI = 'data:image/svg+xml;base64,' . base64_encode($svgQrCode);
-    
-    // Build the HTML for Dompdf. The QR code is inserted via the data URI.
-    $html = "
-        <h1>Haarlem Festival Ticket</h1>
-        <p>Scan the QR code below:</p>
-        <img src=\"$svgDataURI\" width=\"200\" height=\"200\" />
-    ";
-    
-    // Create and configure the PDF.
-    $dompdf = new Dompdf();
-    $dompdf->loadHtml($html);
-    $dompdf->setPaper('A4', 'portrait');
-    $dompdf->render();
-    
-    file_put_contents($pdfPath, $dompdf->output());
-    
-    echo "✅ PDF created at: $pdfPath<br>";
-} catch (Exception $e) {
-    echo "❌ PDF Error: " . $e->getMessage();
-}
+          // Display the extracted ticket ID.
+          document.getElementById("result").innerText = "Ticket ID: " + ticketId;
+        } catch(e) {
+          console.error("Failed to decode QR code", e);
+          document.getElementById("result").innerText = "Error decoding QR code.";
+        }
+      }
+      
+      // Optionally log scan failures (or ignore them).
+      function onScanFailure(error) {
+          // Uncomment this line to see scan errors in the console:
+          // console.warn(`QR code scan error: ${error}`);
+      }
+      
+      // Configure and start the scanner.
+      var html5QrcodeScanner = new Html5QrcodeScanner(
+        "qr-reader", { fps: 10, qrbox: 250 }, false);
+      html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+    </script>
+  </body>
+</html>

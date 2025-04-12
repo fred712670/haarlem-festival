@@ -44,6 +44,15 @@ class OrderModel extends BaseModel {
             'Address'    => $address
         ];
 
+        // Retrieve the customer's name from the User table.
+        // Adjust table/column names if necessary.
+        $userQuery = "SELECT FullName FROM User WHERE UserId = :userId LIMIT 1";
+        $stmtUser = self::$pdo->prepare($userQuery);
+        $stmtUser->bindParam(':userId', $userId);
+        $stmtUser->execute();
+        $userData = $stmtUser->fetch(PDO::FETCH_ASSOC);
+        $orderDetails['CustomerName'] = $userData ? $userData['FullName'] : 'Unknown';
+
         $insertedTickets = [];
         // Loop through each ticket in the cart.
         foreach ($order as $ticket) {
@@ -78,6 +87,62 @@ class OrderModel extends BaseModel {
             'tickets' => $insertedTickets
         ];
     }
+
+    /**
+ * Retrieves detailed information for an event based on its EventId.
+ * It first fetches the base event row from the Event table and then
+ * performs an additional lookup based on EventType to fetch event-specific details.
+ * Only the Location and DateTime are fetched and standardized.
+ *
+ * @param int $eventId
+ * @return array|null  Standardized event info including Name, Location, and DateTime.
+ */
+public function getEventDetails($eventId) {
+    // Fetch the base event details.
+    $eventQuery = "SELECT * FROM Event WHERE EventId = :eventId LIMIT 1";
+    $stmtEvent = self::$pdo->prepare($eventQuery);
+    $stmtEvent->bindParam(':eventId', $eventId);
+    $stmtEvent->execute();
+    $event = $stmtEvent->fetch(PDO::FETCH_ASSOC);
+    if (!$event) {
+        return null;
+    }
+    
+    // Depending on EventType, fetch event–specific details and alias location and datetime.
+    switch ($event['EventType']) {
+        case 'JazzEvent':
+            $specificQuery = "SELECT DateTime AS DateTime FROM JazzEvent WHERE EventId = :eventId LIMIT 1";
+            break;
+        case 'DanceEvent':
+            $specificQuery = "SELECT StartDateTime AS DateTime FROM DanceEvent WHERE EventId = :eventId LIMIT 1";
+            break;
+        case 'HistoryTourSchedule':
+            $specificQuery = "SELECT TourDate AS DateTime FROM HistoryTourSchedule WHERE EventId = :eventId LIMIT 1";
+            break;
+        case 'Restaurant':
+            $specificQuery = "SELECT FirstStart AS DateTime FROM Restaurant WHERE EventId = :eventId LIMIT 1";
+            break;
+        default:
+            $specificQuery = "";
+            break;
+    }
+    
+    $standardDetails = [];
+    if ($specificQuery != "") {
+        $stmtSpecific = self::$pdo->prepare($specificQuery);
+        $stmtSpecific->bindParam(':eventId', $eventId);
+        $stmtSpecific->execute();
+        $specificDetails = $stmtSpecific->fetch(PDO::FETCH_ASSOC);
+        if ($specificDetails) {
+            $standardDetails = $specificDetails;
+        }
+    }
+    // Merge a standardized event name.
+    // Here we assume the Event table has a 'Name' column.
+    $standardDetails['Name'] = $event['EventType'];
+    
+    return $standardDetails;
+}
 
     public function getUserOrders($userId) {
         $orderQuery = "
