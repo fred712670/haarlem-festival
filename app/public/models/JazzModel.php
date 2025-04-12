@@ -48,7 +48,8 @@ class JazzModel extends BaseModel
 
     
     /**
-     * Get a specific artist by ID
+     * Get a specific artist by ID 
+     * break it up, and make the name  spesifci 
      * 
      * @param int $id Artist ID
      * @return array|null Artist data or null if not found
@@ -349,7 +350,7 @@ class JazzModel extends BaseModel
      * 
      * @return array Ticket types and pricing
      */
-    // this is temporary until we all get a unified database 
+    
      public function getTicketInfo()
     {
         try {

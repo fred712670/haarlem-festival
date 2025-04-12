@@ -73,34 +73,41 @@ require_once __DIR__ . "/../partials/header.php";
     
     <!-- Tracks Section -->
     <?php if (!empty($artist['tracks'])): ?>
-    <section class="artist-tracks" id="tracks" aria-labelledby="tracks-title">
-        <div class="container">
-            <h2 id="tracks-title">Popular Tracks</h2>
-            <div class="tracks-list" role="list" aria-label="List of tracks by <?= htmlspecialchars($artist['name']) ?>">
-                <?php foreach ($artist['tracks'] as $index => $track): ?>
-                    <div class="track-item" role="listitem">
-                        <div class="track-number" aria-hidden="true"><?= $index + 1 ?></div>
-                        <div class="track-info">
-                            <h3 class="track-title"><?= htmlspecialchars($track['title']) ?></h3>
+<section class="artist-tracks py-5 bg-light" id="tracks" aria-labelledby="tracks-title">
+    <div class="container">
+        <h2 class="mb-4" id="tracks-title">Popular Tracks</h2>
+        
+        <div class="tracks-list" role="list" aria-label="List of tracks by <?= htmlspecialchars($artist['name']) ?>">
+            <?php foreach ($artist['tracks'] as $index => $track): ?>
+                <div class="track-item card mb-3 p-3 shadow-sm" role="listitem" data-track-id="<?= htmlspecialchars($track['id']) ?>">
+                    <div class="d-flex align-items-center">
+                        <div class="track-number me-3 fw-bold text-secondary"><?= $index + 1 ?></div>
+                        
+                        <div class="track-info flex-grow-1">
+                            <h3 class="track-title h5 mb-1"><?= htmlspecialchars($track['title']) ?></h3>
                             <?php if (!empty($track['release_year'])): ?>
-                                <span class="track-year"><?= date('Y', strtotime($track['release_year'])) ?></span>
+                                <span class="track-year text-muted small ms-2"><?= date('Y', strtotime($track['release_year'])) ?></span>
                             <?php endif; ?>
                             <?php if (!empty($track['description'])): ?>
-                                <p class="track-description"><?= htmlspecialchars($track['description']) ?></p>
+                                <p class="track-description text-muted small mb-0"><?= htmlspecialchars($track['description']) ?></p>
                             <?php endif; ?>
                         </div>
-                        <div class="track-controls">
-                            <button class="play-button" aria-label="Play <?= htmlspecialchars($track['title']) ?>">
+                        
+                        <div class="track-controls d-flex align-items-center">
+                            <!-- Audio controls will be inserted here by JavaScript -->
+                            <button class="play-button btn btn-primary rounded-circle d-flex align-items-center justify-content-center" 
+                                    style="width: 40px; height: 40px;" 
+                                    aria-label="Play <?= htmlspecialchars($track['title']) ?>">
                                 <span class="play-icon" aria-hidden="true">▶</span>
                             </button>
                         </div>
                     </div>
-                <?php endforeach; ?>
-            </div>
+                </div>
+            <?php endforeach; ?>
         </div>
-    </section>
-    <?php endif; ?>
-
+    </div>
+</section>
+<?php endif; ?>
 <!-- Include Festival Schedule Component with artist's performances -->
 <?php 
     // Setup variables for the schedule component

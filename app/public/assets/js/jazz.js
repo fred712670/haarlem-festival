@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
   // Handle Artist Card Hover Effects
-  // (Similar hover effects as in yummy.js, but adapted for artist cards)
   const artistCards = document.querySelectorAll(".artist-card");
 
   artistCards.forEach((card) => {
@@ -135,4 +134,370 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+
+  // Audio player initialization and management
+  let currentAudio = null;
+  let currentPlayButton = null;
+  let currentTrackItem = null;
+  let progressInterval = null;
+
+  // Initialize play buttons for tracks
+  const initializeAudioPlayers = () => {
+    // Create audio duration elements for each track
+    const trackItems = document.querySelectorAll(".track-item");
+    trackItems.forEach((trackItem) => {
+      // Create progress container if it doesn't exist
+      if (!trackItem.querySelector(".audio-controls")) {
+        // Create audio controls container
+        const audioControls = document.createElement("div");
+        audioControls.className =
+          "audio-controls d-flex align-items-center me-2";
+
+        // Time display
+        const timeDisplay = document.createElement("div");
+        timeDisplay.className = "time-display small text-muted me-2";
+
+        const currentTimeSpan = document.createElement("span");
+        currentTimeSpan.className = "current-time";
+        currentTimeSpan.textContent = "0:00";
+
+        const separator = document.createElement("span");
+        separator.textContent = " / ";
+
+        const durationSpan = document.createElement("span");
+        durationSpan.className = "track-duration";
+        durationSpan.textContent = "--:--";
+
+        timeDisplay.appendChild(currentTimeSpan);
+        timeDisplay.appendChild(separator);
+        timeDisplay.appendChild(durationSpan);
+
+        // Create Bootstrap progress
+        const progressContainer = document.createElement("div");
+        progressContainer.className = "progress mx-2";
+        progressContainer.style.width = "80px";
+        progressContainer.style.height = "6px";
+        progressContainer.style.cursor = "pointer";
+
+        const progressBar = document.createElement("div");
+        progressBar.className = "progress-bar";
+        progressBar.style.width = "0%";
+        progressBar.setAttribute("role", "progressbar");
+        progressBar.setAttribute("aria-valuenow", "0");
+        progressBar.setAttribute("aria-valuemin", "0");
+        progressBar.setAttribute("aria-valuemax", "100");
+
+        progressContainer.appendChild(progressBar);
+
+        // Add elements to audio controls
+        audioControls.appendChild(timeDisplay);
+        audioControls.appendChild(progressContainer);
+
+        // Add audio controls to track controls
+        const controlsDiv = trackItem.querySelector(".track-controls");
+        controlsDiv.insertBefore(audioControls, controlsDiv.firstChild);
+      }
+    });
+
+    const playButtons = document.querySelectorAll(".play-button");
+    playButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        const trackItem = this.closest(".track-item");
+        currentTrackItem = trackItem;
+
+        const trackTitle = trackItem.querySelector(".track-title").textContent;
+        const trackId = trackItem.getAttribute("data-track-id") || "";
+
+        // Create an audio filename based on artist and track name
+        const artistName = document
+          .getElementById("artist-name")
+          .textContent.trim();
+        const audioFile = getAudioFileName(artistName, trackTitle, trackId);
+
+        console.log("Trying to play:", audioFile);
+
+        // If we're clicking the same button that's currently playing, pause/resume
+        if (currentPlayButton === this && currentAudio) {
+          if (currentAudio.paused) {
+            currentAudio.play();
+            updatePlayButtonState(this, "playing");
+            startProgressUpdates();
+          } else {
+            currentAudio.pause();
+            updatePlayButtonState(this, "paused");
+            stopProgressUpdates();
+          }
+          return;
+        }
+
+        // Stop any currently playing audio
+        if (currentAudio) {
+          currentAudio.pause();
+          if (currentPlayButton) {
+            updatePlayButtonState(currentPlayButton, "stopped");
+          }
+          stopProgressUpdates();
+        }
+
+        // Reset any previous active tracks
+        document.querySelectorAll(".track-item").forEach((item) => {
+          item.classList.remove(
+            "active",
+            "border-primary",
+            "border-start",
+            "border-3"
+          );
+        });
+
+        // Mark current track as active with Bootstrap classes
+        trackItem.classList.add(
+          "active",
+          "border-start",
+          "border-primary",
+          "border-3"
+        );
+
+        // Create and play new audio
+        currentAudio = new Audio(audioFile);
+        currentPlayButton = this;
+
+        // Show loading state
+        updatePlayButtonState(this, "loading");
+
+        // Reset time display to 0:00
+        const currentTimeSpan = trackItem.querySelector(".current-time");
+        if (currentTimeSpan) {
+          currentTimeSpan.textContent = "0:00";
+        }
+
+        // Add event listeners for audio
+        currentAudio.addEventListener("loadedmetadata", function () {
+          // Display duration once we have it
+          const duration = formatTime(currentAudio.duration);
+          trackItem.querySelector(".track-duration").textContent = duration;
+        });
+
+        currentAudio.addEventListener("canplay", function () {
+          this.play();
+          updatePlayButtonState(currentPlayButton, "playing");
+          startProgressUpdates();
+        });
+
+        currentAudio.addEventListener("ended", function () {
+          updatePlayButtonState(currentPlayButton, "stopped");
+          stopProgressUpdates();
+          resetProgress();
+          currentAudio = null;
+          currentPlayButton = null;
+          currentTrackItem = null;
+        });
+
+        currentAudio.addEventListener("error", function (e) {
+          console.error("Error loading audio:", e);
+
+          // Show error and reset state
+          updatePlayButtonState(currentPlayButton, "error");
+          stopProgressUpdates();
+          showAudioErrorMessage(trackItem);
+
+          // Reset after a short delay
+          setTimeout(() => {
+            updatePlayButtonState(currentPlayButton, "stopped");
+            currentAudio = null;
+            currentPlayButton = null;
+            currentTrackItem = null;
+          }, 1500);
+        });
+
+        // Load the audio
+        currentAudio.load();
+      });
+    });
+  };
+
+  // Format time in MM:SS format
+  function formatTime(seconds) {
+    if (isNaN(seconds) || !isFinite(seconds)) return "--:--";
+
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs < 10 ? "0" + secs : secs}`;
+  }
+
+  // Start updating progress bar
+  function startProgressUpdates() {
+    stopProgressUpdates(); // Clear any existing interval
+
+    progressInterval = setInterval(() => {
+      if (!currentAudio || !currentTrackItem) return;
+
+      // Update progress bar
+      const progressBar = currentTrackItem.querySelector(".progress-bar");
+      if (progressBar) {
+        const percent =
+          (currentAudio.currentTime / currentAudio.duration) * 100;
+        progressBar.style.width = `${percent}%`;
+        progressBar.setAttribute("aria-valuenow", percent);
+      }
+
+      // Update current time display
+      const currentTimeSpan = currentTrackItem.querySelector(".current-time");
+      if (currentTimeSpan) {
+        currentTimeSpan.textContent = formatTime(currentAudio.currentTime);
+      }
+    }, 100);
+  }
+
+  // Stop progress updates
+  function stopProgressUpdates() {
+    if (progressInterval) {
+      clearInterval(progressInterval);
+      progressInterval = null;
+    }
+  }
+
+  // Reset progress bar
+  function resetProgress() {
+    if (!currentTrackItem) return;
+
+    const progressBar = currentTrackItem.querySelector(".progress-bar");
+    if (progressBar) {
+      progressBar.style.width = "0%";
+      progressBar.setAttribute("aria-valuenow", "0");
+    }
+
+    const currentTimeSpan = currentTrackItem.querySelector(".current-time");
+    if (currentTimeSpan) {
+      currentTimeSpan.textContent = "0:00";
+    }
+  }
+
+  // Function to get an audio filename based on artist and track
+  const getAudioFileName = (artistName, trackTitle, trackId) => {
+    // Clean up artist name and track title to create valid filename
+    const cleanArtistName = artistName
+      .replace(/[^\w\s]/gi, "")
+      .replace(/\s+/g, "")
+      .toLowerCase();
+    const cleanTrackTitle = trackTitle
+      .replace(/[^\w\s]/gi, "")
+      .replace(/\s+/g, "")
+      .toLowerCase();
+
+    // Special case for known files
+    if (
+      cleanArtistName === "gumbokings" &&
+      cleanTrackTitle === "bourbonstreetparade"
+    ) {
+      return "/assets/audio/jazz/gumbokings.bourbonstreetparade.mp3.mp3";
+    }
+
+    // Try multiple possible paths
+    return `/assets/audio/jazz/${cleanArtistName}.${cleanTrackTitle}.mp3`;
+  };
+
+  // Update play button state and icon
+  const updatePlayButtonState = (button, state) => {
+    // First, remove all state classes
+    button.classList.remove(
+      "btn-primary",
+      "btn-danger",
+      "btn-warning",
+      "btn-secondary"
+    );
+
+    // Add appropriate Bootstrap classes based on state
+    switch (state) {
+      case "playing":
+        button.classList.add("btn-danger"); // Red for playing
+        break;
+      case "paused":
+        button.classList.add("btn-warning"); // Yellow/orange for paused
+        break;
+      case "loading":
+        button.classList.add("btn-secondary"); // Gray for loading
+        break;
+      case "error":
+        button.classList.add("btn-danger"); // Red for error
+        break;
+      default:
+        button.classList.add("btn-primary"); // Blue for default state
+    }
+
+    // Update the icon
+    const icon = button.querySelector(".play-icon");
+    if (icon) {
+      switch (state) {
+        case "playing":
+          icon.innerHTML = "⏸"; // pause icon
+          break;
+        case "paused":
+          icon.innerHTML = "▶"; // play icon
+          break;
+        case "loading":
+          icon.innerHTML = "⏳"; // loading icon
+          break;
+        case "error":
+          icon.innerHTML = "⚠️"; // error icon
+          break;
+        default:
+          icon.innerHTML = "▶"; // play icon
+      }
+    }
+  };
+
+  // Show error message when audio can't be played
+  const showAudioErrorMessage = (trackItem) => {
+    const errorMsg = document.createElement("div");
+    errorMsg.className = "alert alert-danger py-1 px-3 mt-2";
+    errorMsg.style.fontSize = "0.875rem";
+    errorMsg.textContent = "Track unavailable";
+
+    // Remove any existing error messages
+    const existingError = trackItem.querySelector(".alert-danger");
+    if (existingError) {
+      existingError.remove();
+    }
+
+    // Insert the error message after track info
+    const trackInfo = trackItem.querySelector(".track-info");
+    if (trackInfo) {
+      trackInfo.appendChild(errorMsg);
+    } else {
+      trackItem.appendChild(errorMsg);
+    }
+
+    // Remove the message after 3 seconds
+    setTimeout(() => {
+      if (errorMsg.parentNode) {
+        errorMsg.parentNode.removeChild(errorMsg);
+      }
+    }, 3000);
+  };
+
+  // Make progress bars clickable to seek
+  document.addEventListener("click", function (e) {
+    if (e.target.closest(".progress") && currentAudio) {
+      const progressContainer = e.target.closest(".progress");
+      const rect = progressContainer.getBoundingClientRect();
+      const clickPos = (e.clientX - rect.left) / rect.width;
+
+      // Set audio position based on click
+      currentAudio.currentTime = clickPos * currentAudio.duration;
+
+      // Update progress bar immediately
+      const progressBar = progressContainer.querySelector(".progress-bar");
+      progressBar.style.width = `${clickPos * 100}%`;
+      progressBar.setAttribute("aria-valuenow", clickPos * 100);
+
+      // Update current time display immediately
+      const currentTimeSpan = currentTrackItem.querySelector(".current-time");
+      if (currentTimeSpan) {
+        currentTimeSpan.textContent = formatTime(currentAudio.currentTime);
+      }
+    }
+  });
+
+  // Initialize the audio players when the DOM is loaded
+  initializeAudioPlayers();
 });
