@@ -3,115 +3,88 @@ require_once 'models/HistoryModel.php';
 
 class HistoryController {
     private $model;
-    
+
     public function __construct() {
         $this->model = new HistoryModel();
     }
+
     public function getTourGuides() {
         return $this->model->getTourGuides();
     }
+
     public function getTourSchedule() {
         return $this->model->getTourSchedule();
     }
+
     public function getHistoryContent($section) {
         return $this->model->getHistoryContent($section);
     }
-    
+
     public function getHistoryLocations() {
         return $this->model->getHistoryLocations();
     }
+
     public function getPricing() {
         return $this->model->getPricing();
     }
+
     public function getTourLocationById($locationId) {
         return $this->model->getTourLocationById($locationId);
     }
-   //handling booking
+
+    public function showHistoryPage() {
+        $guides = $this->getTourGuides();
+        $schedule = $this->getTourSchedule();
+        $locations = $this->getHistoryLocations();
+        $overviewContent = $this->getHistoryContent('overview');
+        $eventDetailContent = $this->getHistoryContent('event_detail');
+        $pricing = $this->getPricing();
+
+        require(__DIR__ . "/../views/pages/history.php");
+    }
+    public function showReservationForm() {
+        // Get all available dates
+        $availableDates = $this->model->getAvailableDates();
+    
+        // dynamic dropdowns
+        $defaultDate = $availableDates[0]['TourDate'] ?? null;
+        $availableTimes = $defaultDate ? $this->model->getAvailableTimes($defaultDate) : [];
+        $defaultTime = $availableTimes[0]['TourTime'] ?? null;
+        $availableLanguages = ($defaultDate && $defaultTime) 
+            ? $this->model->getAvailableLanguages($defaultDate, $defaultTime) 
+            : [];
+    
+        // Pass the data to the view
+        require(__DIR__ . "/../views/pages/tour_reservation.php");
+    }
+
+    // Booking handling
     public function processBooking($postData) {
-        $errors = [];
+        $errors = $this->validateBookingInput($postData);
 
-        // Validate date
-        if (empty($postData['date'])) {
-            $errors[] = "Date is required.";
-        } else {
-            $selectedDate = new DateTime($postData['date']);
-            $today = new DateTime();
-            $today->setTime(0, 0, 0);
-
-            if ($selectedDate < $today) {
-                $errors[] = "The selected date cannot be in the past.";
-            }
-        }
-
-        // Validate time
-        if (empty($postData['time'])) {
-            $errors[] = "Time is required.";
-        }
-
-        // Validate language
-        if (empty($postData['language'])) {
-            $errors[] = "Language is required.";
-        }
-
-        // Validate ticket type
-        if (empty($postData['ticket_type'])) {
-            $errors[] = "Ticket type is required.";
-        }
-
-        // Validate seats for Regular Participant
-        if ($postData['ticket_type'] === 'Regular Participant') {
-            if (empty($postData['seats'])) {
-                $errors[] = "Number of seats is required.";
-            } else if ((int)$postData['seats'] < 1 || (int)$postData['seats'] > 12) {
-                $errors[] = "Number of seats must be between 1 and 12.";
-            }
-        }
-        // If there are errors, return them
         if (!empty($errors)) {
-            return [
-                'success' => false,
-                'errors' => $errors
-            ];
+            return ['success' => false, 'errors' => $errors];
         }
-        // Try to process the booking
+
         try {
-            // Get schedule ID
-            $scheduleId = $this->model->getScheduleId(
-                $postData['date'], 
-                $postData['time'], 
-                $postData['language']
-            );
-
+            $scheduleId = $this->model->getScheduleId($postData['date'], $postData['time'], $postData['language']);
             if (!$scheduleId) {
-                return [
-                    'success' => false,
-                    'errors' => ["No available tour schedule found."]
-                ];
+                return ['success' => false, 'errors' => ["No available tour schedule found."]];
             }
 
-            // Get price information
             $priceInfo = $this->model->getPriceInfo($postData['date'], $postData['time']);
-            
-            // Calculate total price
-            $seats = (int)$postData['seats']; 
-            if ($postData['ticket_type'] === 'Family Package Deal') {
-                $seats = 4;
-                $totalPrice = $priceInfo['FamilyTicketPrice'];
-            } else {
-                $seats = (int)$postData['seats'];
-                $totalPrice = $priceInfo['TicketPrice'] * $seats;
-            }
+            $ticketType = $postData['ticket_type'];
+            $seats = ($ticketType === 'Family Package Deal') ? 4 : (int)$postData['seats'];
+            $totalPrice = ($ticketType === 'Family Package Deal') ? $priceInfo['FamilyTicketPrice'] : $priceInfo['TicketPrice'] * $seats;
 
-            // Create booking
             $bookingId = $this->model->createBooking(
-                $scheduleId, 
-                $postData['language'], 
-                $postData['ticket_type'], 
-                $seats, 
+                $scheduleId,
+                $postData['language'],
+                $ticketType,
+                $seats,
                 $totalPrice
             );
 
-            // Get guide information
             $guideInfo = $this->model->getGuideInfo($scheduleId);
 
             return [
@@ -122,26 +95,36 @@ class HistoryController {
                     'date' => $postData['date'],
                     'time' => $postData['time'],
                     'language' => $postData['language'],
-                    'ticketType' => $postData['ticket_type'],
+                    'ticketType' => $ticketType,
                     'seats' => $seats,
                     'totalPrice' => $totalPrice
                 ]
             ];
-
         } catch (Exception $e) {
-            return [
-                'success' => false,
-                'errors' => ["Booking failed: " . $e->getMessage()]
-            ];
+            return ['success' => false, 'errors' => ["Booking failed: " . $e->getMessage()]];
         }
     }
-    //get details 
-    public function getBookingConfirmationDetails($bookingId) {
-        $details = $this->model->getBookingDetails($bookingId);
-        
-        return $details ? 
-            ['success' => true, 'details' => $details] : 
-            ['success' => false, 'errors' => ['Booking not found']];
+
+    // Input validation 
+    private function validateBookingInput($data) {
+        return $this->validateDate($data);
+    }
+
+    private function validateDate($data) {
+        $errors = [];
+
+        if (empty($data['date'])) {
+            $errors[] = "Date is required.";
+            return $errors;
+        }
+
+        $availableDates = array_column($this->model->getAvailableDates(), 'TourDate');
+
+        if (!in_array($data['date'], $availableDates)) {
+            $errors[] = "The selected date is not available for booking.";
+        }
+
+        return $errors;
     }
 }
 ?>
