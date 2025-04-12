@@ -34,6 +34,7 @@
                             <p class="eventName"><?= htmlspecialchars($ticket['description']) ?></p>
                             <p><?= htmlspecialchars($ticket['location']) ?></p>
                             <p><?= htmlspecialchars($ticket['dateTime']) ?></p>
+                            <p><?= htmlspecialchars($ticket['ticketType']) ?></p>
                             <p>Amount of people:</p>
                             <div class="quantity-controls">
                                 <form method="post" action="updateQuantity">
@@ -56,7 +57,7 @@
                         <?php endforeach; ?>
                         </div>
                         <p>Total: € <span id="totalPrice"><?= htmlspecialchars($totalPrice) ?></span></p>
-                        <a href="/payment" class="btn btn-primary btn-pay" name="createOrder" id="createOrderBtn" <?php echo $isUserLoggedIn ? '' : 'disabled'; ?>>
+                        <a href="/create/order" class="btn btn-primary btn-pay" name="createOrder" id="createOrderBtn" <?php echo $isUserLoggedIn ? '' : 'disabled'; ?>>
                             Proceed to payment
                         </a>
                         <?php

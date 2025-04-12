@@ -28,13 +28,16 @@ $total = 0;
         </div>
 
         <form class="payment-form" method="POST" action="/process-payment" onsubmit="return validatePaymentForm()">
-        <input type="text" name="phone" required>
-        <input type="text" name="address" required>
-        <label for="card-name">Cardholder Name</label>
-            <input type="text" name="card_name" id="card-name" required>
-
-            <label for="card-number">Card Number</label>
-            <input type="text" name="card_number" id="card-number" required maxlength="19">
+            <div class="card-details">
+                <div>
+                    <label for="card-name">Cardholder Name</label>
+                    <input type="text" name="card_name" id="card-name" required>
+                </div>
+                <div>
+                    <label for="card-number">Card Number</label>
+                    <input type="text" name="card_number" id="card-number" required maxlength="19">
+                </div>
+            </div>
 
             <div class="card-details">
                 <div>
@@ -46,6 +49,13 @@ $total = 0;
                     <input type="text" name="cvv" id="cvv" maxlength="4" required>
                 </div>
             </div>
+
+            <!-- Moved the address and phone fields here -->
+            <label for="address">Billing Address</label>
+            <input type="text" name="address" id="address" placeholder="Enter address" required>
+
+            <label for="phone">Phone Number</label>
+            <input type="text" name="phone" id="phone" placeholder="Enter phone number" required>
 
             <div class="payment-buttons">
                 <a href="/cart" class="btn-grey">← Back to Cart</a>

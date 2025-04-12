@@ -30,7 +30,13 @@ class DanceController
     public function getSongsByArtistId($id)
     {
         $songModel = new DanceModel();
-        return $songModel->getArtistSongs();
+        return $songModel->getArtistSongs($id);
+    }
+
+    public function getArtistPerformances($id)
+    {
+        $performanceModel = new DanceModel();
+        return $performanceModel->getArtistPerformances($id);
     }
 }
 ?>
