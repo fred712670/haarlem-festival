@@ -42,6 +42,11 @@ class OrderController {
         //exit;
     }
 
+    public function getUserOrders($userId){
+        $orderModel = new OrderModel();
+        return $orderModel->getUserOrders($userId);
+    }
+
 /**
  * Generates one PDF per event from the inserted order's tickets.
  *
