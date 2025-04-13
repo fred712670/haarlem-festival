@@ -207,34 +207,37 @@ class JazzModel extends BaseModel
      * 
      * @return array Ticket types and pricing
      */
-    public function getTicketInfo()
-    {
-        try {
-            $query = "SELECT 
-                        PassId as id,
-                        DisplayName as title,
-                        ShortDescription as description,
-                        BasePrice as price,
-                        Featured as featured
-                      FROM JazzPass";
-                      
-            $stmt = self::$pdo->prepare($query);
-            $stmt->execute();
-            
-            $tickets = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            
-            // Convert numeric strings to proper types
-            foreach ($tickets as &$ticket) {
-                $ticket['price'] = (float)$ticket['price'];
-                $ticket['featured'] = (bool)$ticket['featured'];
-            }
-            
-            return $tickets;
-        } catch (Exception $e) {
-            error_log("Error retrieving ticket information: " . $e->getMessage());
-            return [];
-        }
-    }
+   public function getTicketInfo()
+   {
+       try {
+           $query = "SELECT 
+                       PassId as id,
+                       PassType as type,
+                       DisplayName as title,
+                       Description as description,
+                       Dates as dates,
+                       BasePrice as price,
+                       Featured as featured
+                     FROM JazzPass
+                     ORDER BY PassId ASC";
+                     
+           $stmt = self::$pdo->prepare($query);
+           $stmt->execute();
+           
+           $tickets = $stmt->fetchAll(PDO::FETCH_ASSOC);
+           
+           // Convert numeric strings to proper types
+           foreach ($tickets as &$ticket) {
+               $ticket['price'] = (float)$ticket['price'];
+               $ticket['featured'] = (bool)$ticket['featured'];
+           }
+           
+           return $tickets;
+       } catch (Exception $e) {
+           error_log("Error retrieving ticket information: " . $e->getMessage());
+           return [];
+       }
+   }
 
     /**
      * Get venue information with only fields needed for the venue view

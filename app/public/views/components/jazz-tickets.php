@@ -4,56 +4,53 @@
         <h2>Tickets</h2>
         
         <div class="ticket-options">
-            <div class="ticket-card">
-                <h3>Single Performances</h3>
-                <p class="price">€10 - €15</p>
-                <ul>
-                    <li>Select individual performances</li>
-                    <li>Main Hall performances: €15 per show</li>
-                    <li>Second & Third Hall: €10 per show</li>
-                    <li>Flexible scheduling to fit your plans</li>
-                </ul>
-                <a href="#schedule" class="btn-buy">Select Performance</a>
-            </div>
-            
-            <div class="ticket-card">
-                <h3>Day Pass</h3>
-                <p class="price">€35.00</p>
-                <ul>
-                    <li>Full access to all venues for one day</li>
-                    <li>Choose Thursday, Friday, or Saturday</li>
-                    <li>Access to all performances on your chosen day</li>
-                    <li>Convenient all-in-one ticket</li>
-                </ul>
-                <a href="#" class="btn-buy" id="day-pass-btn">Buy Now</a>
-            </div>
-            
-            <div class="ticket-card featured">
-                <h3>Weekend Pass (Thu-Sat)</h3>
-                <p class="price">€80.00</p>
-                <ul>
-                    <li>Complete access Thursday through Saturday</li>
-                    <li>Admission to all performances across three days</li>
-                    <li>Experience the full range of indoor festival events</li>
-                </ul>
-                <form action="/reserve" method="POST" style="display: inline;">
-                    <input type="hidden" name="ticketType" value="WeekendPass">
-                    <input type="hidden" name="name" value="Jazz Festival Weekend Pass (Thu-Sat)">
-                    <input type="hidden" name="price" value="80">
-                    <!-- Thu-Sat dates -->
-                    <input type="hidden" name="date" value="2025-07-24,2025-07-25,2025-07-26">
-                    <button type="submit" class="btn-buy">Best Value - Buy Now</button>
-                </form>
-            </div>
+            <?php foreach ($ticketInfo as $ticket): ?>
+                <?php if ($ticket['type'] === 'Free') continue; // Skip free passes ?>
+                
+                <div class="ticket-card <?= $ticket['featured'] ? 'featured' : '' ?>">
+                    <h3><?= htmlspecialchars($ticket['title']) ?></h3>
+                    <p class="price">€<?= number_format($ticket['price'], 2) ?></p>
+                    
+                    <ul>
+                        <?php foreach (explode('||', $ticket['description']) as $item): ?>
+                            <?php if (trim($item)): ?>
+                                <li><?= htmlspecialchars(trim($item)) ?></li>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </ul>
+                    
+                    <?php if ($ticket['type'] === 'SingleUse'): ?>
+                        <a href="#schedule" class="btn-buy">Select Performance</a>
+                    <?php elseif ($ticket['type'] === 'DayPass'): ?>
+                        <a href="#" class="btn-buy" id="day-pass-btn">Buy Now</a>
+                    <?php elseif ($ticket['type'] === 'WeekendPass'): ?>
+                        <form action="/reserve" method="POST" style="display: inline;">
+                            <input type="hidden" name="ticketType" value="<?= $ticket['type'] ?>">
+                            <input type="hidden" name="name" value="<?= htmlspecialchars($ticket['title']) ?>">
+                            <input type="hidden" name="price" value="<?= $ticket['price'] ?>">
+                            <input type="hidden" name="date" value="<?= htmlspecialchars($ticket['dates']) ?>">
+                            <button type="submit" class="btn-buy">Best Value - Buy Now</button>
+                        </form>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
         </div>
         
+        <!-- Free Sunday info -->
+        <?php 
+        $sundayPass = array_filter($ticketInfo, function($t) { return $t['type'] === 'Free'; });
+        $sundayPass = reset($sundayPass);
+        if ($sundayPass):
+            $description = explode('||', $sundayPass['description']);
+        ?>
         <div class="sunday-free-info">
             <div class="free-info-card">
-                <h3>Sunday Performances - Free Entry</h3>
-                <p>All performances at Grote Markt on Sunday, July 30th are <strong>free for all visitors</strong>. No reservation needed.</p>
-                <p>Join us for a fantastic day of jazz in the heart of Haarlem!</p>
+                <h3><?= htmlspecialchars($description[0] ?? 'Sunday Performances - Free Entry') ?></h3>
+                <p><?= htmlspecialchars($description[1] ?? '') ?></p>
+                <p><?= htmlspecialchars($description[2] ?? '') ?></p>
             </div>
         </div>
+        <?php endif; ?>
     </div>
 </section>
 
