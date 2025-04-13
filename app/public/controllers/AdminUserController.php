@@ -64,7 +64,7 @@ class AdminUserController
      * @param string $fullName Full name of the user
      * @param string $email Email address of the user
      * @param string $password Password for the user
-     * @param string $role Role of the user (Customer, Employee, Administrator)
+     * @param string $role Role of the user (customer, employee, admin)
      * @return array Result of the operation
      */
     public function createUser($fullName, $email, $password, $role)
@@ -82,13 +82,13 @@ class AdminUserController
             return ['success' => false, 'message' => 'Password must be at least 8 characters.'];
         }
 
-        $validRoles = ['Customer', 'Employee', 'Administrator'];
-        if (!in_array($role, $validRoles)) {
+        $validRoles = ['customer', 'employee', 'admin'];
+        if (!in_array(strtolower($role), $validRoles)) {
             return ['success' => false, 'message' => 'Invalid role.'];
         }
 
         // Create user
-        return $this->adminUserModel->createUser($fullName, $email, $password, $role);
+        return $this->adminUserModel->createUser($fullName, $email, $password, strtolower($role));
     }
 
     /**
@@ -111,13 +111,13 @@ class AdminUserController
             return ['success' => false, 'message' => 'Invalid email format.'];
         }
 
-        $validRoles = ['Customer', 'Employee', 'Administrator'];
-        if (!in_array($role, $validRoles)) {
+        $validRoles = ['customer', 'employee', 'admin'];
+        if (!in_array(strtolower($role), $validRoles)) {
             return ['success' => false, 'message' => 'Invalid role.'];
         }
 
         // Update user
-        return $this->adminUserModel->updateUser($userId, $fullName, $email, $role);
+        return $this->adminUserModel->updateUser($userId, $fullName, $email, strtolower($role));
     }
 
     /**
@@ -171,6 +171,7 @@ class AdminUserController
      */
     public function getRoles()
     {
-        return ['Customer', 'Employee', 'Administrator'];
+        // Modified to match the database roles
+        return ['customer', 'employee', 'admin'];
     }
 }
