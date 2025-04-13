@@ -35,9 +35,15 @@
                     <li>Complete access Thursday through Saturday</li>
                     <li>Admission to all performances across three days</li>
                     <li>Experience the full range of indoor festival events</li>
-                
                 </ul>
-                <a href="/jazz/tickets/weekend-pass" class="btn-buy">Best Value - Buy Now</a>
+                <form action="/reserve" method="POST" style="display: inline;">
+                    <input type="hidden" name="ticketType" value="WeekendPass">
+                    <input type="hidden" name="name" value="Jazz Festival Weekend Pass (Thu-Sat)">
+                    <input type="hidden" name="price" value="80">
+                    <!-- Thu-Sat dates -->
+                    <input type="hidden" name="date" value="2025-07-24,2025-07-25,2025-07-26">
+                    <button type="submit" class="btn-buy">Best Value - Buy Now</button>
+                </form>
             </div>
         </div>
         

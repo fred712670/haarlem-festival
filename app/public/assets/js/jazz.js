@@ -501,6 +501,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initialize the audio players when the DOM is loaded
   initializeAudioPlayers();
 
+  // Find the existing day pass modal code in jazz.js and replace it with this:
+
   // Day Pass Modal Functionality
   const modal = document.getElementById("dayPassModal");
   const dayPassBtn = document.getElementById("day-pass-btn");
@@ -508,7 +510,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const cancelBtn = document.querySelector(".btn-cancel");
   const confirmBtn = document.querySelector(".btn-confirm");
   const dayOptions = document.querySelectorAll('input[name="selectedDay"]');
-  const selectedDateInput = document.getElementById("selected-date-input");
   const dayPassForm = document.querySelector(".day-pass-form");
 
   if (dayPassBtn) {
@@ -549,28 +550,23 @@ document.addEventListener("DOMContentLoaded", function () {
         confirmBtn.disabled = false;
         confirmBtn.classList.remove("disabled");
       }
-
-      if (selectedDateInput) {
-        selectedDateInput.value = this.value;
-        console.log("Selected date:", this.value);
-      }
     });
   });
 
   // Add form submission handling
   if (dayPassForm) {
     dayPassForm.addEventListener("submit", function (e) {
-      if (!selectedDateInput || !selectedDateInput.value) {
+      const selectedDay = document.querySelector(
+        'input[name="selectedDay"]:checked'
+      );
+      if (!selectedDay) {
         e.preventDefault();
         alert("Please select a day first");
         return false;
       }
 
       // Form will submit naturally to /reserve endpoint
-      console.log(
-        "Submitting day pass form with date:",
-        selectedDateInput.value
-      );
+      console.log("Submitting day pass form with date:", selectedDay.value);
     });
   }
 });
