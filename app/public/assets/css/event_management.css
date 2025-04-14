@@ -1,0 +1,26 @@
+body {
+    background-color: #fff3db;
+}
+
+.section-heading {
+    background-color: #2a5d88;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.list-group-item {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.modal-content {
+    border-radius: 10px;
+}
+
+.btn-success, .btn-primary {
+    font-weight: bold;
+}

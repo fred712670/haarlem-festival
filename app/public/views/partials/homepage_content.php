@@ -13,7 +13,7 @@
             <div class="slide fade" data-link="<?= htmlspecialchars($slide['Link']) ?>" style="opacity: 1;">
                 <img src="/assets/img/home/<?= htmlspecialchars($slide['ImageName']) ?>" alt="<?= htmlspecialchars($slide['Title']) ?>">
                 <div class="text-box">
-                    <h2><?= htmlspecialchars($slide['Title']) ?></h2>
+                    <h2><?= html_entity_decode($slide['Title']) ?></h2>
                 </div>
             </div>
         <?php endforeach; ?>
@@ -25,13 +25,13 @@
 <!-- Welcome Section -->
 <section class="welcome-section">
     <h2><?= htmlspecialchars($welcome['Title'] ?? '') ?></h2>
-    <p><?= nl2br(htmlspecialchars($welcome['Content'] ?? '')) ?></p>
+    <p><?= nl2br(html_entity_decode($welcome['Content'] ?? '')) ?></p>
 </section>
 
 <!-- About Section -->
 <section class="about-section">
     <h2><?= htmlspecialchars($about['Title'] ?? '') ?></h2>
-    <p><?= nl2br(htmlspecialchars($about['Content'] ?? '')) ?></p>
+    <p><?= nl2br(html_entity_decode($about['Content'] ?? '')) ?></p>
 </section>
 
 <!-- Event Locations -->
@@ -73,7 +73,7 @@
                     <h3><?= htmlspecialchars($event['Title']) ?></h3>
                     <img src="/assets/img/home/<?= htmlspecialchars($event['ImageName']) ?>" alt="<?= htmlspecialchars($event['Title']) ?>" />
                 </div>
-                <p><?= htmlspecialchars($event['Content']) ?></p>
+                <p><?= html_entity_decode($event['Content']) ?></p>
             </div>
         <?php endforeach; ?>
     </div>
