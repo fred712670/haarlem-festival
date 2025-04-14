@@ -500,4 +500,73 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initialize the audio players when the DOM is loaded
   initializeAudioPlayers();
+
+  // Find the existing day pass modal code in jazz.js and replace it with this:
+
+  // Day Pass Modal Functionality
+  const modal = document.getElementById("dayPassModal");
+  const dayPassBtn = document.getElementById("day-pass-btn");
+  const closeBtn = document.querySelector(".day-pass-close");
+  const cancelBtn = document.querySelector(".btn-cancel");
+  const confirmBtn = document.querySelector(".btn-confirm");
+  const dayOptions = document.querySelectorAll('input[name="selectedDay"]');
+  const dayPassForm = document.querySelector(".day-pass-form");
+
+  if (dayPassBtn) {
+    dayPassBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (modal) {
+        modal.style.display = "block";
+        document.body.style.overflow = "hidden";
+      }
+    });
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener("click", function () {
+      modal.style.display = "none";
+      document.body.style.overflow = "auto";
+    });
+  }
+
+  if (cancelBtn) {
+    cancelBtn.addEventListener("click", function () {
+      modal.style.display = "none";
+      document.body.style.overflow = "auto";
+    });
+  }
+
+  window.addEventListener("click", function (event) {
+    if (event.target === modal) {
+      modal.style.display = "none";
+      document.body.style.overflow = "auto";
+    }
+  });
+
+  // Handle day selection
+  dayOptions.forEach(function (option) {
+    option.addEventListener("change", function () {
+      if (confirmBtn) {
+        confirmBtn.disabled = false;
+        confirmBtn.classList.remove("disabled");
+      }
+    });
+  });
+
+  // Add form submission handling
+  if (dayPassForm) {
+    dayPassForm.addEventListener("submit", function (e) {
+      const selectedDay = document.querySelector(
+        'input[name="selectedDay"]:checked'
+      );
+      if (!selectedDay) {
+        e.preventDefault();
+        alert("Please select a day first");
+        return false;
+      }
+
+      // Form will submit naturally to /reserve endpoint
+      console.log("Submitting day pass form with date:", selectedDay.value);
+    });
+  }
 });

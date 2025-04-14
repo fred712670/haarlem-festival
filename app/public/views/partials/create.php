@@ -60,11 +60,11 @@
                             <select class="form-select" id="role" name="role" required>
                                 <option value="" selected disabled>Select a role</option>
                                 <?php foreach ($roles as $role): ?>
-                                    <option value="<?= htmlspecialchars($role) ?>" 
-                                            <?= (isset($formData['role']) && $formData['role'] === $role) ? 'selected' : '' ?>>
-                                        <?= htmlspecialchars($role) ?>
-                                    </option>
-                                <?php endforeach; ?>
+ *     <option value="<?= htmlspecialchars($role) ?>" 
+ *             <?= (isset($formData['role']) && $formData['role'] === $role) ? 'selected' : '' ?>>
+ *         <?= htmlspecialchars(ucfirst($role)) ?>
+ *     </option>
+ * <?php endforeach; ?>
                             </select>
                         </div>
                         

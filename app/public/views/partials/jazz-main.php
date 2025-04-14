@@ -1,12 +1,22 @@
+<?php
+?>
 <link rel="stylesheet" href="/assets/css/jazz.css">
 <link rel="stylesheet" href="/assets/css/style.css">
 
 <!-- Main Jazz Content -->
 <section class="jazz-hero" role="banner" aria-labelledby="jazz-hero-title">
     <div class="jazz-hero-content">
-        <h1 id="jazz-hero-title">HAARLEM-JAZZ FESTIVAL 2025</h1>
-        <p>From THURSDAY 24 JULY Till SUNDAY 27 JULY</p>
-        <a href="#tickets" class="btn-ticket" aria-label="Get Your Tickets Now">Get Your Tickets Now</a>
+        <?php if (isset($content) && isset($content['hero_title'])): ?>
+            <h1 id="jazz-hero-title"><?= htmlspecialchars($content['hero_title']) ?></h1>
+        <?php endif; ?>
+        
+        <?php if (isset($content) && isset($content['hero_dates'])): ?>
+            <p><?= htmlspecialchars($content['hero_dates']) ?></p>
+        <?php endif; ?>
+        
+        <?php if (isset($content) && isset($content['ticket_button'])): ?>
+            <a href="#tickets" class="btn-ticket" aria-label="Get Tickets"><?= htmlspecialchars($content['ticket_button']) ?></a>
+        <?php endif; ?>
     </div>
 </section>
 
@@ -14,7 +24,9 @@
 <section class="jazz-about" id="about" aria-labelledby="about-title">
     <div class="container">
         <h2 id="about-title">About The Event</h2>
-        <p>Haarlem Jazz brings world-class jazz performances to the heart of Haarlem from July 24-27, 2025. Featuring both established artists and emerging talents, the festival transforms Het Patronaat and Grote Markt into vibrant venues where jazz comes alive.</p>
+        <?php if (isset($content) && isset($content['about'])): ?>
+            <p><?= htmlspecialchars($content['about']) ?></p>
+        <?php endif; ?>
     </div>
 </section>
 
@@ -23,19 +35,34 @@
     <div class="container">
         <h2 id="artists-title">Meet The Artists</h2>
         <div class="artists-grid" role="list">
-            <?php foreach ($artists as $artist): ?>
-                <div class="artist-card" role="listitem">
-                    <div class="artist-image">
-                        <img src="/assets/img/jazz/<?= htmlspecialchars($artist['image']) ?>" alt="Photo of <?= htmlspecialchars($artist['name']) ?>">
-                        <div class="artist-preview">
-                            <p><?= htmlspecialchars($artist['short_description']) ?></p>
-                            <a href="/jazz/artist/<?= htmlspecialchars($artist['id']) ?>" class="read-more" aria-label="Read more about <?= htmlspecialchars($artist['name']) ?>">Read More</a>
+            <?php if (isset($artists) && is_array($artists) && !empty($artists)): ?>
+                <?php foreach ($artists as $artist): ?>
+                    <div class="artist-card" role="listitem">
+                        <div class="artist-image">
+                            <?php if (isset($artist['image'])): ?>
+                                <img src="/assets/img/jazz/<?= htmlspecialchars($artist['image']) ?>" 
+                                     alt="Photo of <?= htmlspecialchars($artist['name'] ?? '') ?>">
+                            <?php endif; ?>
+                            
+                            <div class="artist-preview">
+                                <?php if (isset($artist['short_description'])): ?>
+                                    <p><?= htmlspecialchars($artist['short_description']) ?></p>
+                                <?php endif; ?>
+                                
+                                <?php if (isset($artist['id'])): ?>
+                                    <a href="/jazz/artist/<?= htmlspecialchars($artist['id']) ?>" 
+                                       class="read-more" 
+                                       aria-label="Read more about <?= htmlspecialchars($artist['name'] ?? '') ?>">Read More</a>
+                                <?php endif; ?>
+                            </div>
                         </div>
+                        
+                        <?php if (isset($artist['name'])): ?>
+                            <h3><?= htmlspecialchars($artist['name']) ?></h3>
+                        <?php endif; ?>
                     </div>
-                    <h3><?= htmlspecialchars($artist['name']) ?></h3>
-                    
-                </div>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
     </div>
 </section>

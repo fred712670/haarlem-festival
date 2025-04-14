@@ -38,11 +38,11 @@
                     <select class="form-select" id="role" name="role">
                         <option value="">All Roles</option>
                         <?php foreach ($viewData['roles'] as $role): ?>
-                            <option value="<?= htmlspecialchars($role) ?>" 
-                                <?= ($viewData['filters']['role'] === $role) ? 'selected' : '' ?>>
-                                <?= htmlspecialchars($role) ?>
-                            </option>
-                        <?php endforeach; ?>
+ *     <option value="<?= htmlspecialchars($role) ?>" 
+ *         <?= ($viewData['filters']['role'] === $role) ? 'selected' : '' ?>>
+ *         <?= htmlspecialchars(ucfirst($role)) ?>
+ *     </option>
+ * <?php endforeach; ?>
                     </select>
                 </div>
                 
@@ -118,7 +118,7 @@
                                 <tr>
                                     <td><?= htmlspecialchars($user['FullName']) ?></td>
                                     <td><?= htmlspecialchars($user['Email']) ?></td>
-                                    <td><?= htmlspecialchars($user['Role']) ?></td>
+                                    <td><?= htmlspecialchars(ucfirst($user['Role'])) ?></td>
                                     <td><?= htmlspecialchars($user['RegisteredDate']) ?></td>
                                     <td>
                                         <div class="btn-group" role="group">
