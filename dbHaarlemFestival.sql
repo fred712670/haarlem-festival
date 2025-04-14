@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Apr 08, 2025 at 12:49 PM
+-- Generation Time: Apr 14, 2025 at 12:08 PM
 -- Server version: 11.5.2-MariaDB-ubu2404
 -- PHP Version: 8.2.25
 
@@ -52,7 +52,11 @@ CREATE TABLE `Content` (
 INSERT INTO `Content` (`ContentId`, `EventType`, `Section`, `Content`) VALUES
 (1, 'history', 'overview', 'Haarlem, one of the Netherlands\'s most picturesque cities, is steeped in history and culture. From its cobblestone streets to grand churches, Haarlem offers a glimpse into the past. This walking tour takes you through the city\'s iconic landmarks, blending stories of its vibrant history with breathtaking architecture.'),
 (2, 'history', 'event_detail', 'Embark on an unforgettable journey through Haarlem\'s historic streets with our guided walking tour. This 2.5-hour experience includes visits to the city\'s most renowned landmarks and a 15-minute refreshment break. Perfect for history enthusiasts and curious travelers alike, this tour provides an intimate glimpse into Haarlem\'s cultural and architectural treasures.'),
-(3, 'dance', 'aboutUs', 'At Haarlem Dance, we showcase top-tier dance, house, techno, and trance acts in iconic venues in and around the city of Haarlem. Six world-class DJs will thrill audiences with epic Back2Back sessions on big stages and intimate experimental club sets. So don’t miss out — hop in, join the vibe, and dance the night away.');
+(3, 'dance', 'aboutUs', 'At Haarlem Dance, we showcase top-tier dance, house, techno, and trance acts in iconic venues in and around the city of Haarlem. Six world-class DJs will thrill audiences with epic Back2Back sessions on big stages and intimate experimental club sets. So don’t miss out — hop in, join the vibe, and dance the night away.'),
+(4, 'jazz', 'hero_title', 'HAARLEM-JAZZ FESTIVAL 2025'),
+(5, 'jazz', 'hero_dates', 'From THURSDAY 24 JULY Till SUNDAY 27 JULY'),
+(6, 'jazz', 'about', 'Haarlem Jazz brings world-class jazz performances to the heart of Haarlem from July 24-27, 2025. Featuring both established artists and emerging talents, the festival transforms Het Patronaat and Grote Markt into vibrant venues where jazz comes alive.'),
+(7, 'jazz', 'ticket_button', 'Get Your Tickets Now');
 
 -- --------------------------------------------------------
 
@@ -402,30 +406,30 @@ CREATE TABLE `JazzEvent` (
 --
 
 INSERT INTO `JazzEvent` (`JazzEventId`, `EventId`, `Description`, `Location`, `StartDateTime`, `TimeSlot`, `DurationByMinute`, `TicketsAvailable`, `Price`) VALUES
-(1, 21, 'Gumbo Kings performance at Patronaat', '1', '2025-07-27 18:00:00', 'Evening', 60, 300, 15),
-(2, 22, 'Evolve performance at Patronaat', '1', '2025-07-27 19:30:00', 'Evening', 60, 300, 15),
-(3, 23, 'Ntjam Rosie performance at Patronaat', '1', '2025-07-27 21:00:00', 'Evening', 60, 300, 15),
-(4, 24, 'Wicked Jazz Sounds performance at Patronaat', '2', '2025-07-27 18:00:00', 'Evening', 60, 200, 10),
-(5, 25, 'Wouter Hamel performance at Patronaat', '2', '2025-07-27 19:30:00', 'Evening', 60, 200, 10),
-(6, 26, 'Jonna Frazer performance at Patronaat', '2', '2025-07-27 21:00:00', 'Evening', 60, 200, 10),
-(7, 27, 'Karsu performance at Patronaat', '1', '2025-07-28 18:00:00', 'Evening', 60, 300, 15),
-(8, 28, 'Uncle Sue performance at Patronaat', '1', '2025-07-28 19:30:00', 'Evening', 60, 300, 15),
-(9, 29, 'Chris Allen performance at Patronaat', '1', '2025-07-28 21:00:00', 'Evening', 60, 300, 15),
-(10, 30, 'Myles Sanko performance at Patronaat', '2', '2025-07-28 18:00:00', 'Evening', 60, 200, 10),
-(11, 31, 'Ilse Huizinga performance at Patronaat', '2', '2025-07-28 19:30:00', 'Evening', 60, 200, 10),
-(12, 32, 'Eric Vloeimans and Hotspot! performance at Patronaat', '2', '2025-07-28 21:00:00', 'Evening', 60, 200, 10),
-(13, 33, 'Gare du Nord performance at Patronaat', '1', '2025-07-29 18:00:00', 'Evening', 60, 300, 15),
-(14, 34, 'Rilan & The Bombadiers performance at Patronaat', '1', '2025-07-29 19:30:00', 'Evening', 60, 300, 15),
-(15, 35, 'Soul Six performance at Patronaat', '1', '2025-07-29 21:00:00', 'Evening', 60, 300, 15),
-(16, 36, 'Han Bennink performance at Patronaat', '3', '2025-07-29 18:00:00', 'Evening', 60, 150, 10),
-(17, 37, 'The Nordanians performance at Patronaat', '3', '2025-07-29 19:30:00', 'Evening', 60, 150, 10),
-(18, 38, 'Lilith Merlot performance at Patronaat', '3', '2025-07-29 21:00:00', 'Evening', 60, 150, 10),
-(19, 39, 'Ruis Soundsystem performance at Grote Markt', '4', '2025-07-30 15:00:00', 'Afternoon', 60, 1000, 0),
-(20, 40, 'Wicked Jazz Sounds performance at Grote Markt', '4', '2025-07-30 16:00:00', 'Afternoon', 60, 1000, 0),
-(21, 41, 'Evolve performance at Grote Markt', '4', '2025-07-30 17:00:00', 'Afternoon', 60, 1000, 0),
-(22, 42, 'The Nordanians performance at Grote Markt', '4', '2025-07-30 18:00:00', 'Evening', 60, 1000, 0),
-(23, 43, 'Gumbo Kings performance at Grote Markt', '4', '2025-07-30 19:00:00', 'Evening', 60, 1000, 0),
-(24, 44, 'Gare du Nord performance at Grote Markt', '4', '2025-07-30 20:00:00', 'Evening', 60, 1000, 0),
+(1, 21, 'Gumbo Kings performance at Patronaat', '1', '2025-07-24 18:00:00', '18:00 - 19:00', 60, 300, 15),
+(2, 22, 'Evolve performance at Patronaat', '1', '2025-07-24 19:30:00', '19:30 - 20:30', 60, 300, 15),
+(3, 23, 'Ntjam Rosie performance at Patronaat', '1', '2025-07-24 21:00:00', '21:00 - 22:00', 60, 300, 15),
+(4, 24, 'Wicked Jazz Sounds performance at Patronaat', '2', '2025-07-24 18:00:00', '18:00 - 19:00', 60, 200, 10),
+(5, 25, 'Wouter Hamel performance at Patronaat', '2', '2025-07-24 19:30:00', '19:30 - 20:30', 60, 200, 10),
+(6, 26, 'Jonna Frazer performance at Patronaat', '2', '2025-07-24 21:00:00', '21:00 - 22:00', 60, 200, 10),
+(7, 27, 'Karsu performance at Patronaat', '1', '2025-07-25 18:00:00', '18:00 - 19:00', 60, 300, 15),
+(8, 28, 'Uncle Sue performance at Patronaat', '1', '2025-07-25 19:30:00', '19:30 - 20:30', 60, 300, 15),
+(9, 29, 'Chris Allen performance at Patronaat', '1', '2025-07-25 21:00:00', '21:00 - 22:00', 60, 300, 15),
+(10, 30, 'Myles Sanko performance at Patronaat', '2', '2025-07-25 18:00:00', '18:00 - 19:00', 60, 200, 10),
+(11, 31, 'Ilse Huizinga performance at Patronaat', '2', '2025-07-25 19:30:00', '19:30 - 20:30', 60, 200, 10),
+(12, 32, 'Eric Vloeimans and Hotspot! performance at Patronaat', '2', '2025-07-25 21:00:00', '21:00 - 22:00', 60, 200, 10),
+(13, 33, 'Gare du Nord performance at Patronaat', '1', '2025-07-26 18:00:00', '18:00 - 19:00', 60, 300, 15),
+(14, 34, 'Rilan & The Bombadiers performance at Patronaat', '1', '2025-07-26 19:30:00', '19:30 - 20:30', 60, 300, 15),
+(15, 35, 'Soul Six performance at Patronaat', '1', '2025-07-26 21:00:00', '21:00 - 22:00', 60, 300, 15),
+(16, 36, 'Han Bennink performance at Patronaat', '3', '2025-07-26 18:00:00', '18:00 - 19:00', 60, 150, 10),
+(17, 37, 'The Nordanians performance at Patronaat', '3', '2025-07-26 19:30:00', '19:30 - 20:30', 60, 150, 10),
+(18, 38, 'Lilith Merlot performance at Patronaat', '3', '2025-07-26 21:00:00', '21:00 - 22:00', 60, 150, 10),
+(19, 39, 'Ruis Soundsystem performance at Grote Markt', '4', '2025-07-27 15:00:00', '15:00 - 16:00', 60, 1000, 0),
+(20, 40, 'Wicked Jazz Sounds performance at Grote Markt', '4', '2025-07-27 16:00:00', '16:00 - 17:00', 60, 1000, 0),
+(21, 41, 'Evolve performance at Grote Markt', '4', '2025-07-27 17:00:00', '17:00 - 18:00', 60, 1000, 0),
+(22, 42, 'The Nordanians performance at Grote Markt', '4', '2025-07-27 18:00:00', '18:00 - 19:00', 60, 1000, 0),
+(23, 43, 'Gumbo Kings performance at Grote Markt', '4', '2025-07-27 19:00:00', '19:00 - 20:00', 60, 1000, 0),
+(24, 44, 'Gare du Nord performance at Grote Markt', '4', '2025-07-27 20:00:00', '20:00 - 21:00', 60, 1000, 0),
 (25, 45, 'Gumbo Kings at Haarlem Jazz', '1', '2025-07-27 19:00:00', 'Evening', 90, 300, 25),
 (26, 46, 'Evolve at Haarlem Jazz', '2', '2025-07-27 21:00:00', 'Evening', 90, 200, 20),
 (27, 47, 'Ntjam Rosie at Haarlem Jazz', '1', '2025-07-28 19:00:00', 'Evening', 90, 300, 25),
@@ -447,6 +451,7 @@ CREATE TABLE `JazzPass` (
   `DisplayName` varchar(100) NOT NULL,
   `ShortDescription` varchar(255) NOT NULL,
   `Description` text NOT NULL,
+  `Dates` varchar(255) DEFAULT NULL,
   `BasePrice` decimal(10,2) NOT NULL DEFAULT 0.00,
   `Featured` tinyint(1) NOT NULL DEFAULT 0,
   `CreatedAt` timestamp NULL DEFAULT current_timestamp(),
@@ -457,19 +462,21 @@ CREATE TABLE `JazzPass` (
 -- Dumping data for table `JazzPass`
 --
 
-INSERT INTO `JazzPass` (`PassId`, `PassType`, `DisplayName`, `ShortDescription`, `Description`, `BasePrice`, `Featured`, `CreatedAt`, `UpdatedAt`) VALUES
-(1, 'Free', 'Sunday Performances', 'All performances at Grote Markt on Sunday', 'Free for all visitors. No reservation needed.', 0.00, 0, '2025-03-25 03:25:58', '2025-03-25 03:25:58'),
-(2, 'SingleUse', 'Single Performance', 'Access to a single performance', 'Prices vary by venue: Main Hall €15, Second & Third Hall €10, Grote Markt free.', 15.00, 0, '2025-03-25 03:25:58', '2025-03-25 03:25:58'),
-(3, 'DayPass', 'Day Pass', 'Access to all venues for one day', 'All-Access pass for this day €35,00. Choose Thursday, Friday, or Saturday.', 35.00, 0, '2025-03-25 03:25:58', '2025-03-25 03:25:58'),
-(4, 'WeekendPass', 'Weekend Pass (Thu-Sat)', 'Access to all performances Thursday through Saturday', 'All-Access pass for Thu, Fri, Sat: €80,00.', 80.00, 1, '2025-03-25 03:25:58', '2025-03-25 03:25:58');
+INSERT INTO `JazzPass` (`PassId`, `PassType`, `DisplayName`, `ShortDescription`, `Description`, `Dates`, `BasePrice`, `Featured`, `CreatedAt`, `UpdatedAt`) VALUES
+(1, 'Free', 'Sunday Performances', 'All performances at Grote Markt on Sunday', 'Sunday Performances - Free Entry||All performances at Grote Markt on Sunday, July 27th are free for all visitors. No reservation needed.||Join us for a fantastic day of jazz in the heart of Haarlem!', '2025-07-27', 0.00, 0, '2025-03-25 03:25:58', '2025-04-13 23:33:49'),
+(2, 'SingleUse', 'Single Performance', 'Access to a single performance', 'Select individual performances||Main Hall performances: €15 per show||Second & Third Hall: €10 per show||Flexible scheduling to fit your plans', NULL, 15.00, 0, '2025-03-25 03:25:58', '2025-04-13 23:09:27'),
+(3, 'DayPass', 'Day Pass', 'Access to all venues for one day', 'Full access to all venues for one day||Choose Thursday, Friday, or Saturday||Access to all performances on your chosen day||Convenient all-in-one ticket', '2025-07-24,2025-07-25,2025-07-26', 35.00, 0, '2025-03-25 03:25:58', '2025-04-13 23:33:49'),
+(4, 'WeekendPass', 'Weekend Pass (Thu-Sat)', 'Access to all performances Thursday through Saturday', 'Complete access Thursday through Saturday||Admission to all performances across three days||Experience the full range of indoor festival events', '2025-07-24,2025-07-25,2025-07-26', 80.00, 1, '2025-03-25 03:25:58', '2025-04-13 23:33:49');
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `JazzPerformance`
 --
 
 CREATE TABLE `JazzPerformance` (
-  `JazzEventId` int(11) DEFAULT NULL,
-  `ArtistId` int(11) DEFAULT NULL
+  `JazzEventId` int(11) NOT NULL,
+  `ArtistId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 --
@@ -647,7 +654,10 @@ INSERT INTO `Order` (`OrderId`, `UserId`, `Amount`, `Status`, `OrderDate`, `Phon
 (3, 1, NULL, NULL, '2025-03-25 12:32:05', '0647629759', 'Strada Marului, nr 5'),
 (4, 1, 0, 'Pending', '2025-03-25 12:39:35', '0647629759', 'Strada Marului, nr 5'),
 (5, 1, 0, 'Pending', '2025-03-25 12:41:47', '0647629759', 'Strada Marului, nr 5'),
-(10, 2, NULL, NULL, '2025-04-02 14:48:13', 'fred', '123432142');
+(10, 2, NULL, NULL, '2025-04-02 14:48:13', 'fred', '123432142'),
+(11, 3, NULL, NULL, '2025-04-13 22:29:07', NULL, NULL),
+(12, 3, NULL, NULL, '2025-04-13 22:30:20', NULL, NULL),
+(13, 3, NULL, NULL, '2025-04-13 22:30:47', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -703,6 +713,21 @@ CREATE TABLE `Ticket` (
   `EventId` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
+--
+-- Dumping data for table `Ticket`
+--
+
+INSERT INTO `Ticket` (`TicketId`, `OrderId`, `Price`, `PassType`, `IsValid`, `EventId`) VALUES
+(3, 11, 18, NULL, 1, 10),
+(4, 11, 18, NULL, 1, 10),
+(5, 11, 18, NULL, 1, 10),
+(6, 11, 18, NULL, 1, 10),
+(7, 12, 0, NULL, 1, 1),
+(8, 12, 0, NULL, 1, 1),
+(9, 12, 0, NULL, 1, 1),
+(10, 13, 18, NULL, 1, 10),
+(11, 13, 18, NULL, 1, 10);
+
 -- --------------------------------------------------------
 
 --
@@ -745,16 +770,18 @@ CREATE TABLE `User` (
   `Role` varchar(50) DEFAULT NULL,
   `VerifyToken` varchar(100) DEFAULT NULL,
   `VerifyStatus` tinyint(4) DEFAULT 0,
-  `ResetTokenExpires` datetime DEFAULT NULL
+  `ResetTokenExpires` datetime DEFAULT NULL,
+  `RegisteredDate` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 --
 -- Dumping data for table `User`
 --
 
-INSERT INTO `User` (`UserId`, `FullName`, `Email`, `Password`, `Role`, `VerifyToken`, `VerifyStatus`, `ResetTokenExpires`) VALUES
-(1, 'minudenisa29@gmail.com', 'minudenisa29@gmail.com', '$2y$12$jCeTK/mwIeCoFbYa.oLjkuPrwuio8xiOmgrfyKGwZk/KyaFjf4MEm', 'customer', '5dab23b6dc70d349c9d6d898d5eeeada', 0, NULL),
-(2, 'fred', 'fred@gmail.com', '$2y$12$GT9ax8mzyqThc.wksKuy8OwasAKug4NBbMcjE/FW/XGS2LH0ZrBPm', 'customer', '2721408a3149f413b2f14143e9ab32a4', 0, NULL);
+INSERT INTO `User` (`UserId`, `FullName`, `Email`, `Password`, `Role`, `VerifyToken`, `VerifyStatus`, `ResetTokenExpires`, `RegisteredDate`) VALUES
+(1, 'minudenisa29@gmail.com', 'minudenisa29@gmail.com', '$2y$12$jCeTK/mwIeCoFbYa.oLjkuPrwuio8xiOmgrfyKGwZk/KyaFjf4MEm', 'customer', '5dab23b6dc70d349c9d6d898d5eeeada', 0, NULL, '2025-04-13 11:58:28'),
+(2, 'fred', 'fred@gmail.com', '$2y$12$GT9ax8mzyqThc.wksKuy8OwasAKug4NBbMcjE/FW/XGS2LH0ZrBPm', 'customer', '2721408a3149f413b2f14143e9ab32a4', 0, NULL, '2025-04-13 11:58:28'),
+(3, 'Admin', 'aldrobe.nl@gmail.com', '$2y$12$tqDTmdZDeZQZIbP/dXIsIu1ok7DjNZTDX1QrOPXUTdjYHZPtMAvW6', 'admin', NULL, 0, NULL, '2025-04-13 11:58:28');
 
 -- --------------------------------------------------------
 
@@ -873,6 +900,7 @@ ALTER TABLE `JazzPass`
 -- Indexes for table `JazzPerformance`
 --
 ALTER TABLE `JazzPerformance`
+  ADD PRIMARY KEY (`JazzEventId`,`ArtistId`),
   ADD KEY `JazzEventId` (`JazzEventId`),
   ADD KEY `ArtistId` (`ArtistId`);
 
@@ -999,7 +1027,7 @@ ALTER TABLE `JazzPass`
 -- AUTO_INCREMENT for table `Order`
 --
 ALTER TABLE `Order`
-  MODIFY `OrderId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `OrderId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `Restaurant`
@@ -1011,13 +1039,13 @@ ALTER TABLE `Restaurant`
 -- AUTO_INCREMENT for table `Ticket`
 --
 ALTER TABLE `Ticket`
-  MODIFY `TicketId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `TicketId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `User`
 --
 ALTER TABLE `User`
-  MODIFY `UserId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `UserId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
@@ -1096,12 +1124,7 @@ ALTER TABLE `Order`
 --
 ALTER TABLE `Restaurant`
   ADD CONSTRAINT `Restaurant_ibfk_1` FOREIGN KEY (`EventId`) REFERENCES `Event` (`EventId`);
---
--- Constraints for table `Jazz peformance`
-ALTER TABLE `JazzPerformance` 
-  MODIFY `JazzEventId` int(11) NOT NULL,
-  MODIFY `ArtistId` int(11) NOT NULL,
-  ADD PRIMARY KEY (`JazzEventId`, `ArtistId`);
+
 --
 -- Constraints for table `Ticket`
 --
