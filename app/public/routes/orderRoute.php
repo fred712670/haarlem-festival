@@ -8,8 +8,13 @@ Route::add('/create/order', function()  {
 
     $orderController->createOrder();
     
-    //header('Location: /profile');
+    header('Location: /profile');
 });
+
+Route::add('/download/ticket', function() {
+    $controller = new OrderController();
+    $controller->downloadTicket(); 
+}, 'get');
 
 Route::add('/payment', function () {
     require_once __DIR__ . '/../views/pages/payment.php';
@@ -22,6 +27,7 @@ Route::add('/process-payment', function () {
 }, 'post');
 
 Route::add('/ticket/scanner', function () {
+    
     require_once __DIR__ . '/../views/pages/ticketValidation.php';
 }, 'get');
 

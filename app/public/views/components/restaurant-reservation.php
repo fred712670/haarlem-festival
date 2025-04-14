@@ -16,7 +16,7 @@ function renderRestaurantReservation($restaurant) {
                 <input type="hidden" name="eventId" value="<?= htmlspecialchars($restaurant['EventId']) ?>">
                 <input type="hidden" name="name" value="<?= htmlspecialchars($restaurant['Name']) ?>">
                 <input type="hidden" name="address" value="<?= htmlspecialchars($restaurant['Address']) ?>">
-                <input type="hidden" name="ticketType" value="SingleUse">
+                <input type="hidden" name="ticketType" value="Reservation">
 
                 <label for="guests">Number of guests:</label>
                 <input type="number" id="guests" name="guests" min="1" max="12"<?= $restaurant['Seats'] ?> value="2">
@@ -26,8 +26,8 @@ function renderRestaurantReservation($restaurant) {
 
                 <label for="time">Select time:</label>
                 <select id="time" name="time">
-                    <option value="12:00-14:30">12:00 - 14:30</option>
-                    <option value="18:30-21:00">18:30 - 21:00</option>
+                    <option value="12:00">12:00 - 14:30</option>
+                    <option value="18:30">18:30 - 21:00</option>
                 </select>
 
                 <label for="requests">Special Requests:</label>
