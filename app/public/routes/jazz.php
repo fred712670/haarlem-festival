@@ -38,6 +38,9 @@ Route::add('/jazz/artist/([0-9]+)/([a-zA-Z0-9-]+)', function ($id, $name) {
     // Get the schedule data organized by days
     $schedule = $controller->getSchedule($id);
     
+    // Add this line to get ticket info
+    $ticketInfo = $controller->getTicketInfo();
+    
     // Set artist name for the schedule heading
     $artistName = $artist['name'];
     

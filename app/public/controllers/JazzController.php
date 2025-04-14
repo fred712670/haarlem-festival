@@ -229,4 +229,16 @@ public function getJazzContent($section = null)
         error_log("Error fetching jazz content: " . $e->getMessage());
         return $section !== null ? '' : [];
     }
-}}
+}
+
+
+/**
+ * Get ticket information for the festival
+ * 
+ * @return array Ticket types and pricing
+ */
+public function getTicketInfo() {
+    return $this->jazzModel->getTicketInfo();
+}
+}
+
