@@ -319,4 +319,29 @@ public function getJazzContent($section = null)
         return $section !== null ? '' : [];
     }
 }
+/**
+ * Get festival dates from jazz events
+ * 
+ * @return array Festival dates
+ */
+public function getFestivalDates()
+{
+    try {
+        $query = "SELECT 
+                    DISTINCT DATE(StartDateTime) as date,
+                    DAYNAME(StartDateTime) as day_name,
+                    DAY(StartDateTime) as day_number,
+                    MONTHNAME(StartDateTime) as month_name
+                FROM JazzEvent
+                ORDER BY StartDateTime";
+        
+        $stmt = self::$pdo->prepare($query);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        error_log("Error fetching dates: " . $e->getMessage());
+        return [];
+    }
+}
 }

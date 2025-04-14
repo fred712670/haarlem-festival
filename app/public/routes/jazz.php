@@ -1,4 +1,10 @@
 <?php
+/**
+ * Jazz Festival Routes
+ * 
+ * This file defines all routes related to the Jazz Festival section of the website,
+ * including both web page routes and API endpoints for AJAX functionality.
+ */
 require_once __DIR__ . '/../lib/Route.php';
 require_once __DIR__ . '/../controllers/JazzController.php';
 require_once __DIR__ . '/../controllers/ReservationController.php';
@@ -8,14 +14,12 @@ Route::add('/jazz', function () {
     $controller = new JazzController();
     $data = $controller->index(); // Fetch all jazz data
 
-     //Extract data for the view
-     $artists = $data['artists'];
-     $schedule = $data['schedule'];
-     $venues = $data['venues'];
-     $ticketInfo = $data['ticketInfo'];
-     $content = $data['content'];
-    
-    
+    // Extract data for the view
+    $artists = $data['artists'];
+    $schedule = $data['schedule'];
+    $venues = $data['venues'];
+    $ticketInfo = $data['ticketInfo'];
+    $content = $data['content'];
     // Set a flag to indicate this is the main page (not artist detail)
     $isArtistPage = false;
     
@@ -23,9 +27,9 @@ Route::add('/jazz', function () {
 }, 'get');
 
 // Individual artist details page route
-Route::add('/jazz/artist/([0-9]+)/([a-zA-Z0-9-]+)', function ($id, $name) {
+Route::add('/jazz/artist/([0-9]+)', function ($id) {
     $controller = new JazzController();
-    $artist = $controller->showArtist($id); // Still find by ID
+    $artist = $controller->showArtist($id);
     
     if (!$artist) {
         header("Location: /jazz");
@@ -51,30 +55,44 @@ Route::add('/jazz/artist/([0-9]+)/([a-zA-Z0-9-]+)', function ($id, $name) {
     require_once __DIR__ . '/../views/partials/jazz-artist.php';
 }, 'get');
 
-// Keep the old route for backward compatibility
-Route::add('/jazz/artist/([0-9]+)', function ($id) {
+// API endpoint to get all jazz artists as JSON
+Route::add('/api/jazz/artists', function() {
+    $controller = new JazzController();
+    $artists = $controller->getAllArtists();
+    
+    header('Content-Type: application/json');
+    echo json_encode($artists);
+}, 'get');
+
+// API endpoint to get a specific artist's data as JSON
+Route::add('/api/jazz/artist/([0-9]+)', function($id) {
     $controller = new JazzController();
     $artist = $controller->showArtist($id);
     
+    header('Content-Type: application/json');
     if (!$artist) {
-        header("Location: /jazz");
-        exit();
+        http_response_code(404);
+        echo json_encode(['error' => 'Artist not found']);
+    } else {
+        echo json_encode($artist);
     }
-    
-    // Create a URL-friendly version of the artist name (slug)
-    $nameSlug = strtolower(str_replace(' ', '-', preg_replace('/[^a-zA-Z0-9\s]/', '', $artist['name'])));
-    
-    // Redirect to the URL with both ID and name
-    header("Location: /jazz/artist/$id/$nameSlug");
-    exit();
 }, 'get');
-Route::add('/jazz', function () {
+
+// API endpoint to get festival schedule as JSON
+Route::add('/api/jazz/schedule', function() {
     $controller = new JazzController();
-    $data = $controller->index(); // Fetch all jazz data
+    $artistId = isset($_GET['artist']) ? intval($_GET['artist']) : null;
+    $schedule = $controller->getSchedule($artistId);
     
-    // Extract data for the view
-    extract($data); // This creates variables from the array keys
+    header('Content-Type: application/json');
+    echo json_encode($schedule);
+}, 'get');
+
+// API endpoint to get ticket information as JSON
+Route::add('/api/jazz/tickets', function() {
+    $controller = new JazzController();
+    $tickets = $controller->getTicketInfo();
     
-    // Include the page view
-    require_once __DIR__ . '/../views/pages/jazz.php';
+    header('Content-Type: application/json');
+    echo json_encode($tickets);
 }, 'get');

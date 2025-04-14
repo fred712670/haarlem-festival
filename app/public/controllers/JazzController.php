@@ -70,6 +70,14 @@ public function index() {
         
         return $artist;
     }
+    /**
+ * Get all jazz artists
+ * 
+ * @return array All jazz artists data
+ */
+public function getAllArtists() {
+    return $this->jazzModel->getAllArtists();
+}
     
     /**
      * Ensure all required sections exist in artist data
@@ -130,35 +138,29 @@ public function index() {
         return $scheduleData;
     }
     
-    /**
-     * Create an empty schedule structure with festival days
-     * 
-     * @return array Empty schedule structure
-     */
-    private function createEmptySchedule() {
-        // we still need to add a table to database for the days of festival and the events
-        $festivalDates = [
-            ['date' => '2025-07-24', 'day_name' => 'Thursday', 'day_number' => '24', 'month_name' => 'July'],
-            ['date' => '2025-07-25', 'day_name' => 'Friday', 'day_number' => '25', 'month_name' => 'July'],
-            ['date' => '2025-07-26', 'day_name' => 'Saturday', 'day_number' => '26', 'month_name' => 'July'],
-            ['date' => '2025-07-27', 'day_name' => 'Sunday', 'day_number' => '27', 'month_name' => 'July']
+   /**
+ * Create an empty schedule structure with festival days
+ * 
+ * @return array Empty schedule structure
+ */
+private function createEmptySchedule() {
+    // Get festival dates directly from the database
+    $festivalDates = $this->jazzModel->getFestivalDates();
+    
+    $emptySchedule = [];
+    foreach ($festivalDates as $day) {
+        $dateKey = $day['date'];
+        $emptySchedule[$dateKey] = [
+            'date' => $day['date'],
+            'day_name' => $day['day_name'],
+            'day_number' => $day['day_number'],
+            'month_name' => $day['month_name'],
+            'events' => []
         ];
-        
-        $emptySchedule = [];
-        foreach ($festivalDates as $day) {
-            $dateKey = $day['date'];
-            $emptySchedule[$dateKey] = [
-                'date' => $day['date'],
-                'day_name' => $day['day_name'],
-                'day_number' => $day['day_number'],
-                'month_name' => $day['month_name'],
-                'events' => []
-            ];
-        }
-        
-        return $emptySchedule;
     }
     
+    return $emptySchedule;
+}
     /**
      * Get featured artists for the homepage
      * 
@@ -239,6 +241,22 @@ public function getJazzContent($section = null)
  */
 public function getTicketInfo() {
     return $this->jazzModel->getTicketInfo();
+}
+public function showArtistPage($id) {
+    $artist = $this->showArtist($id);
+    
+    if (!$artist) {
+        return null;
+    }
+    
+    return [
+        'artist' => $artist,
+        'venues' => $this->getVenues(),
+        'schedule' => $this->getSchedule($id),
+        'ticketInfo' => $this->getTicketInfo(),
+        'artistName' => $artist['name'],
+        'isArtistPage' => true
+    ];
 }
 }
 
