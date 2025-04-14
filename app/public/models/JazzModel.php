@@ -269,4 +269,54 @@ class JazzModel extends BaseModel
             return [];
         }
     }
+/**
+ * Get content for Jazz Festival
+ * 
+ * @param string|null $section Specific section to retrieve (optional)
+ * @return array Content data
+ */
+public function getJazzContent($section = null)
+{
+    try {
+        $query = "SELECT 
+                    ContentId as id,
+                    Section as section,
+                    Content as content
+                FROM Content
+                WHERE EventType = 'jazz'";
+        
+        // If a specific section is requested, add WHERE clause
+        if ($section !== null) {
+            $query .= " AND Section = :section";
+        }
+        
+        $stmt = self::$pdo->prepare($query);
+        
+        // Bind the section parameter if needed
+        if ($section !== null) {
+            $stmt->bindParam(':section', $section, PDO::PARAM_STR);
+        }
+        
+        $stmt->execute();
+        
+        // If a specific section was requested, return just the content
+        if ($section !== null) {
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result ? $result['content'] : '';
+        }
+        
+        // Otherwise return all content items indexed by section
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $contentBySection = [];
+        
+        foreach ($results as $row) {
+            $contentBySection[$row['section']] = $row['content'];
+        }
+        
+        return $contentBySection;
+    } catch (Exception $e) {
+        error_log("Error fetching jazz content: " . $e->getMessage());
+        return $section !== null ? '' : [];
+    }
+}
 }

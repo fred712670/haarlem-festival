@@ -8,11 +8,13 @@ Route::add('/jazz', function () {
     $controller = new JazzController();
     $data = $controller->index(); // Fetch all jazz data
 
-    // Extract data for the view
-    $artists = $data['artists'];
-    $schedule = $data['schedule'];
-    $venues = $data['venues'];
-    $ticketInfo = $data['ticketInfo'];
+     //Extract data for the view
+     $artists = $data['artists'];
+     $schedule = $data['schedule'];
+     $venues = $data['venues'];
+     $ticketInfo = $data['ticketInfo'];
+     $content = $data['content'];
+    
     
     // Set a flag to indicate this is the main page (not artist detail)
     $isArtistPage = false;
