@@ -35,6 +35,7 @@ require_once __DIR__ . '/routes/jazz.php';
 require_once(__DIR__ . "/routes/yummy.php");
 
 require_once(__DIR__ . "/routes/dance.php");
+require_once __DIR__ . '/routes/payment.php';
 
 // Start the router, enabling handling requests
 Route::run();

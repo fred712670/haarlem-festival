@@ -57,9 +57,16 @@
                         <?php endforeach; ?>
                         </div>
                         <p>Total: € <span id="totalPrice"><?= htmlspecialchars($totalPrice) ?></span></p>
-                        <a href="/create/order" class="btn btn-primary btn-pay" name="createOrder" id="createOrderBtn" <?php echo $isUserLoggedIn ? '' : 'disabled'; ?>>
-                            Proceed to payment
-                        </a>
+                        <form action="/payment/create-checkout-session" method="post">
+    <input type="hidden" name="orderId" value="<?= htmlspecialchars($yourOrderIdVariable) ?>">
+    <input type="hidden" name="fromCart" value="1">
+    <button type="submit" class="btn btn-primary btn-pay" <?= $isUserLoggedIn ? '' : 'disabled' ?>>
+        Proceed to payment
+    </button>
+</form>
+
+
+
                         <?php
                         // Calculate total price
                         $totalPrice += $ticket['price'] * $ticket['quantity'];

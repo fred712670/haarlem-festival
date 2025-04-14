@@ -3,13 +3,12 @@ require_once(__DIR__ . "/BaseModel.php");
 
 class OrderModel extends BaseModel {
 
-    public function createOrder($order, $phone = null, $address = null){
-        // Insert the order into the 'orders' table
-        $orderQuery = "INSERT INTO `Order` (UserId, OrderDate, PhoneNumber, Address)
-                    VALUES (:UserId, :OrderDate, :PhoneNumber, :Address)";
-
+    public function createOrder($order, $phone = null, $address = null) {
         $currentDateTime = date('Y-m-d H:i:s');
         $null = null;
+
+        $orderQuery = "INSERT INTO `Order` (UserId, OrderDate, PhoneNumber, Address)
+                       VALUES (:UserId, :OrderDate, :PhoneNumber, :Address)";
 
         $stmt = self::$pdo->prepare($orderQuery);
         $stmt->bindParam(':UserId', $_SESSION['userId']);
@@ -18,46 +17,42 @@ class OrderModel extends BaseModel {
         $stmt->bindParam(':Address', $address);
         $stmt->execute();
 
-        // Get the OrderId of the newly inserted order
         $orderId = self::$pdo->lastInsertId();
 
-        // Now loop through each ticket in the order and insert them into the tickets table
         foreach ($order as $ticket) {
             for ($i = 0; $i < $ticket['quantity']; $i++) {
                 $ticketQuery = "INSERT INTO Ticket (OrderId, Price, PassType, IsValid, EventId)
                                 VALUES (:OrderId, :Price, :PassType, :IsValid, :EventId)";
-                $isValid = 1; // Assume tickets are valid when created
+                $isValid = 1;
 
-                // Prepare the statement for inserting each ticket
                 $stmt = self::$pdo->prepare($ticketQuery);
                 $stmt->bindParam(':OrderId', $orderId);
                 $stmt->bindParam(':Price', $ticket['price']);
-                $stmt->bindParam(':PassType', $null);  // Set PassType as null or another default value
+                $stmt->bindParam(':PassType', $null);
                 $stmt->bindParam(':IsValid', $isValid);
                 $stmt->bindParam(':EventId', $ticket['eventId']);
                 $stmt->execute();
             }
         }
+
         return $orderId;
     }
 
-    public function getUserOrders($userId){
+    public function getUserOrders($userId) {
         $orderQuery = "
         SELECT o.OrderId, o.OrderDate, o.Status, t.TicketId, t.Price, t.PassType, t.IsValid, t.EventId, e.Name AS EventName
         FROM `Order` o
         LEFT JOIN Ticket t ON o.OrderId = t.OrderId
         LEFT JOIN Event e ON t.EventId = e.EventId
         WHERE o.UserId = :userId
-        ORDER BY o.OrderDate DESC";  // Order by the latest orders
+        ORDER BY o.OrderDate DESC";
 
         $stmt = self::$pdo->prepare($orderQuery);
         $stmt->bindParam(':userId', $userId);
         $stmt->execute();
 
-        // Fetch the results
         $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Group tickets by OrderId
         $orders = [];
         foreach ($reservations as $reservation) {
             $orders[$reservation['OrderId']]['orderDetails'] = [
@@ -71,10 +66,74 @@ class OrderModel extends BaseModel {
                 'PassType' => $reservation['PassType'],
                 'IsValid' => $reservation['IsValid'],
                 'EventId' => $reservation['EventId'],
-                'EventName' => $reservation['EventName']  // Event name from the Event table
+                'EventName' => $reservation['EventName']
             ];
         }
 
         return $orders;
+    }
+
+    public function getOrderById($orderId) {
+        $query = "SELECT * FROM `Order` WHERE OrderId = :orderId LIMIT 1";
+        $stmt = self::$pdo->prepare($query);
+        $stmt->bindParam(':orderId', $orderId);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function setStripeSessionId($orderId, $sessionId) {
+        $query = "UPDATE `Order` SET StripeSessionId = :sessionId WHERE OrderId = :orderId";
+        $stmt = self::$pdo->prepare($query);
+        $stmt->bindParam(':orderId', $orderId);
+        $stmt->bindParam(':sessionId', $sessionId);
+        $stmt->execute();
+    }
+
+    public function getOrderIdBySessionId($sessionId) {
+        $query = "SELECT OrderId FROM `Order` WHERE StripeSessionId = :sessionId LIMIT 1";
+        $stmt = self::$pdo->prepare($query);
+        $stmt->bindParam(':sessionId', $sessionId);
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    }
+
+    public function getTicketsByOrderId($orderId) {
+        $query = "
+            SELECT t.TicketId, t.Price, t.PassType, t.IsValid, t.EventId, e.Name AS EventName
+            FROM Ticket t
+            JOIN Event e ON t.EventId = e.EventId
+            WHERE t.OrderId = :orderId";
+        $stmt = self::$pdo->prepare($query);
+        $stmt->bindParam(':orderId', $orderId);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function markOrderAsPaid($orderId) {
+        $query = "UPDATE `Order` SET Status = 'paid' WHERE OrderId = :orderId";
+        $stmt = self::$pdo->prepare($query);
+        $stmt->bindParam(':orderId', $orderId);
+        $stmt->execute();
+    }
+
+    public function expireStaleOrders() {
+        $query = "SELECT OrderId FROM `Order` WHERE Status = 'pending' AND OrderDate < NOW() - INTERVAL 24 HOUR";
+        $stmt = self::$pdo->query($query);
+        $expiredOrders = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        foreach ($expiredOrders as $orderId) {
+            $this->expireOrder($orderId);
+        }
+    }
+
+    public function expireOrder($orderId) {
+        $updateOrder = "UPDATE `Order` SET Status = 'expired' WHERE OrderId = :orderId";
+        $stmt = self::$pdo->prepare($updateOrder);
+        $stmt->bindParam(':orderId', $orderId);
+        $stmt->execute();
+
+        $updateTickets = "UPDATE Ticket SET IsValid = 0 WHERE OrderId = :orderId";
+        $stmt = self::$pdo->prepare($updateTickets);
+        $stmt->bindParam(':orderId', $orderId);
+        $stmt->execute();
     }
 }
