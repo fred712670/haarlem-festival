@@ -1,20 +1,19 @@
 <?php
-    //print_r($_SESSION['cart']);
-    //echo password_hash("fred123", PASSWORD_DEFAULT);
+    // Initialize total price
     $totalPrice = 0;
     $isUserLoggedIn = isset($_SESSION['user']);
 ?>
 <!DOCTYPE html>
-<lang="en">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart</title>
     <link rel="stylesheet" href="/assets/css/cart.css">
 </head>
+<body>
     <div class="container">
         <div class="personal-and-cart">
-
             <div class="cart-title">
                 <br><br>
                 <i class="fa fa-shopping-cart"> Shopping Cart</i>
@@ -29,6 +28,12 @@
                 <div class="cart-items-container">
                     <?php
                     if(isset($_SESSION['cart']) && !empty($_SESSION['cart'])){ 
+                        // Calculate total price first
+                        foreach ($_SESSION['cart'] as $ticket) {
+                            $totalPrice += $ticket['price'] * $ticket['quantity'];
+                        }
+                        
+                        // Then display each item
                         foreach ($_SESSION['cart'] as $index => $ticket): ?>
                         <div class="ticket-container">
                             <p class="eventName"><?= htmlspecialchars($ticket['description']) ?></p>
@@ -51,19 +56,18 @@
 
                             <?php if ($ticket['price'] > 0): ?>
                                 <p>€ <span id="ticketPrice<?= $index ?>"><?= htmlspecialchars($ticket['price']) ?></span></p>
+                                <p>Item Total: € <span id="itemTotalPrice<?= $index ?>"><?= htmlspecialchars($ticket['price'] * $ticket['quantity']) ?></span></p>
                             <?php endif; ?>
-                            <input type="hidden" name="index" value="<?= $index ?>">
                         </div>
                         <?php endforeach; ?>
                         </div>
                         <p>Total: € <span id="totalPrice"><?= htmlspecialchars($totalPrice) ?></span></p>
                         <form action="/payment/create-checkout-session" method="post">
-    <input type="hidden" name="orderId" value="<?= htmlspecialchars($yourOrderIdVariable) ?>">
-    <input type="hidden" name="fromCart" value="1">
     <button type="submit" class="btn btn-primary btn-pay" <?= $isUserLoggedIn ? '' : 'disabled' ?>>
         Proceed to payment
     </button>
 </form>
+
 
 
 
@@ -78,20 +82,7 @@
                         <?php } ?>
             </div>
         </div>
-        
-
-        <!--<div class="order-summary">
-            <h2>Order Summary</h2>
-            Additional summary details can be added here
-        </div>-->
-
-        <!--<div class="button-bar">
-            <button class="btn btn-secondary">Back</button>
-            <form method="post" action="/completeOrder">
-                button class="btn btn-primary" name="completeOrder">Proceed to payment</button>
-            </form>
-        </div>-->
-    </div>
     </div>
     <script src="/assets/js/shoppingCart.js"></script>
+</body>
 </html>

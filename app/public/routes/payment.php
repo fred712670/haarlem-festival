@@ -26,3 +26,25 @@ Route::add('/payment/expired', function () {
     $controller = new PaymentController();
     $controller->showExpiredPage(); // informs user the hold has lapsed
 }, 'get');
+
+// Stripe Redirect Bridges
+Route::get('/stripe-redirect/success', function () {
+    $sessionId = $_GET['session_id'] ?? null;
+    if (!$sessionId) {
+        http_response_code(400);
+        exit("Missing session ID.");
+    }
+    header("Location: /payment/success?session_id=" . urlencode($sessionId));
+    exit;
+});
+
+Route::get('/stripe-redirect/cancel', function () {
+    $orderId = $_GET['order_id'] ?? null;
+    if (!$orderId) {
+        http_response_code(400);
+        exit("Missing order ID.");
+    }
+    header("Location: /payment/cancel?order_id=" . urlencode($orderId));
+    exit;
+});
+

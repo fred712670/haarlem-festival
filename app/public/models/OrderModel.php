@@ -98,16 +98,18 @@ class OrderModel extends BaseModel {
     }
 
     public function getTicketsByOrderId($orderId) {
-        $query = "
-            SELECT t.TicketId, t.Price, t.PassType, t.IsValid, t.EventId, e.Name AS EventName
-            FROM Ticket t
-            JOIN Event e ON t.EventId = e.EventId
-            WHERE t.OrderId = :orderId";
-        $stmt = self::$pdo->prepare($query);
-        $stmt->bindParam(':orderId', $orderId);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+    $query = "
+        SELECT t.TicketId, t.Price, t.PassType, t.IsValid, t.EventId, e.EventType AS EventName
+        FROM Ticket t
+        JOIN Event e ON t.EventId = e.EventId
+        WHERE t.OrderId = :orderId
+    ";
+    $stmt = self::$pdo->prepare($query);
+    $stmt->bindParam(':orderId', $orderId);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 
     public function markOrderAsPaid($orderId) {
         $query = "UPDATE `Order` SET Status = 'paid' WHERE OrderId = :orderId";
@@ -136,4 +138,15 @@ class OrderModel extends BaseModel {
         $stmt->bindParam(':orderId', $orderId);
         $stmt->execute();
     }
+
+    public function getLatestPendingOrderWithSession($userId) {
+    $query = "SELECT * FROM `Order` 
+              WHERE UserId = :userId AND Status = 'pending' AND StripeSessionId IS NOT NULL 
+              ORDER BY OrderDate DESC LIMIT 1";
+    $stmt = self::$pdo->prepare($query);
+    $stmt->bindParam(':userId', $userId);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 }

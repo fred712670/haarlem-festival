@@ -26,4 +26,9 @@ class CartController {
             
         }
     }
+
+    public function clearCart() {
+    unset($_SESSION['cart']);
+    }
+
 }
