@@ -91,13 +91,29 @@ foreach ($danceEvents as $event) {
                 <h3><?= $day ?></h3>
                 <?php foreach ($events as $event): ?>
                 <div class="show">
-                    <p><strong><?= date('l, F j, Y', strtotime($event['StartDateTime'])) ?></strong></p> <!-- Day name, full date -->
-                    <p><strong><?= htmlspecialchars($event['TimeSlot']) ?></strong></p>
+                <form action="/reserve" method="POST">
+                    <!-- Hidden inputs -->
+                    <input type="hidden" name="eventId" value="<?= htmlspecialchars($event['EventId']) ?>">
+                    <input type="hidden" name="name" value="Dance Event">
+                    <input type="hidden" name="ticketType" value="SingleUse">
+                    <input type="hidden" name="guests" value="1">
+                    <input type="hidden" name="date" value="<?= htmlspecialchars($event['StartDateTime']) ?>">
+                    <!--<input type="hidden" name="time" value="<?= htmlspecialchars($event['TimeSlot']) ?>">-->
+                    <input type="hidden" name="address" value="<?= htmlspecialchars($event['Location']) ?>">
+                    <input type="hidden" name="artists" value="<?= htmlspecialchars($event['Description']) ?>">
+                    <input type="hidden" name="price" value="<?= htmlspecialchars($event['Price']) ?>">
+                    <input type="hidden" name="ticketsLeft" value="<?= htmlspecialchars($event['TicketsAvailable']) ?>">
+
+                    <!-- Visible tags -->
+                    <p><strong>Date:</strong> <?= date('l, F j, Y', strtotime($event['StartDateTime'])) ?></p>
+                    <p><strong>Time:</strong> <?= htmlspecialchars($event['TimeSlot']) ?></p>
                     <p><strong>Venue:</strong> <em><?= htmlspecialchars($event['Location']) ?></em></p>
                     <p><strong>Artists:</strong> <?= htmlspecialchars($event['Description']) ?></p>
                     <p><strong>Price:</strong> €<?= htmlspecialchars($event['Price']) ?></p>
                     <p><strong>Tickets left:</strong> <?= htmlspecialchars($event['TicketsAvailable']) ?></p>
-                    <button class="small-button book-button" data-id="<?= $event['DanceEventId'] ?>">Book This Show</button>
+
+                    <button type="submit" class="small-button book-button">Book This Show</button>
+                </form>
                 </div>
                 <?php endforeach; ?>
             </div>
@@ -110,14 +126,15 @@ foreach ($danceEvents as $event) {
         <div class="passes-grid">
             <div class="pass">
             <form action="reserve" method="POST">
-                <input type="hidden" name="eventId" value="20">
+                <input type="hidden" name="eventId" value="null">
                 <!--Some values should be pulled using eventid-->
                 <input type="hidden" name="name" value="Dance Event">
                 <h3>Weekend All-Access</h3>
                 <input type="hidden" name="address" value="Dance Event Stage">
-                <p name="price" value="250.00">€250.00</p>
-                <input type="hidden" name="date" value="2025-06-24">
-                <input type="hidden" name="time" value="00:00">
+                <input type="hidden" name="price" value="250.00">
+                <p>€250.00</p>
+                <input type="hidden" name="date" value="null">
+                <input type="hidden" name="time" value="null">
                 <input type="hidden" name="ticketType" value="WeekendPass">
                 <input type="hidden" name="guests" value="1">
                 <button type="submit" class="small-button">Purchase</button>
@@ -128,8 +145,9 @@ foreach ($danceEvents as $event) {
                 <input type="hidden" name="eventId" value="20">
                 <input type="hidden" name="name" value="Dance Event">
                 <input type="hidden" name="address" value="Dance Event Stage">
+                <input type="hidden" name="price" value="125.00">
                 <h3>Friday Access</h3>
-                <p name="price" value="125.00">€125.00</p>
+                <p>€125.00</p>
                 <input type="hidden" name="date" value="2025-06-21">
                 <input type="hidden" name="time" value="00:00">
                 <input type="hidden" name="ticketType" value="DayPass">
@@ -142,8 +160,9 @@ foreach ($danceEvents as $event) {
                 <input type="hidden" name="eventId" value="20">
                 <input type="hidden" name="name" value="Dance Event">
                 <input type="hidden" name="address" value="Dance Event Stage">
+                <input type="hidden" name="price" value="150.00">
                 <h3>Saturday Access</h3>
-                <p name="price" value="150.00">€150.00</p>
+                <p>€150.00</p>
                 <input type="hidden" name="date" value="2025-06-22">
                 <input type="hidden" name="time" value="00:00">
                 <input type="hidden" name="ticketType" value="DayPass">
@@ -156,8 +175,9 @@ foreach ($danceEvents as $event) {
                 <input type="hidden" name="eventId" value="20">
                 <input type="hidden" name="name" value="Dance Event">
                 <input type="hidden" name="address" value="Dance Event Stage">
+                <input type="hidden" name="price" value="150.00">
                 <h3>Sunday Access</h3>
-                <p name="price" value="150.00">€150.00</p>
+                <p>€150.00</p>
                 <input type="hidden" name="date" value="2025-06-23">
                 <input type="hidden" name="time" value="00:00">
                 <input type="hidden" name="ticketType" value="DayPass">

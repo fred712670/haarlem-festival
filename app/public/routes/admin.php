@@ -16,8 +16,8 @@ function requireAdmin() {
         exit();
     }
     
-    // Check if the role exists and equals Administrator
-    if (!isset($_SESSION['role']) || $_SESSION['role'] != 'Administrator') {
+    // Check if the role exists and equals Administrator (case-insensitive)
+    if (!isset($_SESSION['role']) || strtolower($_SESSION['role']) != 'admin') {
         $_SESSION['error_message'] = 'You must be an administrator to access this page.';
         header('Location:/');
         exit();

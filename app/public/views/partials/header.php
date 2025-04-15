@@ -25,17 +25,17 @@
     </div>
     <ul class="nav-links">
     <li>
-    <?php if(isset($_SESSION['role']) && $_SESSION['role'] == 'Administrator'): ?>
-        <a href="/admin"><i class="fas fa-user-shield"></i> <span class="link-text">Admin</span></a>
-    <?php else: ?>
-        <a href="/profile"><i class="fas fa-user"></i> <span class="link-text">Profile</span></a>
-    <?php endif; ?>
+    <?php if(isset($_SESSION['role']) && strtolower($_SESSION['role']) == 'admin'): ?>
+    <a href="/admin"><i class="fas fa-user-shield"></i> <span class="link-text">Admin</span></a>
+<?php else: ?>
+    <a href="/profile"><i class="fas fa-user"></i> <span class="link-text">Profile</span></a>
+<?php endif; ?>
 </li>
         <li><a href="/cart"><i class="fas fa-shopping-cart"></i> <span class="link-text">Cart</span></a></li>
         <li><a href="/"><i class="fas fa-home"></i> <span class="link-text">Home</span></a></li>
         <li><a href="/yummy"><i class="fas fa-utensils"></i> <span class="link-text">Yummy!</span></a></li>
-        <li><a href="jazz"><i class="fas fa-running"></i> <span class="link-text">Dance!</span></a></li>
-        <li><a href="/dance"><i class="fas fa-music"></i> <span class="link-text">Jazz</span></a></li>
+        <li><a href="/dance"><i class="fas fa-running"></i> <span class="link-text">Dance!</span></a></li>
+        <li><a href="/jazz"><i class="fas fa-music"></i> <span class="link-text">Jazz</span></a></li>
         <li><a href="/history"><i class="fas fa-history"></i> <span class="link-text">History</span></a></li>
         <li><a href="/magicTeylers"><i class="fas fa-magic"></i> <span class="link-text">Magic@Teylers</span></a></li>
     </ul>

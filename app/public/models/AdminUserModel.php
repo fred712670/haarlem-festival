@@ -62,7 +62,7 @@ class AdminUserModel extends BaseModel
             if (!empty($filters['startDate']) && !empty($filters['endDate'])) {
                 $sql .= " AND RegisteredDate BETWEEN ? AND ?";
                 $params[] = $filters['startDate'];
-                $params[] = $filters['endDate'];
+                $params[] = $filters['endDate'] . ' 23:59:59'; // Include the entire end day
             }
         }
         
@@ -124,7 +124,7 @@ class AdminUserModel extends BaseModel
             if (!empty($filters['startDate']) && !empty($filters['endDate'])) {
                 $sql .= " AND RegisteredDate BETWEEN ? AND ?";
                 $params[] = $filters['startDate'];
-                $params[] = $filters['endDate'];
+                $params[] = $filters['endDate'] . ' 23:59:59'; // Include the entire end day
             }
         }
         
@@ -177,13 +177,16 @@ class AdminUserModel extends BaseModel
         // Hash the password
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
         
+        // Create verification token
+        $verifyToken = bin2hex(random_bytes(16));
+        
         // Insert new user
-        $sql = "INSERT INTO User (FullName, Email, Password, Role, RegisteredDate) 
-                VALUES (?, ?, ?, ?, NOW())";
+        $sql = "INSERT INTO User (FullName, Email, Password, Role, RegisteredDate, VerifyToken, VerifyStatus) 
+                VALUES (?, ?, ?, ?, NOW(), ?, 1)";
         $stmt = self::$pdo->prepare($sql);
         
         try {
-            $stmt->execute([$fullName, $email, $hashedPassword, $role]);
+            $stmt->execute([$fullName, $email, $hashedPassword, $role, $verifyToken]);
             return [
                 'success' => true, 
                 'message' => 'User created successfully.', 

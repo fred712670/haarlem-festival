@@ -44,12 +44,12 @@
                         <div class="mb-3">
                             <label for="role" class="form-label">Role <span class="required" aria-hidden="true">*</span><span class="visually-hidden">required</span></label>
                             <select class="form-select" id="role" name="role" required>
-                                <?php foreach ($roles as $role): ?>
-                                    <option value="<?= htmlspecialchars($role) ?>" 
-                                            <?= ($user['Role'] === $role) ? 'selected' : '' ?>>
-                                        <?= htmlspecialchars($role) ?>
-                                    </option>
-                                <?php endforeach; ?>
+                            <?php foreach ($roles as $role): ?>
+ *     <option value="<?= htmlspecialchars($role) ?>" 
+ *             <?= (strtolower($user['Role']) === $role) ? 'selected' : '' ?>>
+ *         <?= htmlspecialchars(ucfirst($role)) ?>
+ *     </option>
+ * <?php endforeach; ?>
                             </select>
                             <div class="invalid-feedback">
                                 Please select a role.

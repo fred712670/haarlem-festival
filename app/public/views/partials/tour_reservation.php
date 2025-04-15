@@ -30,10 +30,10 @@
                 <div id="error-message" class="booking-error" style="display: none;"></div>
 
                 <form id="history-booking-form" action="/reserve" method="post">
-
                     <input type="hidden" name="eventId" value="10">
                     <input type="hidden" name="name" value="History Tour">
                     <input type="hidden" name="address" value="Church of St. Bavo">
+                    <input type="hidden" name="ticketType" value="SingleUse">
 
                     <!-- Date -->
                     <div class="booking-field">
@@ -66,7 +66,6 @@
                             <img src="../../assets/img/history/clock-icon.png" class="booking-select-icon" alt="Clock">
                         </div>
                     </div>
-
                     <!-- Language -->
                   <div class="booking-field">
                     <label for="ticketType">Select Language:</label>

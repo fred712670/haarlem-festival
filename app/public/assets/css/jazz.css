@@ -1224,3 +1224,181 @@ section {
     padding: 20px;
   }
 }
+/* Add to Cart button styles */
+.btn-add-to-cart {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.btn-add-to-cart:hover {
+  background-color: #0056b3;
+}
+
+/* Mobile card add to cart button */
+.performance-card .performance-action {
+  margin-top: 10px;
+}
+
+.performance-card .btn-add-to-cart {
+  width: 100%;
+  padding: 8px;
+}
+/* Day Pass Modal Styles */
+.day-pass-modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  overflow: auto;
+}
+
+.day-pass-modal-content {
+  background-color: white;
+  margin: 10% auto;
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 500px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.day-pass-close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #555;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.day-pass-close:hover {
+  color: #000;
+}
+
+.day-pass-modal h2 {
+  color: var(--jazz-primary);
+  margin-top: 0;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.day-pass-modal p {
+  margin-bottom: 25px;
+  text-align: center;
+  color: #555;
+}
+
+.day-options {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.day-option {
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s;
+}
+
+.day-option input[type="radio"] {
+  display: none;
+}
+
+.day-option label {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.day-option input[type="radio"]:checked + label {
+  border-color: var(--jazz-accent);
+  background-color: rgba(241, 162, 8, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.day-option:hover {
+  transform: translateY(-2px);
+}
+
+.day-name {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: var(--jazz-dark);
+}
+
+.day-date {
+  color: #666;
+}
+
+.day-pass-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.day-pass-actions button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-cancel {
+  background-color: #e0e0e0;
+  color: #555;
+}
+
+.btn-cancel:hover {
+  background-color: #d0d0d0;
+}
+
+.btn-confirm {
+  background-color: var(--jazz-accent);
+  color: white;
+}
+
+.btn-confirm:hover {
+  background-color: #e09400;
+}
+
+.btn-confirm:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .day-pass-modal-content {
+    margin: 15% auto;
+    width: 90%;
+    padding: 20px;
+  }
+
+  .day-option label {
+    padding: 12px;
+  }
+}

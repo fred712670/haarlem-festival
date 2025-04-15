@@ -26,8 +26,8 @@ function renderRestaurantReservation($restaurant) {
 
                 <label for="time">Select time:</label>
                 <select id="time" name="time">
-                    <option value="12:00-14:30">12:00 - 14:30</option>
-                    <option value="18:30-21:00">18:30 - 21:00</option>
+                    <option value="12:00">12:00 - 14:30</option>
+                    <option value="18:30">18:30 - 21:00</option>
                 </select>
 
                 <label for="requests">Special Requests:</label>
