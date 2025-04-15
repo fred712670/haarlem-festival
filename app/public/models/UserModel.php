@@ -202,36 +202,38 @@ class UserModel extends BaseModel
         return $stmt->fetch() !== false;
     }
    
-    public function register($fullName, $email, $password, $role, $verify_token) 
-    {
-        // Check if username exists
-        if ($this->checkUserName($fullName)) {
-            return ['success' => false, 'message' => 'Username already exists'];
-        }
-        
-        // Check if email exists
-        if ($this->checkEmail($email)) {
-            return ['success' => false, 'message' => 'Email already exists'];
-        }
-        
-        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-        
-        $sql = "INSERT INTO User (FullName, Email, Password, Role, VerifyToken, VerifyStatus)
-                VALUES (:fullName, :email, :password, :role, :verifyToken, 0)";
-        $stmt = self::$pdo->prepare($sql);
-        $stmt->bindParam(':fullName', $fullName);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':password', $hashedPassword);
-        $stmt->bindParam(':role', $role);
-        $stmt->bindParam(':verifyToken', $verify_token);
-        
-        $result = $stmt->execute();
-        
-        return [
-            'success' => $result,
-            'verify_token' => $verify_token
-        ];
+    public function register($fullName, $email, $password, $role, $verify_token)
+{
+    // Check if username exists
+    if ($this->checkUserName($fullName)) {
+        return ['success' => false, 'message' => 'Username already exists'];
     }
+    
+    // Check if email exists
+    if ($this->checkEmail($email)) {
+        return ['success' => false, 'message' => 'Email already exists'];
+    }
+    
+    $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+    $currentDate = date('Y-m-d H:i:s'); // Get current date and time
+    
+    $sql = "INSERT INTO User (FullName, Email, Password, Role, VerifyToken, VerifyStatus, RegisteredDate)
+            VALUES (:fullName, :email, :password, :role, :verifyToken, 0, :registeredDate)";
+    $stmt = self::$pdo->prepare($sql);
+    $stmt->bindParam(':fullName', $fullName);
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':password', $hashedPassword);
+    $stmt->bindParam(':role', $role);
+    $stmt->bindParam(':verifyToken', $verify_token);
+    $stmt->bindParam(':registeredDate', $currentDate);
+    
+    $result = $stmt->execute();
+    
+    return [
+        'success' => $result,
+        'verify_token' => $verify_token
+    ];
+}
     // Verify user and update verify_status
     public function verifyUser($token) {
         $sql = "SELECT UserId FROM User WHERE VerifyToken = :verifyToken AND VerifyStatus = 0";
