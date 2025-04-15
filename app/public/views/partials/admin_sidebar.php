@@ -1,5 +1,6 @@
 <div class="admin-sidebar">
-    <div class="admin-sidebar-brand">
+<link rel="stylesheet" href="/assets/css/admin.css">
+<div class="admin-sidebar-brand">
         <span>Haarlem Festival</span>
     </div>
     <div class="admin-sidebar-nav">
@@ -58,3 +59,4 @@
         </a>
     </div>
 </div>
+<script src="/assets/js/admin.js"></script>
