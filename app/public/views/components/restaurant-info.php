@@ -1,14 +1,20 @@
 <?php
-function renderRestaurantInfo($restaurant) {
+function renderRestaurantInfo($restaurant, $menuItems) {
 ?>
     <div class="restaurant-info">
         <div class="menu-highlights">
             <h3>Menu Highlights</h3>
             <ol>
-                <li><strong>Kingfish</strong> - Passion fruit, peanut, Thai basil (€20)</li>
-                <li><strong>Scallops</strong> - Celeriac, katsuani, mushroom (€19)</li>
-                <li><strong>Sea Bass</strong> - Nduja, arrabiata, guanciale (€24)</li>
-                <li><strong>Perfect Egg</strong> - Truffle, spätzle, mushroom (€8)</li>
+                <?php if (!empty($menuItems)): ?>
+                    <?php foreach ($menuItems as $item): ?>
+                        <li>
+                            <strong><?= htmlspecialchars($item['Title']) ?></strong> -
+                            <?= htmlspecialchars($item['Description']) ?> (€<?= number_format($item['Price'], 2) ?>)
+                        </li>
+                        <?php endforeach; ?>
+                <?php else: ?>
+                    <li>No menu items available.</li>
+                <?php endif; ?>
             </ol>
         </div>
 
