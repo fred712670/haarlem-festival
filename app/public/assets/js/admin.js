@@ -59,4 +59,24 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
+  document.addEventListener("DOMContentLoaded", function () {
+    // Handle gallery image removal
+    const removedImagesInput = document.getElementById(
+      "removed_gallery_images"
+    );
+    const removedImages = [];
+
+    const removeButtons = document.querySelectorAll(".remove-gallery-image");
+    removeButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        const imageItem = this.closest(".gallery-image-item");
+        const imageName = imageItem.dataset.image;
+
+        removedImages.push(imageName);
+        removedImagesInput.value = removedImages.join(",");
+
+        imageItem.remove();
+      });
+    });
+  });
 });
