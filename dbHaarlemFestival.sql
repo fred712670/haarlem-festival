@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Apr 15, 2025 at 08:12 PM
+-- Generation Time: Apr 15, 2025 at 08:30 PM
 -- Server version: 11.6.2-MariaDB-ubu2404
 -- PHP Version: 8.2.27
 
@@ -945,24 +945,18 @@ CREATE TABLE `Order` (
 --
 
 INSERT INTO `Order` (`OrderId`, `UserId`, `Amount`, `Status`, `OrderDate`, `PhoneNumber`, `Address`, `StripeSessionId`) VALUES
-(1, 1, NULL, NULL, '2025-03-25 12:31:18', '0647629759', 'Strada Marului, nr 5', NULL),
-(2, 1, NULL, NULL, '2025-03-25 12:32:01', '0647629759', 'Strada Marului, nr 5', NULL),
-(3, 1, NULL, NULL, '2025-03-25 12:32:05', '0647629759', 'Strada Marului, nr 5', NULL),
-(4, 1, 0, 'Pending', '2025-03-25 12:39:35', '0647629759', 'Strada Marului, nr 5', NULL),
-(5, 1, 0, 'Pending', '2025-03-25 12:41:47', '0647629759', 'Strada Marului, nr 5', NULL),
 (10, 2, NULL, NULL, '2025-04-02 14:48:13', 'fred', '123432142', NULL),
 (11, 3, NULL, NULL, '2025-04-12 18:16:32', NULL, NULL, NULL),
 (12, 3, NULL, NULL, '2025-04-12 18:27:32', NULL, NULL, NULL),
 (13, NULL, NULL, NULL, '2025-04-15 15:10:15', NULL, NULL, NULL),
-(1, 1, NULL, NULL, '2025-03-25 12:31:18', '0647629759', 'Strada Marului, nr 5', NULL),
-(2, 1, NULL, NULL, '2025-03-25 12:32:01', '0647629759', 'Strada Marului, nr 5', NULL),
-(3, 1, NULL, NULL, '2025-03-25 12:32:05', '0647629759', 'Strada Marului, nr 5', NULL),
-(4, 1, 0, 'Pending', '2025-03-25 12:39:35', '0647629759', 'Strada Marului, nr 5', NULL),
-(5, 1, 0, 'Pending', '2025-03-25 12:41:47', '0647629759', 'Strada Marului, nr 5', NULL),
-(10, 2, NULL, NULL, '2025-04-02 14:48:13', 'fred', '123432142', NULL),
-(11, 3, NULL, NULL, '2025-04-12 18:16:32', NULL, NULL, NULL),
-(12, 3, NULL, NULL, '2025-04-12 18:27:32', NULL, NULL, NULL),
-(13, NULL, NULL, NULL, '2025-04-15 15:10:15', NULL, NULL, NULL);
+(14, NULL, NULL, NULL, '2025-04-15 20:19:55', NULL, NULL, NULL),
+(15, NULL, NULL, NULL, '2025-04-15 20:19:59', NULL, NULL, NULL),
+(16, NULL, NULL, NULL, '2025-04-15 20:22:18', NULL, NULL, NULL),
+(17, NULL, NULL, NULL, '2025-04-15 20:22:48', NULL, NULL, NULL),
+(18, NULL, NULL, NULL, '2025-04-15 20:25:33', NULL, NULL, NULL),
+(19, NULL, NULL, NULL, '2025-04-15 20:26:44', NULL, NULL, NULL),
+(20, NULL, NULL, NULL, '2025-04-15 20:29:41', NULL, NULL, NULL),
+(21, NULL, NULL, NULL, '2025-04-15 20:30:16', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1001,13 +995,6 @@ INSERT INTO `Restaurant` (`RestaurantId`, `EventId`, `CuisineType`, `Description
 (4, 4, 'Dutch, French, European', 'A blend of Dutch and French flavors in a cozy atmosphere.', 'Welcome to Fris! Nestled in the heart of Haarlem, Fris marries contemporary culinary art with the rich flavors of Dutch cuisine. Perfect for a sophisticated night out, a memorable family dinner, or a delightful gathering with friends, our restaurant offers a warm atmosphere and a menu that caters to discerning palates. Join us at Fris for an exceptional dining adventure where every meal is a celebration of modern gastronomy.', 'Twijnderslaan 7, 2012 BG Haarlem, Nederland', 'Restaurant Fris', 'restaurant-fris1.jpg,restaurant-fris2.jpg,restaurant-fris3.jpg', 'restaurant-fris.jpg', 'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00', '3', '2024-03-09 17:30:00', 2, 4, 45, 23, NULL),
 (5, 5, 'Vegan', 'A fully vegan restaurant with innovative plant-based dishes.', 'Welcome to New Vegas, a culinary gem in the bustling heart of Haarlem at Koningstraat 5. Here, we merge vibrant flavors with an artistic flair to bring you a truly unique dining experience. Our kitchen focuses on innovative international cuisine, with each dish crafted to surprise and delight. ', 'Koningstraat 5, 2011 TB Haarlem', 'New Vegas', 'new-vegas1.jpg,new-vegas2.jpg,new-vegas3.jpg', 'new-vegas.jpg', 'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00', '3', '2024-03-09 17:00:00', 2, 3, 36, 18, NULL),
 (6, 6, 'Dutch, European, Modern', 'A modern take on Dutch and European cuisine in a grand setting.', 'Welcome to Grand Café Brinkmann, a cherished landmark nestled in the heart of Haarlem at Grote Markt 13. Established over a century ago, this iconic café blends rich history with contemporary hospitality. Offering a diverse menu that ranges from classic Dutch favorites to modern culinary delights, Grand Café Brinkmann is perfect for any dining occasion. ', 'Grote Markt 13, 2011 RC Haarlem, Nederland', 'Grand Cafe Brinkman', 'grand-cafe-brinkman1.jpg,grand-cafe-brinkman2.jpg,grand-cafe-brinkman3.jpg', 'grand-cafe-brinkman.jpg', 'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00', '3', '2024-03-09 16:30:00', 2, 3, 100, 18, NULL),
-(7, 7, 'Dutch, Fish, European', 'A French-inspired bistro with fresh seafood and Dutch classics.', 'Welcome to Frenchy Bistro Toujours, your slice of Paris nestled in the charming streets of Haarlem at Oude Groenmarkt 10. This cozy bistro offers a romantic and inviting ambiance, perfect for indulging in the finest French cuisine. At Toujours, we pride ourselves on delivering authentic flavors using high-quality ingredients, paired beautifully with our selection of French wines. ', 'Oude Groenmarkt 10-12, 2011 HL Haarlem, Nederland', 'Urban Frenchy Bistro Toujours', 'urban-frenchy1.jpg,urban-frenchy2.jpg,urban-frenchy3.jpg', 'urban-frenchy.jpg', 'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00', '3', '2024-03-09 17:30:00', 2, 3, 48, 18, NULL),
-(1, 1, 'Dutch, Fish, European', 'A cozy café serving Dutch, fish, and European dishes.', 'Welcome to Café De Roemer, where tradition meets innovation! Located in the heart of Haarlem, we specialize in authentic Italian dishes crafted with locally sourced ingredients. Whether you\'re here for a romantic dinner, a family gathering, or a casual meal with friends, our warm ambiance and exquisite menu will ensure an unforgettable dining experience.', 'Botermarkt 17, 2011 XL Haarlem', 'Café de Roemer', 'cafe-de-roemer1.jpg,cafe-de-roemer2.jpg,cafe-de-roemer3.jpg', 'cafe-roemer.jpg', 'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00', '3', '2024-03-09 18:00:00', 2, 4, 35, 18, NULL),
-(2, 2, 'French, Fish, European', 'Fine French dining by the river, specializing in seafood.', 'Welcome to Fris, where tradition meets innovation! Located in the heart of Haarlem, we specialize in authentic Italian dishes crafted with locally sourced ingredients. Whether you\'re here for a romantic dinner, a family gathering, or a casual meal with friends, our warm ambiance and exquisite menu will ensure an unforgettable dining experience.', 'Spaarne 96, 2011 CL Haarlem, Nederland', 'Ratatouille', 'ratatouille1.jpg,ratatouille2.jpg,ratatouille3.jpg', 'ratatouille.jpg', 'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00', '3', '2024-03-09 17:00:00', 2, 4, 52, 23, NULL),
-(3, 3, 'Dutch, Fish, European', 'An elegant dining experience offering Dutch and seafood cuisine.', 'Welcome to Restaurant ML, that blends historical elegance with contemporary flair, offering a Michelin-starred menu that impresses with its creativity and taste. Led by Chef Mark Gratama, the restaurant is celebrated for its innovative dishes that expertly combine traditional techniques with modern culinary artistry.', 'Kleine Houtstraat 70, 2011 DR Haarlem, Nederland', 'Restaurant ML', 'restaurant-ml1.jpg,restaurant-ml2.jpg,restaurant-ml3.jpg', 'restaurant-ml.jpg', 'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00', '2', '2024-03-09 17:00:00', 2, 4, 60, 23, NULL),
-(4, 4, 'Dutch, French, European', 'A blend of Dutch and French flavors in a cozy atmosphere.', 'Welcome to Fris! Nestled in the heart of Haarlem, Fris marries contemporary culinary art with the rich flavors of Dutch cuisine. Perfect for a sophisticated night out, a memorable family dinner, or a delightful gathering with friends, our restaurant offers a warm atmosphere and a menu that caters to discerning palates. Join us at Fris for an exceptional dining adventure where every meal is a celebration of modern gastronomy.', 'Twijnderslaan 7, 2012 BG Haarlem, Nederland', 'Restaurant Fris', 'restaurant-fris1.jpg,restaurant-fris2.jpg,restaurant-fris3.jpg', 'restaurant-fris.jpg', 'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00', '3', '2024-03-09 17:30:00', 2, 4, 45, 23, NULL),
-(5, 5, 'Vegan', 'A fully vegan restaurant with innovative plant-based dishes.', 'Welcome to New Vegas, a culinary gem in the bustling heart of Haarlem at Koningstraat 5. Here, we merge vibrant flavors with an artistic flair to bring you a truly unique dining experience. Our kitchen focuses on innovative international cuisine, with each dish crafted to surprise and delight. ', 'Koningstraat 5, 2011 TB Haarlem', 'New Vegas', 'new-vegas1.jpg,new-vegas2.jpg,new-vegas3.jpg', 'new-vegas.jpg', 'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00', '3', '2024-03-09 17:00:00', 2, 3, 36, 18, NULL),
-(6, 6, 'Dutch, European, Modern', 'A modern take on Dutch and European cuisine in a grand setting.', 'Welcome to Grand Café Brinkmann, a cherished landmark nestled in the heart of Haarlem at Grote Markt 13. Established over a century ago, this iconic café blends rich history with contemporary hospitality. Offering a diverse menu that ranges from classic Dutch favorites to modern culinary delights, Grand Café Brinkmann is perfect for any dining occasion. ', 'Grote Markt 13, 2011 RC Haarlem, Nederland', 'Grand Cafe Brinkman', 'grand-cafe-brinkman1.jpg,grand-cafe-brinkman2.jpg,grand-cafe-brinkman3.jpg', 'grand-cafe-brinkman.jpg', 'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00', '3', '2024-03-09 16:30:00', 2, 3, 100, 18, NULL),
 (7, 7, 'Dutch, Fish, European', 'A French-inspired bistro with fresh seafood and Dutch classics.', 'Welcome to Frenchy Bistro Toujours, your slice of Paris nestled in the charming streets of Haarlem at Oude Groenmarkt 10. This cozy bistro offers a romantic and inviting ambiance, perfect for indulging in the finest French cuisine. At Toujours, we pride ourselves on delivering authentic flavors using high-quality ingredients, paired beautifully with our selection of French wines. ', 'Oude Groenmarkt 10-12, 2011 HL Haarlem, Nederland', 'Urban Frenchy Bistro Toujours', 'urban-frenchy1.jpg,urban-frenchy2.jpg,urban-frenchy3.jpg', 'urban-frenchy.jpg', 'Monday - Tuesday: Closed\nWednesday - Saturday: 12:00 - 14:30, 18:30 - 21:30\nSunday: 12:00 - 14:30, 18:30 - 21:00', '3', '2024-03-09 17:30:00', 2, 3, 48, 18, NULL);
 
 -- --------------------------------------------------------
@@ -1030,18 +1017,9 @@ CREATE TABLE `Ticket` (
 --
 
 INSERT INTO `Ticket` (`TicketId`, `OrderId`, `Price`, `PassType`, `IsValid`, `EventId`) VALUES
-(3, 11, 0, NULL, 1, 5),
-(4, 11, 0, NULL, 1, 5),
-(5, 11, 0, NULL, 1, 5),
-(6, 11, 18, NULL, 1, 10),
-(7, 12, 18, NULL, 1, 10),
-(8, 12, 18, NULL, 1, 10),
-(3, 11, 0, NULL, 1, 5),
-(4, 11, 0, NULL, 1, 5),
-(5, 11, 0, NULL, 1, 5),
-(6, 11, 18, NULL, 1, 10),
-(7, 12, 18, NULL, 1, 10),
-(8, 12, 18, NULL, 1, 10);
+(1, 0, NULL, 'Reservation', 1, 2),
+(2, 0, NULL, 'Reservation', 1, 2),
+(3, 0, NULL, 'Reservation', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -1163,6 +1141,18 @@ ALTER TABLE `MenuItem`
   ADD KEY `MenuId` (`MenuId`);
 
 --
+-- Indexes for table `Order`
+--
+ALTER TABLE `Order`
+  ADD PRIMARY KEY (`OrderId`);
+
+--
+-- Indexes for table `Ticket`
+--
+ALTER TABLE `Ticket`
+  ADD PRIMARY KEY (`TicketId`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -1171,6 +1161,18 @@ ALTER TABLE `MenuItem`
 --
 ALTER TABLE `MenuItem`
   MODIFY `MenuItemId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+
+--
+-- AUTO_INCREMENT for table `Order`
+--
+ALTER TABLE `Order`
+  MODIFY `OrderId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT for table `Ticket`
+--
+ALTER TABLE `Ticket`
+  MODIFY `TicketId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
