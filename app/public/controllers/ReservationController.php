@@ -8,27 +8,43 @@ class ReservationController {
     }
 
     public function createReservation($data) {
-        // Validate required fields
-        if (empty($data['name']) || empty($data['price'])) {
-            $_SESSION['error'] = "Missing required information for reservation";
-            return false;
-        }
-
-        // For day passes, extract date from selectedDay
-        $date = isset($data['date']) ? $data['date'] : '';
         
-        // If this is a day pass submission with a selectedDay
-        if (isset($data['ticketType']) && $data['ticketType'] === 'DayPass' && isset($data['selectedDay'])) {
-            $date = $data['selectedDay']; // Use the selected day's date
+        // Initialize variables
+        $eventId = null;
+        $date = null;
+        $price = null;
+
+        // If this is a History Tour, use the HistoryModel to get the eventId.
+        if ($data['name'] === 'History Tour') {
+            $historyModel = new HistoryModel();
+            $eventId = $historyModel->getHistoryTourEventId($data['date'], $data['time'], $data['language']);
+            $date = $data['date'] . ' ' . $data['time'];
+            $price = $data['price'];
+        } else {
+            // Otherwise, handle based on ticketType.
+            if ($data['ticketType'] === 'DayPass') {
+                $eventId = null;
+                $date = $data['date'];
+                $price = $data['price'];
+            } else if ($data['ticketType'] === 'WeekendPass') {
+                $eventId = null;
+                $date = null;
+                $price = $data['price'];
+            } else {
+                // For non-history SingleUse, take eventId from POST data.
+                $eventId = $data['eventId'];
+                $date = $data['date'] . ' ' . $data['time'];
+                $price = $data['price']; 
+            }
         }
 
         // Create reservation item
         $item = [
-            'eventId' => $data['eventId'] ?? null,
+            'eventId' => $eventId,
             'description' => $data['name'] ?? '',
             'location' => $data['address'] ?? '',
-            'dateTime' => $date . ' ' . ($data['time'] ?? ''),
-            'price' => (float)($data['price'] ?? 0),
+            'dateTime' => $date,
+            'price' => $price,
             'ticketType' => $data['ticketType'] ?? '',
             'quantity' => (int)($data['guests'] ?? 1)
         ];

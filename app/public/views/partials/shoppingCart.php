@@ -37,7 +37,11 @@
                         foreach ($_SESSION['cart'] as $index => $ticket): ?>
                         <div class="ticket-container">
                             <p class="eventName"><?= htmlspecialchars($ticket['description']) ?></p>
-                            <p>Reservation for <?= htmlspecialchars($ticket['dateTime'])?></p>
+                            <p>Reservation for: 
+                                <?= ($ticket['ticketType'] === "WeekendPass") 
+                                    ? "All Event Days" 
+                                    : htmlspecialchars($ticket['dateTime']) ?>
+                            </p>
                             <p>Ticket type: <?= htmlspecialchars($ticket['ticketType']) ?></p>
                             <p>Amount of people:</p>
                             <div class="quantity-controls">

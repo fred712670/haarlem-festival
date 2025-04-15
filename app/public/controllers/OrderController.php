@@ -51,7 +51,7 @@ class OrderController {
 
     
         // Clear the shopping cart.
-        //unset($_SESSION['cart']);
+        unset($_SESSION['cart']);
     
         // Redirect to the thank-you page.
         //header("Location: /thank-you?orderId=$orderId");

@@ -201,5 +201,20 @@ public function getTourLocationById($locationId) {
     
     return $location;
 }
+
+public function getHistoryTourEventId($date, $time, $language) {
+    $query = "SELECT EventId FROM HistoryTourSchedule 
+              WHERE TourDate = :date 
+                AND TourTime = :time 
+                AND Language = :language
+              LIMIT 1";
+    $stmt = self::$pdo->prepare($query);
+    $stmt->bindParam(':date', $date);
+    $stmt->bindParam(':time', $time);
+    $stmt->bindParam(':language', $language);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result ? (int)$result['EventId'] : null;
+}
 }
 ?>
