@@ -14,7 +14,7 @@ require_once(__DIR__ . "/lib/error_reporting.php"); // enables error reporting l
  */
 session_start();
 
-require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 /**
  * Require routing library
