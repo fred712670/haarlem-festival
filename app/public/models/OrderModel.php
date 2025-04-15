@@ -195,14 +195,6 @@ public function getEventDetails($eventId) {
         // Return true if a ticket row was updated.
         return $stmt->rowCount() > 0;
     }
-    
-    public function getOrderById($orderId) {
-        $query = "SELECT * FROM `Order` WHERE OrderId = :orderId LIMIT 1";
-        $stmt = self::$pdo->prepare($query);
-        $stmt->bindParam(':orderId', $orderId);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
 
     public function setStripeSessionId($orderId, $sessionId) {
         $query = "UPDATE `Order` SET StripeSessionId = :sessionId WHERE OrderId = :orderId";
