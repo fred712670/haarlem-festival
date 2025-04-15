@@ -9,6 +9,7 @@ class RestaurantDetailsController
 
         $restaurant = $restaurantModel->getRestaurantById($id);
         $menuItems = $restaurantModel->getMenuItemsByRestaurant($id);
+        $sessionTimes = $restaurantModel->getSessionTimes($id);
 
         if (!$restaurant) {
             return null;
@@ -16,7 +17,8 @@ class RestaurantDetailsController
         
         return [
             'restaurant' => $restaurant,
-            'menuItems' => $menuItems
+            'menuItems' => $menuItems,
+            'sessionTimes' => $sessionTimes 
         ];
     }
 }

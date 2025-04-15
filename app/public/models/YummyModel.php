@@ -59,5 +59,31 @@ class YummyModel extends BaseModel
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getSessionTimes($restaurantId)
+    {
+        $stmt = self::$pdo->prepare("SELECT FirstStart, Duration, SessionsAvailable FROM Restaurant WHERE RestaurantId = ?");
+        $stmt->execute([$restaurantId]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$row) {
+            return [];
+        }
+
+        $firstStart = new DateTime($row['FirstStart']);
+        $duration = (int) $row['Duration'];
+        $sessionsAvailable = (int) $row['SessionsAvailable'];
+
+        $times = [];
+        for ($i = 0; $i < $sessionsAvailable; $i++) {
+            $start = clone $firstStart;
+            $start->modify("+" . ($i * $duration) . " hours");
+            $end = clone $start;
+            $end->modify("+{$duration} hours");
+            $times[] = $start->format('H:i') . ' - ' . $end->format('H:i');
+        }
+
+        return $times;
+    }
 }
 ?>

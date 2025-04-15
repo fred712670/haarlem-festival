@@ -2,7 +2,7 @@
 $festivalStart = '2025-07-24';
 $festivalEnd = '2025-07-27';
 $default = $festivalStart;
-function renderRestaurantReservation($restaurant) {
+function renderRestaurantReservation($restaurant, $sessionTimes) {
 ?>
     <div class="reservation">
         <div class="contact-info">
@@ -39,9 +39,10 @@ function renderRestaurantReservation($restaurant) {
                 required>
 
                 <label for="time">Select time:</label>
-                <select id="time" name="time">
-                    <option value="12:00">12:00 - 14:30</option>
-                    <option value="18:30">18:30 - 21:00</option>
+                <select id="time" name="time" required>
+                <?php foreach ($sessionTimes as $time): ?>
+                    <option value="<?= explode(' - ', $time)[0] ?>"><?= $time ?></option>
+                    <?php endforeach; ?>
                 </select>
 
                 <label for="requests">Special Requests:</label>

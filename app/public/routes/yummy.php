@@ -20,9 +20,8 @@ Route::add('/restaurant/([0-9]+)', function ($id) {
     }
     
     $restaurant = $data['restaurant'];
-    $menuItems = $data['menuItems'];
-    
-
+$menuItems = $data['menuItems'];
+$sessionTimes = $data['sessionTimes'];
     require_once __DIR__ . '/../views/pages/restaurant-details.php';
 }, 'get');
 ?>
