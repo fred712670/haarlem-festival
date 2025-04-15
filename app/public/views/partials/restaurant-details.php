@@ -19,7 +19,7 @@ require_once __DIR__ . '/../components/restaurant-reservation.php';
         <?php 
         renderRestaurantHeader($restaurant);
         renderRestaurantLocation($restaurant);
-        renderRestaurantInfo($restaurant);
+        renderRestaurantInfo($restaurant, $menuItems);
         renderRestaurantReservation($restaurant);
         ?>
     </div>

@@ -6,7 +6,18 @@ class RestaurantDetailsController
     public function show($id)
     {
         $restaurantModel = new YummyModel();
-        return $restaurantModel->getRestaurantById($id);
+
+        $restaurant = $restaurantModel->getRestaurantById($id);
+        $menuItems = $restaurantModel->getMenuItemsByRestaurant($id);
+
+        if (!$restaurant) {
+            return null;
+        }
+        
+        return [
+            'restaurant' => $restaurant,
+            'menuItems' => $menuItems
+        ];
     }
 }
 ?>
