@@ -37,9 +37,8 @@
                         foreach ($_SESSION['cart'] as $index => $ticket): ?>
                         <div class="ticket-container">
                             <p class="eventName"><?= htmlspecialchars($ticket['description']) ?></p>
-                            <p><?= htmlspecialchars($ticket['location']) ?></p>
-                            <p><?= htmlspecialchars($ticket['dateTime']) ?></p>
-                            <p><?= htmlspecialchars($ticket['ticketType']) ?></p>
+                            <p>Reservation for <?= htmlspecialchars($ticket['dateTime'])?></p>
+                            <p>Ticket type: <?= htmlspecialchars($ticket['ticketType']) ?></p>
                             <p>Amount of people:</p>
                             <div class="quantity-controls">
                                 <form method="post" action="updateQuantity">

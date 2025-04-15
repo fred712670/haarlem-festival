@@ -8,16 +8,8 @@ Route::add('/cart', function()  {
 }, 'get');
 
 
-Route::add('/create/order', function()  {
-    $orderController = new OrderController();
-
-    $orderController->createOrder();
-    
-    header('Location: /profile');
-});
-
 Route::add('/reserve', function() {
-
+    
     //print_r($_POST);
 
     $reservationController = new ReservationController();
@@ -45,12 +37,3 @@ Route::add('/deleteItem', function() {
     header('Location: /cart');
 }, 'post');
 
-Route::add('/payment', function () {
-    require_once __DIR__ . '/../views/pages/payment.php';
-}, 'get');
-
-Route::add('/process-payment', function () {
-    require_once __DIR__ . '/../controllers/OrderController.php';
-    $controller = new OrderController();
-    $controller->createOrder();
-}, 'post');

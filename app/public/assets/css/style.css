@@ -361,7 +361,8 @@ hr {
 }
 
 .form-section,
-.cart-section {
+.cart-section,
+.order-section {
   background: #f9f9f9;
   padding: 20px;
   border-radius: 8px;
@@ -452,3 +453,10 @@ p.eventName {
     border: 1px solid #ccc;
     margin-bottom: 30px;
 }
+
+a.btnDownload{
+  float: right;
+  background-color: #2A3A4E;
+  border: none;
+}
+

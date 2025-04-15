@@ -29,7 +29,7 @@ Route::add('/profile', function()  {
         $user = $userController->get($_SESSION['userId']);
 
         $orderController = new OrderController();
-        $orders = $orderController->getUserOrders();
+        $orders = $orderController->getUserOrders($_SESSION['userId']);
         
         require_once(__DIR__ . '/../views/pages/profile.php');
     } else {
