@@ -464,36 +464,76 @@ Route::add('/admin/jazz/venues', function() {
     require_once(__DIR__ . "/../views/pages/admin_jazz_venues.php");
 }, 'get');
 
-Route::add('/admin/jazz/venues/edit/([0-9]+)', function($venueId) {
+Route::add('/admin/jazz/venues/create', function() {
+    // Use the existing requireAdmin function
     requireAdmin();
     
     $controller = new JazzManagementController();
-    $venue = $controller->getVenue($venueId);
     
-    if (!$venue) {
-        $_SESSION['error_message'] = 'Venue not found.';
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $result = $controller->createVenue($_POST);
+        
+        if ($result['success']) {
+            $_SESSION['success_message'] = $result['message'];
+            header('Location: /admin/jazz/venues');
+            exit();
+        } else {
+            $_SESSION['error_message'] = $result['message'];
+            $viewData = $controller->getVenueFormData();
+            $viewData['formData'] = $_POST;
+            require __DIR__ . '/../views/pages/admin_jazz_venue_form.php';
+            exit();
+        }
+    }
+    
+    $viewData = $controller->getVenueFormData();
+    require __DIR__ . '/../views/pages/admin_jazz_venue_form.php';
+}, ['get', 'post']);
+
+Route::add('/admin/jazz/venues/edit/([0-9]+)', function($venueId) {
+    // Use the existing requireAdmin function
+    requireAdmin();
+    
+    $controller = new JazzManagementController();
+    
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $result = $controller->updateVenue($venueId, $_POST);
+        
+        if ($result['success']) {
+            $_SESSION['success_message'] = $result['message'];
+            header('Location: /admin/jazz/venues');
+            exit();
+        } else {
+            $_SESSION['error_message'] = $result['message'];
+        }
+    }
+    
+    $viewData = ['venue' => $controller->getVenue($venueId)];
+    require __DIR__ . '/../views/pages/admin_jazz_venue_form.php';
+}, ['get', 'post']);
+
+Route::add('/admin/jazz/venues/delete/([0-9]+)', function($venueId) {
+    // Use the existing requireAdmin function
+    requireAdmin();
+    
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $controller = new JazzManagementController();
+        $result = $controller->deleteVenue($venueId);
+        
+        if ($result['success']) {
+            $_SESSION['success_message'] = $result['message'];
+        } else {
+            $_SESSION['error_message'] = $result['message'];
+        }
+        
         header('Location: /admin/jazz/venues');
         exit();
     }
     
-    require_once(__DIR__ . "/../views/pages/admin_jazz_venue_form.php");
-}, 'get');
-
-Route::add('/admin/jazz/venues/edit/([0-9]+)', function($venueId) {
-    requireAdmin();
-    
-    $controller = new JazzManagementController();
-    $result = $controller->updateVenue($venueId, $_POST);
-    
-    if ($result['success']) {
-        $_SESSION['success_message'] = $result['message'];
-        header('Location: /admin/jazz/venues');
-    } else {
-        $_SESSION['error_message'] = $result['message'];
-        header("Location: /admin/jazz/venues/edit/{$venueId}");
-    }
+    // If not POST, redirect back to venues page
+    header('Location: /admin/jazz/venues');
     exit();
-}, 'post');
+}, ['post']);
 
 // Pass Management
 Route::add('/admin/jazz/passes', function() {

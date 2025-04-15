@@ -633,6 +633,69 @@ class JazzManagementModel extends BaseModel
     }
 
     /**
+ * Create a new venue
+ */
+public function createVenue($name, $address, $capacity, $description = '', $email = '', $officePhone = '', $officeHours = '', $infoPhone = '')
+{
+    try {
+        $query = "INSERT INTO Venue 
+                    (Name, Address, Capacity, Description, Email, OfficePhone, OfficeHours, InfoPhone) 
+                  VALUES 
+                    (:name, :address, :capacity, :description, :email, :officePhone, :officeHours, :infoPhone)";
+        
+        $stmt = self::$pdo->prepare($query);
+        $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+        $stmt->bindParam(':address', $address, PDO::PARAM_STR);
+        $stmt->bindParam(':capacity', $capacity, PDO::PARAM_INT);
+        $stmt->bindParam(':description', $description, PDO::PARAM_STR);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt->bindParam(':officePhone', $officePhone, PDO::PARAM_STR);
+        $stmt->bindParam(':officeHours', $officeHours, PDO::PARAM_STR);
+        $stmt->bindParam(':infoPhone', $infoPhone, PDO::PARAM_STR);
+        
+        $stmt->execute();
+        
+        return [
+            'success' => true, 
+            'message' => 'Venue created successfully.',
+            'venueId' => self::$pdo->lastInsertId()
+        ];
+    } catch (Exception $e) {
+        error_log("Error creating venue: " . $e->getMessage());
+        return ['success' => false, 'message' => 'Failed to create venue: ' . $e->getMessage()];
+    }
+}
+
+/**
+ * Delete a venue
+ */
+public function deleteVenue($venueId)
+{
+    try {
+        // Check if the venue is used in any events
+        $checkQuery = "SELECT COUNT(*) as count FROM JazzEvent WHERE Location = :venueId";
+        $checkStmt = self::$pdo->prepare($checkQuery);
+        $checkStmt->bindParam(':venueId', $venueId, PDO::PARAM_INT);
+        $checkStmt->execute();
+        $result = $checkStmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($result['count'] > 0) {
+            return ['success' => false, 'message' => 'Cannot delete venue. It is used in events. Remove the events first.'];
+        }
+        
+        $query = "DELETE FROM Venue WHERE VenueId = :venueId";
+        $stmt = self::$pdo->prepare($query);
+        $stmt->bindParam(':venueId', $venueId, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        return ['success' => true, 'message' => 'Venue deleted successfully.'];
+    } catch (Exception $e) {
+        error_log("Error deleting venue: " . $e->getMessage());
+        return ['success' => false, 'message' => 'Failed to delete venue: ' . $e->getMessage()];
+    }
+}
+
+    /**
      * Get all passes
      */
     public function getAllPasses()

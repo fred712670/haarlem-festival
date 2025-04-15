@@ -402,7 +402,53 @@ class JazzManagementController
             $data['infoPhone'] ?? ''
         );
     }
+/**
+ * Create a new venue
+ */
+public function createVenue($data)
+{
+    // Validate inputs
+    if (empty($data['name']) || empty($data['address']) || !isset($data['capacity'])) {
+        return ['success' => false, 'message' => 'Name, address, and capacity are required.'];
+    }
 
+    // Create venue
+    return $this->jazzModel->createVenue(
+        $data['name'],
+        $data['address'],
+        $data['capacity'],
+        $data['description'] ?? '',
+        $data['email'] ?? '',
+        $data['officePhone'] ?? '',
+        $data['officeHours'] ?? '',
+        $data['infoPhone'] ?? ''
+    );
+}
+
+/**
+ * Get data for the venue form (create new venue)
+ */
+public function getVenueFormData()
+{
+    return [
+        'venue' => null
+    ];
+}
+
+/**
+ * Delete a venue
+ */
+public function deleteVenue($venueId)
+{
+    // Check if venue exists
+    $venue = $this->jazzModel->getVenueById($venueId);
+    if (!$venue) {
+        return ['success' => false, 'message' => 'Venue not found.'];
+    }
+
+    // Delete venue
+    return $this->jazzModel->deleteVenue($venueId);
+}
     /**
      * List all passes
      */

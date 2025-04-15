@@ -38,8 +38,12 @@ require_once(__DIR__ . "/../partials/header.php");
                         <i class="fas fa-arrow-left"></i> Back to Dashboard
                     </a>
                 </div>
+                <div class="col-md-6 text-end">
+                    <a href="/admin/jazz/venues/create" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Create New Venue
+                    </a>
+                </div>
             </div>
-
             <div class="admin-card">
                 <div class="admin-card-header">
                     <h5 class="admin-card-title">Jazz Venues</h5>
@@ -80,6 +84,9 @@ require_once(__DIR__ . "/../partials/header.php");
                                                 <a href="/admin/jazz/venues/edit/<?= $venue['id'] ?>" class="btn btn-sm btn-outline-primary" title="Edit Venue">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
+                                                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteVenueModal<?= $venue['id'] ?>" title="Delete Venue">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
@@ -92,6 +99,30 @@ require_once(__DIR__ . "/../partials/header.php");
         </div>
     </div>
 </div>
+
+<!-- Delete Confirmation Modals -->
+<?php foreach ($viewData['venues'] as $venue): ?>
+<div class="modal fade" id="deleteVenueModal<?= $venue['id'] ?>" tabindex="-1" aria-labelledby="deleteVenueModalLabel<?= $venue['id'] ?>" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteVenueModalLabel<?= $venue['id'] ?>">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete the venue "<?= htmlspecialchars($venue['name']) ?>"?</p>
+                <p class="text-danger"><strong>This action cannot be undone.</strong></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="post" action="/admin/jazz/venues/delete/<?= $venue['id'] ?>">
+                    <button type="submit" class="btn btn-danger">Delete Venue</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endforeach; ?>
 
 <script src="/assets/js/admin.js"></script>
 
