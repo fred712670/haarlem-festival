@@ -9,7 +9,6 @@
 </head>
 
 <body>
-   
     <section class="artist-info">
         <h1 class="artist-name"><?= strtoupper(htmlspecialchars($artist['Name'])) ?></h1>
             <div class="artist-detail">
@@ -28,7 +27,6 @@
 
     <section id="popular-works">
     <h2>POPULAR WORKS</h2>
-
     <?php foreach ($songs as $index => $song): ?>
         <div class="song">
             <?php if ($index % 2 === 0): ?>
@@ -64,9 +62,7 @@
     <?php endforeach; ?>
 </section>
 
-
-
-        <section id="tickets" class="shows">
+<section id="tickets" class="shows">
     <h2><?= strtoupper(htmlspecialchars($artist['Name'])) ?>’S APPEARANCES</h2>
     <div class="shows-grid">
         <?php foreach ($performances as $performance): ?>
@@ -79,7 +75,7 @@
                 <p><strong>Event:</strong> <?= htmlspecialchars($performance['Description']) ?></p>
                 <p><strong>Price:</strong> €<?= number_format($performance['Price'], 2) ?></p>
                 <p><strong>Duration:</strong> <?= (int) $performance['DurationByMinute'] ?> minutes</p>
-                <button class="small-button">Book This Show</button>
+                <button type="submit" class="small-button book-button">Book This Show</button>
             </div>
         <?php endforeach; ?>
     </div>
