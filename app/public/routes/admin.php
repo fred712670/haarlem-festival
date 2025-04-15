@@ -631,3 +631,112 @@ Route::add('/admin/jazz/passes/delete/([0-9]+)', function($passId) {
     header('Location: /admin/jazz/passes');
     exit();
 }, 'post');
+
+// Order Management Dashboard
+Route::add('/admin/orders', function() {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/AdminOrderController.php");
+    $controller = new AdminOrderController();
+    
+    // Get filters, search, sort parameters from query string
+    $filters = [
+        'status' => $_GET['status'] ?? '',
+        'startDate' => $_GET['startDate'] ?? '',
+        'endDate' => $_GET['endDate'] ?? '',
+        'minAmount' => $_GET['minAmount'] ?? '',
+        'maxAmount' => $_GET['maxAmount'] ?? ''
+    ];
+    
+    $searchTerm = $_GET['search'] ?? '';
+    $sortBy = $_GET['sortBy'] ?? 'OrderDate';
+    $sortOrder = $_GET['sortOrder'] ?? 'desc';
+    $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+    
+    // Get data for the view
+    $viewData = $controller->index($filters, $searchTerm, $sortBy, $sortOrder, $page);
+    
+    // Add status options for the filter dropdown
+    $viewData['statusOptions'] = ['pending', 'paid', 'completed', 'cancelled', 'refunded'];
+    
+    require_once(__DIR__ . "/../views/pages/admin_orders.php");
+}, 'get');
+
+// View Order Details
+Route::add('/admin/orders/view/([0-9]+)', function($orderId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/AdminOrderController.php");
+    $controller = new AdminOrderController();
+    
+    $orderData = $controller->getOrder($orderId);
+    
+    if (!$orderData) {
+        $_SESSION['error_message'] = 'Order not found.';
+        header('Location: /admin/orders');
+        exit();
+    }
+    
+    // Add status options for the status update form
+    $statusOptions = ['pending', 'paid', 'completed', 'cancelled', 'refunded'];
+    
+    require_once(__DIR__ . "/../views/pages/admin_order_details.php");
+}, 'get');
+
+// Update Order Status
+Route::add('/admin/orders/update-status/([0-9]+)', function($orderId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/AdminOrderController.php");
+    $controller = new AdminOrderController();
+    
+    $status = $_POST['status'] ?? '';
+    
+    $result = $controller->updateOrderStatus($orderId, $status);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+    }
+    
+    header("Location: /admin/orders/view/{$orderId}");
+    exit();
+}, 'post');
+
+// Export Orders to Excel
+Route::add('/admin/orders/export', function() {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/AdminOrderController.php");
+    $controller = new AdminOrderController();
+    
+    // Get filters from query string
+    $filters = [
+        'status' => $_GET['status'] ?? '',
+        'startDate' => $_GET['startDate'] ?? '',
+        'endDate' => $_GET['endDate'] ?? '',
+        'minAmount' => $_GET['minAmount'] ?? '',
+        'maxAmount' => $_GET['maxAmount'] ?? ''
+    ];
+    
+    $searchTerm = $_GET['search'] ?? '';
+    
+    $result = $controller->exportOrders($filters, $searchTerm);
+    
+    if ($result['success']) {
+        // Send the file to the browser for download
+        $filename = basename($result['filepath']);
+        $fileUrl = '/assets/exports/' . $filename;
+        
+        $_SESSION['success_message'] = 'Orders exported successfully.';
+        
+        // Redirect to the file for download
+        header("Location: {$fileUrl}");
+        exit();
+    } else {
+        $_SESSION['error_message'] = 'Failed to export orders.';
+        header('Location: /admin/orders');
+        exit();
+    }
+}, 'get');

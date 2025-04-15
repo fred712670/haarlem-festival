@@ -263,5 +263,146 @@ public function getEventDetails($eventId) {
     $stmt->execute();
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
+public function getOrders($filters = [], $searchTerm = '', $sortBy = 'OrderDate', $sortOrder = 'desc', $page = 1, $perPage = 10) {
+    // Validate inputs
+    $validSortFields = ['OrderId', 'OrderDate', 'Status', 'UserId', 'Amount'];
+    if (!in_array($sortBy, $validSortFields)) {
+        $sortBy = 'OrderDate';
+    }
+    
+    $sortOrder = strtolower($sortOrder) === 'desc' ? 'DESC' : 'ASC';
+    
+    // Calculate offset for pagination
+    $offset = ($page - 1) * $perPage;
+    
+    // Build the base query
+    $sql = "SELECT o.*, u.FullName as CustomerName, u.Email as CustomerEmail, 
+            (SELECT COUNT(*) FROM Ticket WHERE OrderId = o.OrderId) as TicketCount
+            FROM `Order` o
+            LEFT JOIN User u ON o.UserId = u.UserId
+            WHERE 1=1";
+    $params = [];
+    
+    // Add search condition if provided
+    if (!empty($searchTerm)) {
+        $sql .= " AND (o.OrderId LIKE ? OR o.Status LIKE ? OR u.FullName LIKE ? OR u.Email LIKE ? OR o.PhoneNumber LIKE ?)";
+        $searchPattern = "%$searchTerm%";
+        $params[] = $searchPattern;
+        $params[] = $searchPattern;
+        $params[] = $searchPattern;
+        $params[] = $searchPattern;
+        $params[] = $searchPattern;
+    }
+    
+    // Add filters
+    if (!empty($filters)) {
+        // Filter by status
+        if (!empty($filters['status'])) {
+            $sql .= " AND o.Status = ?";
+            $params[] = $filters['status'];
+        }
+        
+        // Filter by date range
+        if (!empty($filters['startDate']) && !empty($filters['endDate'])) {
+            $sql .= " AND o.OrderDate BETWEEN ? AND ?";
+            $params[] = $filters['startDate'] . ' 00:00:00';
+            $params[] = $filters['endDate'] . ' 23:59:59';
+        }
+        
+        // Filter by amount
+        if (!empty($filters['minAmount'])) {
+            $sql .= " AND o.Amount >= ?";
+            $params[] = $filters['minAmount'];
+        }
+        
+        if (!empty($filters['maxAmount'])) {
+            $sql .= " AND o.Amount <= ?";
+            $params[] = $filters['maxAmount'];
+        }
+    }
+    
+    // Add sorting and pagination
+    $sql .= " ORDER BY o.$sortBy $sortOrder LIMIT ?, ?";
+    
+    // Prepare and execute
+    $stmt = self::$pdo->prepare($sql);
+    
+    $paramIndex = 1;
+    foreach ($params as $param) {
+        $stmt->bindValue($paramIndex++, $param, PDO::PARAM_STR);
+    }
+    
+    $stmt->bindValue($paramIndex++, $offset, PDO::PARAM_INT);
+    $stmt->bindValue($paramIndex++, $perPage, PDO::PARAM_INT);
+    
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
+public function getTotalOrdersCount($filters = [], $searchTerm = '') {
+    // Build query
+    $sql = "SELECT COUNT(*) as total 
+            FROM `Order` o
+            LEFT JOIN User u ON o.UserId = u.UserId
+            WHERE 1=1";
+    $params = [];
+    
+    // Add search condition if provided
+    if (!empty($searchTerm)) {
+        $sql .= " AND (o.OrderId LIKE ? OR o.Status LIKE ? OR u.FullName LIKE ? OR u.Email LIKE ? OR o.PhoneNumber LIKE ?)";
+        $searchPattern = "%$searchTerm%";
+        $params[] = $searchPattern;
+        $params[] = $searchPattern;
+        $params[] = $searchPattern;
+        $params[] = $searchPattern;
+        $params[] = $searchPattern;
+    }
+    
+    // Add filters
+    if (!empty($filters)) {
+        if (!empty($filters['status'])) {
+            $sql .= " AND o.Status = ?";
+            $params[] = $filters['status'];
+        }
+        
+        if (!empty($filters['startDate']) && !empty($filters['endDate'])) {
+            $sql .= " AND o.OrderDate BETWEEN ? AND ?";
+            $params[] = $filters['startDate'] . ' 00:00:00';
+            $params[] = $filters['endDate'] . ' 23:59:59';
+        }
+        
+        if (!empty($filters['minAmount'])) {
+            $sql .= " AND o.Amount >= ?";
+            $params[] = $filters['minAmount'];
+        }
+        
+        if (!empty($filters['maxAmount'])) {
+            $sql .= " AND o.Amount <= ?";
+            $params[] = $filters['maxAmount'];
+        }
+    }
+    
+    $stmt = self::$pdo->prepare($sql);
+    $stmt->execute($params);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    return $result['total'];
+}
+
+public function updateOrderStatus($orderId, $status) {
+    $query = "UPDATE `Order` SET Status = ? WHERE OrderId = ?";
+    $stmt = self::$pdo->prepare($query);
+    
+    try {
+        $stmt->execute([$status, $orderId]);
+        
+        if ($stmt->rowCount() > 0) {
+            return ['success' => true, 'message' => 'Order status updated successfully.'];
+        } else {
+            return ['success' => false, 'message' => 'No changes made or order not found.'];
+        }
+    } catch (\PDOException $e) {
+        return ['success' => false, 'message' => 'Failed to update order status: ' . $e->getMessage()];
+    }
+}
 }
