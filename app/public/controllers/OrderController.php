@@ -46,6 +46,9 @@ class OrderController {
     
         // Pass event details to PDF generation
         $this->generateTicketPdfs($orderResult, $eventDetails);
+
+        $this->generateInvoicePdf($orderResult);
+
     
         // Clear the shopping cart.
         //unset($_SESSION['cart']);
@@ -316,6 +319,145 @@ public function downloadTicket() {
     header('Content-Disposition: attachment; filename="' . basename($pdfFilePath) . '"');
     header('Content-Length: ' . filesize($pdfFilePath));
     readfile($pdfFilePath);
+    exit;
+}
+
+private function generateInvoicePdf($orderResult) {
+    // Extract necessary order details
+    $orderId = $orderResult['order']['OrderId'];
+    $customerName = $orderResult['order']['CustomerName'];
+    $phone = $orderResult['order']['PhoneNumber'];
+    $address = $orderResult['order']['Address'];
+    $orderDate = $orderResult['order']['OrderDate'];
+    
+    // Calculate subtotal, VAT, and total
+    $subtotal = 0;
+    $vatRate = 0.21; // Default VAT rate of 21%
+    $lineItems = [];
+
+    foreach ($orderResult['tickets'] as $ticket) {
+        $lineItems[] = [
+            'ticketId' => $ticket['TicketId'],
+            'price' => $ticket['Price'],
+            'passType' => $ticket['PassType'],
+            'quantity' => 1
+        ];
+        $subtotal += $ticket['Price']; // Add price to subtotal
+    }
+
+    // Calculate VAT and total
+    $vat = $subtotal * $vatRate;
+    $total = $subtotal + $vat;
+
+    // Create HTML for the invoice PDF
+    $html = '<html>
+        <head>
+            <meta charset="utf-8">
+            <style>
+                body { font-family: Arial, sans-serif; }
+                h1 { font-size: 28px; }
+                p { font-size: 16px; margin: 6px 0; }
+                .table { width: 100%; margin-top: 20px; border-collapse: collapse; }
+                .table th, .table td { padding: 8px; text-align: left; border: 1px solid #ddd; }
+                .table th { background-color: #f2f2f2; }
+                .total { font-weight: bold; }
+            </style>
+        </head>
+        <body>
+            <h1>Invoice</h1>
+            <p><strong>Invoice Number:</strong> ' . $orderId . '</p>
+            <p><strong>Invoice Date:</strong> ' . $orderDate . '</p>
+            <p><strong>Client Name:</strong> ' . $customerName . '</p>
+            <p><strong>Phone Number:</strong> ' . $phone . '</p>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Ticket ID</th>
+                        <th>Pass Type</th>
+                        <th>Price (€)</th>
+                        <th>Subtotal (€)</th>
+                    </tr>
+                </thead>
+                <tbody>';
+
+    // Add line items
+    foreach ($lineItems as $item) {
+        $html .= '<tr>
+                    <td>' . $item['ticketId'] . '</td>
+                    <td>' . $item['passType'] . '</td>
+                    <td>' . number_format($item['price'], 2) . '</td>
+                    <td>' . number_format($item['price'] * $item['quantity'], 2) . '</td>
+                  </tr>';
+    }
+
+    $html .= '</tbody>
+            </table>
+
+            <p class="total"><strong>Subtotal:</strong> €' . number_format($subtotal, 2) . '</p>
+            <p class="total"><strong>VAT (21%):</strong> €' . number_format($vat, 2) . '</p>
+            <p class="total"><strong>Total Amount:</strong> €' . number_format($total, 2) . '</p>
+
+            <p><strong>Payment Date:</strong> ' . $orderDate . '</p>
+        </body>
+    </html>';
+
+    // Generate the invoice PDF using Dompdf
+    $dompdf = new Dompdf();
+    $dompdf->loadHtml($html);
+    $dompdf->setPaper('A4', 'portrait');
+    $dompdf->render();
+
+    // Save the invoice PDF
+    $pdfDirectory = __DIR__ . "/../assets/orders/invoices/";
+    if (!is_dir($pdfDirectory)) {
+        mkdir($pdfDirectory, 0777, true);
+    }
+    
+    $invoicePath = $pdfDirectory . "invoice-{$orderId}.pdf";
+    file_put_contents($invoicePath, $dompdf->output());
+
+    // Optionally, return the path to the generated invoice
+    return $invoicePath;
+}
+
+public function downloadInvoice() {
+
+    // Check if the user is logged in
+    if (!isset($_SESSION['userId'])) {
+        die("Unauthorized access! Please log in.");
+    }
+
+    // Get order_id from the URL parameters
+    $orderId = isset($_GET['order_id']) ? (int)$_GET['order_id'] : null;
+
+    // Validate the input parameters
+    if (!$orderId) {
+        die("Invalid request.");
+    }
+
+    // Fetch the order and check if the user has access to this order
+    $orderModel = new OrderModel();
+    $order = $orderModel->getOrderById($orderId);
+
+    // Check if the order exists and belongs to the logged-in user
+    if (!$order || $order['UserId'] != $_SESSION['userId']) {
+        die("Unauthorized access to this order.");
+    }
+
+    // Construct the file path for the invoice
+    $invoiceFilePath = __DIR__ . "/../assets/orders/invoices/invoice-{$orderId}.pdf";
+
+    // Check if the invoice file exists
+    if (!file_exists($invoiceFilePath)) {
+        die("The requested invoice file does not exist.");
+    }
+
+    // Serve the file for download
+    header('Content-Type: application/pdf');
+    header('Content-Disposition: attachment; filename="' . basename($invoiceFilePath) . '"');
+    header('Content-Length: ' . filesize($invoiceFilePath));
+    readfile($invoiceFilePath);
     exit;
 }
 

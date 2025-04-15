@@ -16,6 +16,11 @@ Route::add('/download/ticket', function() {
     $controller->downloadTicket(); 
 }, 'get');
 
+Route::add('/download/invoice', function() {
+    $controller = new OrderController();
+    $controller->downloadInvoice(); 
+}, 'get');
+
 Route::add('/payment', function () {
     require_once __DIR__ . '/../views/pages/payment.php';
 }, 'get');

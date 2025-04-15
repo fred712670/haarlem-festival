@@ -34,8 +34,9 @@
                                 (<?= $order['orderDetails']['Status'] ?>)</h5>
                                 <small><strong>Order Placed:</strong> <?= (new DateTime($order['orderDetails']['OrderDate']))->format('D. jS M y') ?></small>
                         </div>
-                        <!-- For each event in this order, add download button(s) -->
-                        
+                        <a class="btn btn-success btn-sm ms-2" href="/download/invoice?order_id=<?= $order['orderDetails']['OrderId'] ?>" target="_blank">
+                            Download Invoice
+                        </a>
                     </div>
                 </div>
                 <div class="card-body">

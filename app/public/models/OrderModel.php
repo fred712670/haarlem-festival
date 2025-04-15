@@ -143,13 +143,13 @@ public function getEventDetails($eventId) {
     
     return $standardDetails;
 }
-    public function getOrderById($orderId) {
-        $query = "SELECT * FROM `Order` WHERE OrderId = :orderId LIMIT 1";
-        $stmt = self::$pdo->prepare($query);
-        $stmt->bindParam(':orderId', $orderId, PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
+public function getOrderById($orderId) {
+    $query = "SELECT * FROM `Order` WHERE OrderId = :orderId LIMIT 1";
+    $stmt = self::$pdo->prepare($query);
+    $stmt->bindParam(':orderId', $orderId, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
 
 
     public function getUserOrders($userId) {
