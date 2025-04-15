@@ -434,29 +434,67 @@ p.eventName {
 
 /* Profile Styles */
 
-.card{
-    margin-top: 20px;
+.card {
+  margin-top: 20px;
 }
 .ticket-info {
-    padding: 10px;
-    background-color: #f8f9fa;
-    margin-bottom: 10px;
-    border-radius: 5px;
-  }
-  .card-header {
-    background-color: #e9ecef;
-  }
-  .form-section {
-    background: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    margin-bottom: 30px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+.card-header {
+  background-color: #e9ecef;
+}
+.form-section {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 30px;
 }
 
-a.btnDownload{
-  float: right;
-  background-color: #2A3A4E;
-  border: none;
+/* Payment Styles */
+.payment-status {
+  max-width: 600px;
+  margin: 3rem auto;
+  padding: 2rem;
+  border-radius: 12px;
+  font-family: sans-serif;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
+.payment-status.success {
+  background-color: #e6ffed;
+  color: #2c662d;
+  border: 2px solid #2c662d;
+}
+
+.payment-status.error {
+  background-color: #ffe6e6;
+  color: #cc0000;
+  border: 2px solid #cc0000;
+}
+
+.payment-status.notice {
+  background-color: #fffbe6;
+  color: #7c5700;
+  border: 2px solid #7c5700;
+}
+
+.payment-status .button {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  background-color: #333;
+  color: #fff;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.payment-status .button:hover {
+  background-color: #555;
+}
