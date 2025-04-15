@@ -258,16 +258,20 @@ class JazzManagementController
      */
     public function getEvent($eventId)
     {
+        error_log("Loading event with ID: " . $eventId);
         $event = $this->jazzModel->getEventById($eventId);
-        $artists = $this->jazzModel->getAllArtists();
-        $venues = $this->jazzModel->getAllVenues();
-        $selectedArtists = $this->jazzModel->getEventArtists($eventId);
+        error_log("Event found: " . ($event ? 'Yes' : 'No'));
+        
+        $artists = [];
+        if ($event) {
+            $artists = $this->jazzModel->getEventArtists($eventId);
+        }
         
         return [
             'event' => $event,
-            'artists' => $artists,
-            'venues' => $venues,
-            'selectedArtists' => $selectedArtists
+            'artists' => $this->jazzModel->getAllArtists(),
+            'venues' => $this->jazzModel->getAllVenues(),
+            'selectedArtists' => $artists
         ];
     }
 
@@ -277,61 +281,66 @@ class JazzManagementController
     public function createEvent($data)
     {
         // Validate inputs
-        if (empty($data['description']) || empty($data['venue']) || empty($data['startDateTime']) || 
+        if (empty($data['description']) || empty($data['venue']) || empty($data['startDate']) || empty($data['startTime']) || 
             empty($data['durationByMinute']) || !isset($data['tickets']) || !isset($data['price'])) {
             return ['success' => false, 'message' => 'All required fields must be filled.'];
         }
-
+    
         if (empty($data['artists'])) {
             return ['success' => false, 'message' => 'At least one artist must be selected.'];
         }
-
+    
+        // Combine date and time into datetime format
+        $startDateTime = $data['startDate'] . ' ' . $data['startTime'] . ':00';
+    
         // Create event
         $result = $this->jazzModel->createEvent(
             $data['description'],
             $data['venue'],
-            $data['startDateTime'],
+            $startDateTime,
             $data['timeSlot'] ?? '',
             $data['durationByMinute'],
             $data['tickets'],
             $data['price'],
             $data['artists']
         );
-
+    
         return $result;
     }
-
+    
     /**
      * Update an existing event
      */
     public function updateEvent($eventId, $data)
-    {
-        // Validate inputs
-        if (empty($data['description']) || empty($data['venue']) || empty($data['startDateTime']) || 
-            empty($data['durationByMinute']) || !isset($data['tickets']) || !isset($data['price'])) {
-            return ['success' => false, 'message' => 'All required fields must be filled.'];
-        }
-
-        if (empty($data['artists'])) {
-            return ['success' => false, 'message' => 'At least one artist must be selected.'];
-        }
-
-        // Update event
-        $result = $this->jazzModel->updateEvent(
-            $eventId,
-            $data['description'],
-            $data['venue'],
-            $data['startDateTime'],
-            $data['timeSlot'] ?? '',
-            $data['durationByMinute'],
-            $data['tickets'],
-            $data['price'],
-            $data['artists']
-        );
-
-        return $result;
+{
+    // Validate inputs
+    if (empty($data['description']) || empty($data['venue']) || empty($data['startDate']) || empty($data['startTime']) || 
+        empty($data['durationByMinute']) || !isset($data['tickets']) || !isset($data['price'])) {
+        return ['success' => false, 'message' => 'All required fields must be filled.'];
     }
 
+    if (empty($data['artists'])) {
+        return ['success' => false, 'message' => 'At least one artist must be selected.'];
+    }
+
+    // Combine date and time into datetime format
+    $startDateTime = $data['startDate'] . ' ' . $data['startTime'] . ':00';
+
+    // Update event
+    $result = $this->jazzModel->updateEvent(
+        $eventId,
+        $data['description'],
+        $data['venue'],
+        $startDateTime,
+        $data['timeSlot'] ?? '',
+        $data['durationByMinute'],
+        $data['tickets'],
+        $data['price'],
+        $data['artists']
+    );
+
+    return $result;
+}
     /**
      * Delete an event
      */

@@ -76,10 +76,33 @@ if ($isEdit && isset($viewData['selectedArtists'])) {
                                 </div>
                                 
                                 <div class="admin-form-group">
-                                    <label for="startDateTime" class="admin-form-label">Start Date & Time <span class="text-danger">*</span></label>
-                                    <input type="datetime-local" class="admin-form-control" id="startDateTime" name="startDateTime" 
-                                           value="<?= htmlspecialchars($formData['start_datetime'] ?? '') ?>" required>
-                                </div>
+            <label for="startDate" class="admin-form-label">Start Date <span class="text-danger">*</span></label>
+            <input type="date" class="admin-form-control" id="startDate" name="startDate" 
+                   value="<?= isset($formData['start_datetime']) ? date('Y-m-d', strtotime($formData['start_datetime'])) : '' ?>" required>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="admin-form-group">
+            <label for="startTime" class="admin-form-label">Start Time <span class="text-danger">*</span></label>
+            <select class="admin-form-control" id="startTime" name="startTime" required>
+                <?php
+                // Generate time options in 30-minute increments
+                $startTime = strtotime('00:00');
+                $endTime = strtotime('23:30');
+                $selectedTime = isset($formData['start_datetime']) ? date('H:i', strtotime($formData['start_datetime'])) : '';
+                
+                while ($startTime <= $endTime) {
+                    $timeOption = date('H:i', $startTime);
+                    echo '<option value="' . $timeOption . '"';
+                    if ($timeOption == $selectedTime) echo ' selected';
+                    echo '>' . $timeOption . '</option>';
+                    $startTime = strtotime('+30 minutes', $startTime);
+                }
+                ?>
+            </select>
+        </div>
+    </div>
+</div>
                                 
                                 <div class="admin-form-group">
                                     <label for="timeSlot" class="admin-form-label">Time Slot (Display Format)</label>

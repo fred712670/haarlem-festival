@@ -77,7 +77,7 @@ require_once(__DIR__ . "/../partials/header.php");
                                             </td>
                                             <td><?= htmlspecialchars($event['description']) ?></td>
                                             <td><?= htmlspecialchars($event['venue_name']) ?></td>
-                                            <td><?= htmlspecialchars($event['artists']) ?></td>
+                                            <td><?= !empty($event['artists']) ? htmlspecialchars($event['artists']) : 'No artists assigned' ?></td>
                                             <td>
                                                 <?= intval($event['tickets']) ?> available
                                                 <div class="progress mt-1" style="height: 5px;">

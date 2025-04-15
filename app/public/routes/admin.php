@@ -427,9 +427,9 @@ Route::add('/admin/jazz/events/delete/([0-9]+)', function($eventId) {
     requireAdmin();
     
     $controller = new JazzManagementController();
-    $event = $controller->getEvent($eventId);
+    $viewData = $controller->getEvent($eventId);
     
-    if (!$event['event']) {
+    if (!$viewData['event']) {
         $_SESSION['error_message'] = 'Event not found.';
         header('Location: /admin/jazz/events');
         exit();

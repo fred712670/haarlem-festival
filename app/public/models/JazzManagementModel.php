@@ -488,6 +488,9 @@ class JazzManagementModel extends BaseModel
         try {
             self::$pdo->beginTransaction();
             
+            // Debug the input
+            error_log("Deleting event with ID: " . $eventId);
+            
             // First, get the EventId from JazzEvent
             $getQuery = "SELECT EventId FROM JazzEvent WHERE JazzEventId = :jazzEventId";
             $getStmt = self::$pdo->prepare($getQuery);
@@ -496,31 +499,34 @@ class JazzManagementModel extends BaseModel
             $result = $getStmt->fetch(PDO::FETCH_ASSOC);
             
             if (!$result) {
+                error_log("No matching event found in database");
                 self::$pdo->rollBack();
                 return ['success' => false, 'message' => 'Event not found.'];
             }
             
             $mainEventId = $result['EventId'];
+            error_log("Found main EventId: " . $mainEventId);
             
-            // Delete artist performances
+            // Delete performances first (foreign key constraint)
             $performanceQuery = "DELETE FROM JazzPerformance WHERE JazzEventId = :jazzEventId";
             $performanceStmt = self::$pdo->prepare($performanceQuery);
             $performanceStmt->bindParam(':jazzEventId', $eventId, PDO::PARAM_INT);
             $performanceStmt->execute();
             
-            // Delete JazzEvent
+            // Delete JazzEvent 
             $jazzEventQuery = "DELETE FROM JazzEvent WHERE JazzEventId = :jazzEventId";
             $jazzEventStmt = self::$pdo->prepare($jazzEventQuery);
             $jazzEventStmt->bindParam(':jazzEventId', $eventId, PDO::PARAM_INT);
             $jazzEventStmt->execute();
             
-            // Delete Event
+            // Delete from main Event table
             $eventQuery = "DELETE FROM Event WHERE EventId = :eventId";
             $eventStmt = self::$pdo->prepare($eventQuery);
             $eventStmt->bindParam(':eventId', $mainEventId, PDO::PARAM_INT);
             $eventStmt->execute();
             
             self::$pdo->commit();
+            error_log("Event deletion successful");
             
             return ['success' => true, 'message' => 'Event deleted successfully.'];
         } catch (Exception $e) {

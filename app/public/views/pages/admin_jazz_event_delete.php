@@ -5,13 +5,8 @@ require_once(__DIR__ . "/../partials/header.php");
 <link rel="stylesheet" href="/assets/css/admin.css">
 
 <div class="admin-container">
-    <?php require_once(__DIR__ . "/../partials/admin_sidebar.php"); ?>
-
-    <div class="admin-main">
+    <div class="admin-main" style="margin-left: 0; width: 100%;">
         <div class="admin-header">
-            <button class="toggle-sidebar">
-                <i class="fas fa-bars"></i>
-            </button>
             <h1>Delete Jazz Event</h1>
         </div>
 
@@ -34,26 +29,30 @@ require_once(__DIR__ . "/../partials/header.php");
                     </div>
                     
                     <div class="mb-4">
-                        <h4><?= htmlspecialchars($viewData['event']['description']) ?></h4>
+                        <h4><?= htmlspecialchars($viewData['event']['description'] ?? '') ?></h4>
                         <div class="row">
                             <div class="col-md-6">
-                                <p><strong>Date:</strong> <?= date('Y-m-d', strtotime($viewData['event']['start_datetime'])) ?></p>
-                                <p><strong>Time:</strong> <?= date('H:i', strtotime($viewData['event']['start_datetime'])) ?></p>
-                                <p><strong>Venue:</strong> <?= htmlspecialchars($viewData['event']['venue_name']) ?></p>
+                                <p><strong>Date:</strong> <?= !empty($viewData['event']['start_datetime']) ? date('Y-m-d', strtotime($viewData['event']['start_datetime'])) : 'N/A' ?></p>
+                                <p><strong>Time:</strong> <?= !empty($viewData['event']['start_datetime']) ? date('H:i', strtotime($viewData['event']['start_datetime'])) : 'N/A' ?></p>
+                                <p><strong>Venue:</strong> <?= htmlspecialchars($viewData['event']['venue_name'] ?? '') ?></p>
                             </div>
                             <div class="col-md-6">
-                                <p><strong>Duration:</strong> <?= htmlspecialchars($viewData['event']['duration']) ?> minutes</p>
-                                <p><strong>Tickets Available:</strong> <?= intval($viewData['event']['tickets']) ?></p>
-                                <p><strong>Price:</strong> €<?= htmlspecialchars($viewData['event']['price']) ?></p>
+                                <p><strong>Duration:</strong> <?= htmlspecialchars($viewData['event']['duration'] ?? '') ?> minutes</p>
+                                <p><strong>Tickets Available:</strong> <?= intval($viewData['event']['tickets'] ?? 0) ?></p>
+                                <p><strong>Price:</strong> €<?= htmlspecialchars($viewData['event']['price'] ?? '') ?></p>
                             </div>
                         </div>
                         
                         <div class="mt-3">
                             <p><strong>Artists:</strong></p>
                             <ul>
-                                <?php foreach ($viewData['selectedArtists'] as $artist): ?>
-                                    <li><?= htmlspecialchars($artist['name']) ?></li>
-                                <?php endforeach; ?>
+                                <?php if (isset($viewData['selectedArtists']) && is_array($viewData['selectedArtists'])): ?>
+                                    <?php foreach ($viewData['selectedArtists'] as $artist): ?>
+                                        <li><?= htmlspecialchars($artist['name'] ?? '') ?></li>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <li>No artists assigned</li>
+                                <?php endif; ?>
                             </ul>
                         </div>
                     </div>
@@ -65,7 +64,7 @@ require_once(__DIR__ . "/../partials/header.php");
                     </ul>
                     <p class="text-danger">You cannot delete an event if tickets have already been sold for it.</p>
 
-                    <form method="post" action="/admin/jazz/events/delete/<?= $viewData['event']['id'] ?>" class="mt-4">
+                    <form method="post" action="/admin/jazz/events/delete/<?= $viewData['event']['id'] ?? 0 ?>" class="mt-4">
                         <div class="d-flex justify-content-between">
                             <a href="/admin/jazz/events" class="btn btn-secondary">Cancel</a>
                             <button type="submit" class="btn btn-danger">
