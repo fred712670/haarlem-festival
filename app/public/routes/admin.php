@@ -3,6 +3,7 @@
  * Routes for admin user management functionality
  */
 require_once(__DIR__ . "/../controllers/AdminUserController.php");
+require_once(__DIR__ . '/../controllers/EventManagementController.php');
 
 /**
  * Middleware to check if user is an administrator
@@ -204,3 +205,46 @@ Route::add('/admin/users/delete/([0-9]+)', function($userId) {
     header('Location: /admin/users');
     exit();
 }, 'post');
+
+// Homepage management
+Route::add('/admin/homepage-management', function () {
+    requireAdmin();
+    $controller = new EventManagementController();
+    $controller->manageHomepage();
+});
+
+Route::add('/admin/homepage-management/store-slide', function () {
+    requireAdmin();
+    $controller = new EventManagementController();
+    $controller->storeSlide();
+}, 'post');
+
+Route::add('/admin/homepage-management/update-slide', function () {
+    requireAdmin();
+    $controller = new EventManagementController();
+    $controller->updateSlide();
+}, 'post');
+
+Route::add('/admin/homepage-management/delete-slide', function () {
+    requireAdmin();
+    $controller = new EventManagementController();
+    $controller->deleteSlide();
+});
+
+Route::add('/admin/homepage-management/update-content', function () {
+    requireAdmin();
+    $controller = new EventManagementController();
+    $controller->updateContent();
+}, 'post');
+
+Route::add('/admin/homepage-management/store-content', function () {
+    requireAdmin();
+    $controller = new EventManagementController();
+    $controller->storeContent();
+}, 'post');
+
+Route::add('/admin/homepage-management/delete-content', function () {
+    requireAdmin();
+    $controller = new EventManagementController();
+    $controller->deleteContent();
+});
