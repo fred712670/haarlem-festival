@@ -21,10 +21,3 @@ Route::add('/payment/cancel', function () {
     $controller = new PaymentController();
     $controller->showCancelPage(); // shows limited-time hold message
 }, 'get');
-
-// Expired Redirect
-Route::add('/payment/expired', function () {
-    $controller = new PaymentController();
-    $controller->showExpiredPage(); // informs user the hold has lapsed
-}, 'get');
-

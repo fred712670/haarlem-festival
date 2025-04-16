@@ -10,15 +10,12 @@ class ComposerStaticInitf11b57142bafe83fafdb1dc7aa80f1a2
         'S' => 
         array (
             'Svg\\' => 4,
+            'Stripe\\' => 7,
             'Sabberworm\\CSS\\' => 15,
         ),
         'P' => 
         array (
             'PHPMailer\\PHPMailer\\' => 20,
-        ),
-        'M' => 
-        array (
-            'Masterminds\\' => 12,
         ),
         'F' => 
         array (
@@ -27,7 +24,6 @@ class ComposerStaticInitf11b57142bafe83fafdb1dc7aa80f1a2
         'D' => 
         array (
             'Dompdf\\' => 7,
-            'Denisa\\HaarlemFestival\\' => 23,
             'DASPRiD\\Enum\\' => 13,
         ),
         'B' => 
@@ -39,7 +35,11 @@ class ComposerStaticInitf11b57142bafe83fafdb1dc7aa80f1a2
     public static $prefixDirsPsr4 = array (
         'Svg\\' => 
         array (
-            0 => __DIR__ . '/..' . '/dompdf/php-svg-lib/src/Svg',
+            0 => __DIR__ . '/..' . '/phenx/php-svg-lib/src/Svg',
+        ),
+        'Stripe\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/stripe/stripe-php/lib',
         ),
         'Sabberworm\\CSS\\' => 
         array (
@@ -49,21 +49,13 @@ class ComposerStaticInitf11b57142bafe83fafdb1dc7aa80f1a2
         array (
             0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
-        'Masterminds\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/masterminds/html5/src',
-        ),
         'FontLib\\' => 
         array (
-            0 => __DIR__ . '/..' . '/dompdf/php-font-lib/src/FontLib',
+            0 => __DIR__ . '/..' . '/phenx/php-font-lib/src/FontLib',
         ),
         'Dompdf\\' => 
         array (
             0 => __DIR__ . '/..' . '/dompdf/dompdf/src',
-        ),
-        'Denisa\\HaarlemFestival\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/src',
         ),
         'DASPRiD\\Enum\\' => 
         array (
@@ -78,6 +70,11 @@ class ComposerStaticInitf11b57142bafe83fafdb1dc7aa80f1a2
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Dompdf\\Cpdf' => __DIR__ . '/..' . '/dompdf/dompdf/lib/Cpdf.php',
+        'HTML5_Data' => __DIR__ . '/..' . '/dompdf/dompdf/lib/html5lib/Data.php',
+        'HTML5_InputStream' => __DIR__ . '/..' . '/dompdf/dompdf/lib/html5lib/InputStream.php',
+        'HTML5_Parser' => __DIR__ . '/..' . '/dompdf/dompdf/lib/html5lib/Parser.php',
+        'HTML5_Tokenizer' => __DIR__ . '/..' . '/dompdf/dompdf/lib/html5lib/Tokenizer.php',
+        'HTML5_TreeBuilder' => __DIR__ . '/..' . '/dompdf/dompdf/lib/html5lib/TreeBuilder.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

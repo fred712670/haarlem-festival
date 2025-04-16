@@ -1,7 +1,8 @@
 <?php
+
 ob_start();
 
-
+require_once __DIR__ . '/../vendor/autoload.php';
 
 /**
  * Set env variables and enable error reporting in local environment
@@ -9,12 +10,12 @@ ob_start();
 require_once(__DIR__ . "/lib/env.php"); // sets global env variables (database configuration)
 require_once(__DIR__ . "/lib/error_reporting.php"); // enables error reporting locally
 
+
 /**
  * Start user session
  */
 session_start();
 
-require_once __DIR__ . '/../vendor/autoload.php';
 
 /**
  * Require routing library

@@ -70,14 +70,6 @@
         Proceed to payment
     </button>
 </form>
-
-
-
-
-                        <?php
-                        // Calculate total price
-                        $totalPrice += $ticket['price'] * $ticket['quantity'];
-                        ?>
                     </div>
                     
                     <?php } else { ?>
