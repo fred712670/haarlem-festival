@@ -63,14 +63,18 @@
                             <?php endif; ?>
                         </div>
                         <?php endforeach; ?>
-                </div>
-                <p>Total: € <span id="totalPrice"><?= htmlspecialchars(number_format($totalPrice, 2)) ?></span></p>
-                <a href="/create/order" class="btn btn-primary btn-pay" name="createOrder" id="createOrderBtn" <?php echo $isUserLoggedIn ? '' : 'disabled'; ?>>
-                    Proceed to payment
-                </a>
-                <?php } else { ?>
-                    <p>Cart is empty!</p>
-                <?php } ?>
+                        </div>
+                        <p>Total: € <span id="totalPrice"><?= htmlspecialchars($totalPrice) ?></span></p>
+                        <form action="/payment/create-checkout-session" method="post">
+    <button type="submit" class="btn btn-primary btn-pay" <?= $isUserLoggedIn ? '' : 'disabled' ?>>
+        Proceed to payment
+    </button>
+</form>
+                    </div>
+                    
+                    <?php } else { ?>
+                            <p>Cart is empty!</p>
+                        <?php } ?>
             </div>
         </div>
     </div>

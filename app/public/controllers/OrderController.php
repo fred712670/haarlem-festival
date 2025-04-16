@@ -242,11 +242,6 @@ private function generateTicketPdfs($orderResult, $eventDetails) {
             $generatedPdfs[] = $pdfPath;
         }
     }
-
-    // Optionally, output the generated PDF paths.
-    foreach ($generatedPdfs as $pdf) {
-        echo "PDF generated: " . htmlspecialchars($pdf) . "<br>";
-    }
 }
 
 
@@ -460,6 +455,33 @@ public function downloadInvoice() {
     readfile($invoiceFilePath);
     exit;
 }
+
+
+
+
+/* This is was put here for use with the Payment Functionality. */
+
+public function generateOrderDocuments($orderId) {
+    $orderModel = new OrderModel();
+    $order = $orderModel->getOrderById($orderId);
+    $tickets = $orderModel->getTicketsByOrderId($orderId);
+
+    // Reconstruct minimal $orderResult structure:
+    $orderResult = ['order' => $order, 'tickets' => $tickets];
+
+    // Derive event details from tickets
+    $eventDetails = [];
+    foreach ($tickets as $ticket) {
+        $eventDetails[$ticket['EventId']] = [
+            'name' => $ticket['EventName'] ?? $ticket['PassType'],
+            'dateTime' => null // you can enrich this if needed
+        ];
+    }
+
+    $this->generateTicketPdfs($orderResult, $eventDetails);
+    $this->generateInvoicePdf($orderResult);
+}
+
 
 }
 

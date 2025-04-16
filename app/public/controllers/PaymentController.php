@@ -12,8 +12,8 @@
  *   - Cart data is in $_SESSION['cart']
  *   - OrderModel exists in ../models/OrderModel.php and has the required methods.
  */
-
 require_once __DIR__ . '/../models/OrderModel.php';
+require_once __DIR__ . '/../controllers/OrderController.php';
 
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
@@ -21,9 +21,11 @@ use Stripe\Checkout\Session;
 class PaymentController {
     
     private $orderModel;
-
+    private $orderController;
+    
     public function __construct() {
         $this->orderModel = new OrderModel();
+        $this->orderController = new OrderController();
     }
     
     /**
@@ -45,13 +47,15 @@ class PaymentController {
         }
         
         // Create a new order from the current cart.
-        $orderId = $this->orderModel->createOrder(
-            $cart,
-            $user['phoneNumber'] ?? null,
-            $user['address'] ?? null
-        );
-        $_SESSION['lastOrderId'] = $orderId;
-        
+$orderResult = $this->orderModel->createOrder(
+    $cart,
+    $_SESSION['userId'],
+    $user['phoneNumber'] ?? null,
+    $user['address'] ?? null
+);
+
+$orderId = $orderResult['order']['OrderId'];
+
         // Retrieve the order so we can check its data.
         $order = $this->orderModel->getOrderById($orderId);
         if (!$order || $order['UserId'] != $_SESSION['userId'] || $order['Status'] !== 'pending') {
@@ -101,15 +105,20 @@ class PaymentController {
         
         // Create a new Stripe Checkout session.
         $session = Session::create([
-            'payment_method_types' => ['card'],
-            'line_items' => $lineItems,
-            'mode' => 'payment',
-            'success_url' => "http://localhost/stripe-redirect/success?session_id={CHECKOUT_SESSION_ID}",
-            'cancel_url'  => "http://localhost/stripe-redirect/cancel?order_id=$orderId",
-            'metadata'    => [
-                'order_id' => $orderId
-            ]
-        ]);
+    'payment_method_types' => ['card'],
+    'line_items' => $lineItems,
+    'mode' => 'payment',
+    'success_url' => "http://localhost/payment/success?session_id={CHECKOUT_SESSION_ID}",
+    'cancel_url'  => "http://localhost/payment/cancel?order_id=$orderId",
+    'metadata'    => [
+        'order_id' => $orderId
+    ],
+    'phone_number_collection' => [
+        'enabled' => true
+    ],
+    'billing_address_collection' => 'required'
+]);
+
         
         // Store the new Stripe session ID with the order.
         $this->orderModel->setStripeSessionId($orderId, $session->id);
@@ -159,12 +168,29 @@ class PaymentController {
         }
         
         $order = $this->orderModel->getOrderById($orderId);
-        if ($order['Status'] !== 'paid') {
-            $this->orderModel->markOrderAsPaid($orderId);
-        }
-        
+if ($order['Status'] !== 'paid') {
+    $this->orderModel->markOrderAsPaid($orderId);
+    
+    // Expand Stripe session to access customer details
+    $session = \Stripe\Checkout\Session::retrieve($sessionId, ['expand' => ['customer_details']]);
+    $phone = $session->customer_details->phone ?? null;
+    $addressObj = $session->customer_details->address ?? null;
+
+    // Format the address into a single string
+    $address = $addressObj
+        ? "{$addressObj->line1}, {$addressObj->postal_code}, {$addressObj->city}, {$addressObj->country}"
+        : null;
+
+    // Store into database
+    $this->orderModel->grabContactDetails($orderId, $phone, $address);
+}
+
+
+        $this->orderController->generateOrderDocuments($orderId);
+
         $status = 'success';
         $message = 'Thank you! Your order has been confirmed, and your tickets have been added to your personal program.';
+        
         // Clear the cart after successful payment.
         unset($_SESSION['cart']);
         
