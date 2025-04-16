@@ -1,7 +1,9 @@
 <?php
+require_once __DIR__ . '/../lib/Route.php';
+require_once __DIR__ . '/../controllers/YummyController.php';
+require_once __DIR__ . '/../controllers/RestaurantDetailsController.php';
 
+// Home Page Route
 Route::add('/', function () {
-    // homepage is simply loading a static page
-    // view the user routes for example following the MVC pattern
     require(__DIR__ . "/../views/pages/index.php");
 });

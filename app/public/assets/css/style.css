@@ -1,1 +1,462 @@
-/* Add custom styles here */
+/* General */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0 auto;
+  padding: 0 auto;
+  background-color: #f8f1e3;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 100%;
+}
+
+/* Sidebar - Fixed to the Right */
+.sidebar {
+  z-index: 1000;
+  width: 60px;
+  height: 100vh;
+  background: white;
+  position: fixed;
+  right: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+  transition: width 0.3s ease-in-out;
+  overflow-x: hidden;
+}
+
+/* Expanded Sidebar */
+.sidebar.expanded {
+  width: 250px;
+}
+
+/* Top Section */
+.top-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding-top: 20px;
+}
+
+/* Align logo and toggle button */
+.sidebar.expanded .top-section {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  padding-left: 25px;
+  padding-top: 20px;
+}
+
+/* Logo */
+#logo {
+  width: 40px;
+  transition: width 0.3s ease-in-out;
+}
+
+/* Expand logo size */
+.sidebar.expanded #logo {
+  width: 140px;
+  margin-right: 15px;
+}
+
+/* Toggle Button (Arrow) */
+.toggle-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+/* Navigation Links */
+.nav-links {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.nav-links li {
+  padding: 15px;
+  text-align: right;
+  transition: background 0.3s;
+}
+
+.nav-links a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: black;
+  padding: 3px;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+/* Icons */
+.nav-links i,
+.language-switcher i {
+  font-size: 22px;
+}
+
+.language-switcher {
+  margin: 57px auto;
+}
+
+/* Hide Text Initially */
+.link-text {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Show Text When Sidebar is Expanded */
+.sidebar.expanded .link-text {
+  display: inline;
+  opacity: 1;
+  margin-left: 17px;
+}
+
+.sidebar.expanded .nav-links a {
+  justify-content: flex-start;
+  align-items: flex-start;
+  left: 0;
+  margin-left: 30px;
+  font-size: 16px;
+}
+
+.sidebar.expanded .top-section {
+  display: inline;
+}
+
+.logo {
+  width: 100%;
+}
+
+/* Footer Styling */
+footer {
+  margin: 0;
+  width: 100%;
+  left: 0;
+  margin-top: 15%; /* maybe change later*/
+  background-color: rgb(96, 187, 212);
+}
+
+.footer-container {
+  max-width: 100%;
+  margin: 20px 140px;
+  margin-left: 5%;
+}
+
+/* Top Section */
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-top p {
+  font-weight: bold;
+}
+
+.social-icons a {
+  color: black;
+  font-size: 12px;
+}
+
+/* Language Switcher */
+.language-switcher {
+  bottom: 20px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.language-switcher i {
+  margin-right: 5px;
+}
+
+/* Divider */
+hr {
+  border: none;
+  border-top: 1px solid black;
+  margin: 2px 0;
+}
+
+/* Main Footer Content */
+.footer-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 0;
+}
+
+.footer-logo img {
+  width: 150px;
+}
+
+/* Footer Links */
+.footer-links {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding-left: 50px;
+}
+
+.footer-section h3 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 5px;
+}
+
+.footer-section ul li a {
+  text-decoration: none;
+  color: black;
+}
+
+/* Bottom Footer */
+.footer-bottom {
+  font-weight: bold;
+  padding-top: 30px;
+  font-size: 14px;
+}
+
+/* Contact Section */
+.footer-section ul li i {
+  margin-right: 8px;
+}
+
+/* Forgot password form */
+/* Center the form */
+.auth-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 80px auto;
+  padding: 30px;
+  background: white;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  text-align: center;
+}
+
+/* Form headings */
+.auth-container h2 {
+  margin-bottom: 20px;
+  color: #2c3e50;
+  font-size: 24px;
+}
+
+/* Input fields */
+.auth-container input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* Submit button */
+.auth-container button {
+  width: 100%;
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.auth-container button:hover {
+  background: #2980b9;
+}
+
+/* Links */
+.auth-links {
+  margin-top: 15px;
+}
+
+.auth-links a {
+  text-decoration: none;
+  color: #3498db;
+  font-size: 14px;
+  margin: 5px;
+}
+
+.auth-links a:hover {
+  text-decoration: underline;
+}
+
+/* MAGIC TEYLERS  */
+.img-fluid {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.text-section {
+  padding: 20px 15%; /* Adjust padding and set a percentage to keep text away from the edges */
+}
+
+.highlight {
+  background-color: #f8f9fa;
+  padding: 20px;
+  margin: 20px 15%; /* Increase margin for highlights to maintain consistency */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Adds subtle shadow for depth */
+}
+
+.btn-custom {
+  background-color: red;
+  color: white;
+  border: none;
+}
+
+#teylers-title-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+/* MAGIC TEYLERS  */
+/* ------ PROFILE EDITING ------ */
+
+.personal-and-cart {
+  display: flex;
+  flex-direction: column; /* This changes from grid to flex to control vertical stacking */
+  grid-area: personal; /* Assigns the entire left column for personal details and cart */
+}
+
+.form-section {
+  margin-bottom: 20px; /* Provides spacing between form section and cart section */
+}
+
+.cart-section {
+  margin-bottom: 20px; /* Optional, depending on your design needs */
+}
+
+.order-summary {
+  grid-area: summary; /* This ensures it takes up the entire right column */
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-self: start; /* Aligns to the top of the grid area */
+  height: 100%; /* Takes full height of its grid area */
+}
+
+.form-section,
+.cart-section,
+.order-section {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.button-bar {
+  grid-column: 1 / -1; /* Spans across all columns at the bottom */
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.header {
+  background-color: #f0f0f0;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+.ticket-container {
+  background: #f9f9f9;
+  width: 500px;
+  border: 1px solid #ccc;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-family: Arial, sans-serif;
+}
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.quantity-controls button {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.quantity-controls input {
+  width: 40px;
+  text-align: center;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 5px;
+}
+button.update {
+  background-color: #28a745;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 100%;
+  margin-top: 10px;
+}
+p.eventName {
+  font-weight: bold;
+}
+
+/* Profile Styles */
+
+.card{
+    margin-top: 20px;
+}
+.ticket-info {
+    padding: 10px;
+    background-color: #f8f9fa;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  .card-header {
+    background-color: #e9ecef;
+  }
+  .form-section {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 30px;
+}
+
+a.btnDownload{
+  float: right;
+  background-color: #2A3A4E;
+  border: none;
+}
+

@@ -1,0 +1,1404 @@
+/* Jazz Festival Styling */
+
+/* General Styles */
+:root {
+  --jazz-primary: #2b4c7e; /* Deep blue */
+  --jazz-secondary: #567ebb; /* Medium blue */
+  --jazz-accent: #f1a208; /* Golden yellow */
+  --jazz-dark: #252525; /* Almost black */
+  --jazz-light: #f5f5f5; /* Off-white */
+  --jazz-beige: #f5f0e0; /* Beige for artist sections */
+  --jazz-background: #f8f1e3; /* Main background color */
+}
+
+.container {
+  width: 85%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Playfair Display", serif;
+}
+
+h2 {
+  font-size: 2.5rem;
+  color: var(--jazz-primary);
+  text-align: center;
+  margin-bottom: 40px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+section {
+  padding: 60px 0;
+}
+
+/* Hero Section */
+.jazz-hero {
+  background-image: url("/assets/img/jazz/hero-bg.jpg");
+  background-size: cover;
+  background-position: center;
+  height: 80vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+}
+
+.jazz-hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
+
+.jazz-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  padding: 0 20px;
+}
+
+.jazz-hero h1 {
+  font-size: 4rem;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.jazz-hero p {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+}
+
+.btn-ticket {
+  display: inline-block;
+  background-color: var(--jazz-accent);
+  color: var(--jazz-dark);
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+}
+
+.btn-ticket:hover {
+  background-color: #e09400;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* About Section */
+.jazz-about {
+  background-color: var(--jazz-background);
+  text-align: center;
+  padding: 80px 0;
+}
+
+.jazz-about h2 {
+  font-size: 2.5rem;
+  color: var(--jazz-primary);
+  margin-bottom: 20px;
+}
+
+.jazz-about p {
+  font-size: 1.2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Artists Grid */
+.jazz-artists {
+  background-color: var(--jazz-background);
+  padding: 80px 0;
+}
+
+.artists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+.artist-card {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.artist-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.artist-image {
+  position: relative;
+  height: 280px;
+  overflow: hidden;
+}
+
+.artist-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.artist-card:hover .artist-image img {
+  transform: scale(1.1);
+}
+
+.artist-preview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(43, 76, 126, 0.85);
+  color: white;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.artist-card:hover .artist-preview {
+  opacity: 1;
+}
+
+.artist-preview p {
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.read-more {
+  display: inline-block;
+  background-color: var(--jazz-accent);
+  color: var(--jazz-dark);
+  padding: 8px 20px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.read-more:hover {
+  background-color: #e09400;
+}
+
+.artist-card h3 {
+  font-size: 1.3rem;
+  margin: 15px 15px 5px;
+  color: var(--jazz-dark);
+}
+
+.performance-time {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0 15px 15px;
+}
+
+/* Schedule styling */
+.jazz-schedule {
+  background-color: #1e4078;
+  color: white;
+  padding: 3rem 0;
+}
+
+.jazz-schedule h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: white;
+}
+
+/* Schedule tabs */
+.schedule-tabs {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.schedule-nav {
+  display: flex;
+  background-color: #5b82bb;
+}
+
+.schedule-tab {
+  flex: 1;
+  padding: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.schedule-tab:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.schedule-tab.active {
+  background-color: #3a5f92;
+}
+
+/* Schedule content */
+.schedule-content {
+  background: white;
+  color: #333;
+}
+
+.schedule-day {
+  display: none;
+  padding: 2rem;
+}
+
+.schedule-day.active {
+  display: block;
+}
+
+/* Table styling */
+.schedule-day table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+}
+
+.schedule-day th {
+  background-color: #f0f3f8;
+  padding: 1rem;
+  text-align: left;
+  font-weight: bold;
+  border-bottom: 2px solid #ddd;
+}
+
+.schedule-day td {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.schedule-day table a {
+  color: #1e4078;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.schedule-day table a:hover {
+  text-decoration: underline;
+}
+
+/* Mobile cards */
+.performance-card {
+  display: none;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  background-color: #f9fafc;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.performance-time {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.performance-artist a {
+  color: #1e4078;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.performance-venue {
+  margin: 0.5rem 0;
+  color: #666;
+}
+
+.performance-price {
+  font-weight: bold;
+}
+
+/* Daily pricing info */
+.daily-pricing-info {
+  background-color: #f0f3f8;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-top: 1.5rem;
+}
+
+.daily-pricing-info p {
+  margin: 0;
+}
+
+/* No performances message */
+.no-performances {
+  padding: 2rem;
+  text-align: center;
+  background-color: #f9fafc;
+  border-radius: 6px;
+}
+
+.no-performances p {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .schedule-day table {
+    display: none;
+  }
+
+  .performance-card {
+    display: block;
+  }
+
+  .schedule-tab {
+    font-size: 0.9rem;
+    padding: 0.8rem 0.5rem;
+  }
+
+  .jazz-schedule h2 {
+    font-size: 2rem;
+  }
+}
+
+/* Responsive Table Styles */
+.schedule-day table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.schedule-day th {
+  text-align: left;
+  padding: 12px 15px;
+  background-color: var(--jazz-light);
+  color: var(--jazz-dark);
+}
+
+.schedule-day td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+  color: var(--jazz-dark);
+}
+
+.schedule-day tr:last-child td {
+  border-bottom: none;
+}
+
+.schedule-day a {
+  color: var(--jazz-primary);
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.schedule-day a:hover {
+  color: var(--jazz-accent);
+}
+
+/* Card-based layout for mobile */
+.performance-card {
+  display: none; /* Hidden by default, shown in mobile view */
+  background-color: white;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.performance-card .performance-time {
+  font-weight: bold;
+  color: var(--jazz-primary);
+  margin-bottom: 5px;
+}
+
+.performance-card .performance-artist {
+  font-size: 1.1rem;
+  margin: 5px 0;
+}
+
+.performance-card .performance-stage {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* Tickets Section */
+.jazz-tickets {
+  background-color: var(--jazz-light);
+  padding: 80px 0;
+}
+
+.ticket-options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+.ticket-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  width: 300px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.ticket-card:hover {
+  transform: translateY(-10px);
+}
+
+.ticket-card.featured {
+  background-color: var(--jazz-primary);
+  color: white;
+  transform: scale(1.05);
+}
+
+.ticket-card.featured:hover {
+  transform: scale(1.05) translateY(-10px);
+}
+
+.ticket-card h3 {
+  font-size: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.price {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 15px 0;
+  color: var(--jazz-accent);
+}
+
+.ticket-card.featured .price {
+  color: white;
+}
+
+.ticket-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.ticket-card li {
+  margin-bottom: 10px;
+  padding-left: 25px;
+  position: relative;
+}
+
+.ticket-card li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--jazz-accent);
+  font-weight: bold;
+}
+
+.ticket-card.featured li::before {
+  color: var(--jazz-accent);
+}
+
+.btn-buy {
+  display: inline-block;
+  background-color: var(--jazz-accent);
+  color: var(--jazz-dark);
+  padding: 10px 30px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.btn-buy:hover {
+  background-color: #e09400;
+}
+
+.ticket-card.featured .btn-buy {
+  background-color: white;
+  color: var(--jazz-primary);
+}
+
+.ticket-card.featured .btn-buy:hover {
+  background-color: #f5f5f5;
+}
+
+/* Artist Details Page */
+.artist-container {
+  padding: 0 0 40px 0;
+}
+
+.back-arrow {
+  display: inline-block;
+  font-size: 2.5rem;
+  color: white;
+  text-decoration: none;
+  margin: 20px;
+  transition: color 0.3s ease;
+  position: absolute;
+  z-index: 10;
+}
+
+.back-arrow:hover {
+  color: var(--jazz-accent);
+}
+
+.artist-header {
+  background-color: var(--jazz-primary);
+  color: white;
+  padding: 80px 0;
+  position: relative;
+}
+
+.artist-profile {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+
+.artist-profile .artist-image {
+  flex: 1;
+  max-width: 400px;
+  height: auto;
+}
+
+.artist-profile .artist-image img {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.artist-info {
+  flex: 2;
+}
+
+.artist-info h1 {
+  font-size: 3rem;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.performance-details {
+  display: block;
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  opacity: 0.9;
+}
+
+.performance-details span {
+  margin-right: 15px;
+}
+
+.artist-description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+/* Common styles for both sections */
+.musical-style h2 {
+  color: var(--jazz-light);
+}
+.musical-style,
+.career-highlights {
+  padding: 50px 0;
+  text-align: center;
+}
+
+.musical-style h2,
+.career-highlights h2 {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.style-content,
+.highlights-content {
+  border-radius: 10px;
+  padding: 30px;
+  max-width: 900px;
+  margin: 0 auto;
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+/* Musical Style specific */
+.musical-style {
+  background-color: var(--jazz-primary);
+  color: white;
+  position: relative;
+}
+
+.style-content {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Career Highlights specific */
+.career-highlights {
+  background-color: var(--jazz-background);
+  color: var(--jazz-dark);
+}
+
+.highlights-content {
+  background-color: white;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.style-content p::before {
+  content: "♪";
+  color: var(--jazz-accent);
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 18px;
+}
+
+.highlights-content p::before {
+  content: "●";
+  color: var(--jazz-primary);
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 18px;
+}
+
+/* Borders between career highlights */
+.highlights-content p {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+}
+
+.highlights-content p:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.musical-style::before {
+  content: "♪";
+  position: absolute;
+  top: 10%;
+  left: 5%;
+  font-size: 80px;
+  color: var(--jazz-accent);
+  opacity: 0.2;
+}
+
+.musical-style::after {
+  content: "♫";
+  position: absolute;
+  bottom: 10%;
+  right: 5%;
+  font-size: 100px;
+  color: var(--jazz-accent);
+  opacity: 0.2;
+}
+
+@media (max-width: 768px) {
+  .musical-style h2,
+  .career-highlights h2 {
+    font-size: 2rem;
+  }
+  .style-content,
+  .highlights-content {
+    padding: 20px;
+  }
+  .musical-style::before,
+  .musical-style::after {
+    display: none;
+  }
+}
+/* Gallery and Listen Now sections */
+.artist-gallery {
+  background-color: var(--jazz-secondary);
+  padding: 60px 0;
+}
+.artist-gallery h2 {
+  color: white;
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.gallery-item {
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.gallery-item:hover {
+  transform: scale(1.03);
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Audio Player Styles */
+.artist-tracks {
+  padding: 3rem 0;
+  background-color: #f5f5f5;
+}
+
+.tracks-list {
+  margin-top: 2rem;
+}
+
+/* Track Item Styling */
+.track-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.track-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.track-item.active {
+  background-color: #f8f8ff;
+  border-left: 3px solid #1e5cba;
+}
+
+.track-number {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+  margin-right: 1rem;
+}
+
+.track-info {
+  flex: 1;
+}
+
+.track-title {
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+  color: #222;
+}
+
+.track-year {
+  display: inline-block;
+  font-size: 0.85rem;
+  color: #666;
+  margin-left: 0.5rem;
+}
+
+.track-description {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.3rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Track Controls */
+.track-controls {
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+}
+
+/* Duration display */
+.track-duration {
+  font-size: 0.85rem;
+  color: #666;
+  margin-right: 0.75rem;
+  min-width: 40px;
+  text-align: right;
+}
+
+/* Progress bar */
+.audio-progress-container {
+  height: 4px;
+  width: 80px;
+  background-color: #e6e6e6;
+  border-radius: 2px;
+  margin-right: 1rem;
+  overflow: hidden;
+  cursor: pointer;
+  transition: height 0.2s ease;
+}
+
+.audio-progress-container:hover {
+  height: 6px;
+}
+
+.track-item:not(.active) .audio-progress-container {
+  opacity: 0.5;
+}
+
+.audio-progress-bar {
+  height: 100%;
+  width: 0;
+  background-color: #1e5cba;
+  border-radius: 2px;
+  transition: width 0.1s linear;
+}
+
+.play-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--jazz-accent);
+  border: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.play-button:hover {
+  background-color: #144a9c;
+  transform: scale(1.05);
+}
+
+.play-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(30, 92, 186, 0.3);
+}
+
+.play-icon {
+  font-size: 1.2rem;
+}
+
+/* Play Button States */
+.play-button.playing {
+  background-color: #e74c3c;
+}
+
+.play-button.paused {
+  background-color: #f39c12;
+}
+
+.play-button.loading {
+  background-color: #7f8c8d;
+}
+
+.play-button.error {
+  background-color: #c0392b;
+}
+
+/* Error Message */
+.track-error-message {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #e74c3c;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  z-index: 10;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+}
+
+.track-player-note {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #777;
+  margin-top: 2rem;
+  font-style: italic;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .track-info {
+    max-width: 60%;
+  }
+
+  .track-description {
+    -webkit-line-clamp: 1;
+  }
+
+  .audio-progress-container {
+    width: 50px;
+  }
+}
+
+@media (max-width: 576px) {
+  .track-year {
+    display: block;
+    margin-left: 0;
+  }
+
+  .track-item {
+    flex-wrap: wrap;
+  }
+
+  .track-controls {
+    margin-top: 0.5rem;
+    margin-left: 40px;
+  }
+}
+/* .artist-tickets {
+  background-color: var(--jazz-background);
+  padding: 60px 0;
+} */
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .jazz-hero h1 {
+    font-size: 3rem;
+  }
+
+  .artist-profile {
+    flex-direction: column;
+  }
+
+  .artist-profile .artist-image {
+    max-width: 100%;
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .jazz-hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .jazz-hero p {
+    font-size: 1.2rem;
+  }
+
+  .schedule-nav {
+    flex-direction: row;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .schedule-tab {
+    flex: 0 0 auto;
+  }
+
+  /* Hide table on mobile */
+  .schedule-day table {
+    display: none;
+  }
+
+  /* Show cards on mobile */
+  .performance-card {
+    display: block;
+  }
+
+  .ticket-options {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ticket-card {
+    width: 100%;
+    max-width: 350px;
+  }
+
+  .ticket-card.featured {
+    transform: scale(1);
+  }
+
+  .ticket-card.featured:hover {
+    transform: translateY(-10px);
+  }
+}
+
+@media (max-width: 480px) {
+  .jazz-hero h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+  }
+
+  .container {
+    width: 95%;
+    padding: 0 10px;
+  }
+
+  section {
+    padding: 40px 0;
+  }
+
+  .artist-info h1 {
+    font-size: 2.2rem;
+  }
+}
+/* Add these styles to your jazz.css file */
+
+/* Venue Section Styles */
+.jazz-venues {
+  padding: 80px 0;
+  background-color: var(--jazz-background);
+}
+
+.venues-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.venue-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.venue-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.venue-card h3 {
+  color: #0f4c75;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #0f4c75;
+  padding-bottom: 10px;
+}
+
+.venue-address {
+  margin-bottom: 15px;
+  font-style: italic;
+  color: #555;
+}
+
+.venue-description {
+  margin-bottom: 20px;
+  color: #666;
+  line-height: 1.6;
+}
+
+.venue-info {
+  margin-bottom: 20px;
+}
+
+.venue-contact {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 15px;
+}
+
+.venue-contact h4 {
+  color: #0f4c75;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+.venue-contact p {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.venue-contact p i {
+  margin-right: 10px;
+  color: #0f4c75;
+  width: 20px;
+  text-align: center;
+}
+
+.btn-map {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #0f4c75;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.btn-map:hover {
+  background-color: #0d3b5c;
+}
+
+.btn-map i {
+  margin-right: 8px;
+}
+
+/* Daily pricing info section */
+.daily-pricing-info {
+  background-color: var(--jazz-light);
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  border-left: 4px solid #0f4c75;
+}
+
+.daily-pricing-info p {
+  margin: 0;
+  color: #333;
+}
+
+/* Sunday free info section */
+.sunday-free-info {
+  margin-top: 40px;
+}
+
+.free-info-card {
+  background-color: #e6f7e6;
+  border-radius: 8px;
+  padding: 25px;
+  border-left: 5px solid #28a745;
+  text-align: center;
+}
+
+.free-info-card h3 {
+  color: #28a745;
+  margin-bottom: 15px;
+}
+
+.free-info-card p {
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+.free-info-card strong {
+  font-weight: 700;
+  color: #28a745;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .venues-container {
+    grid-template-columns: 1fr;
+  }
+
+  .venue-card {
+    padding: 20px;
+  }
+}
+/* Add to Cart button styles */
+.btn-add-to-cart {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.btn-add-to-cart:hover {
+  background-color: #0056b3;
+}
+
+/* Mobile card add to cart button */
+.performance-card .performance-action {
+  margin-top: 10px;
+}
+
+.performance-card .btn-add-to-cart {
+  width: 100%;
+  padding: 8px;
+}
+/* Day Pass Modal Styles */
+.day-pass-modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  overflow: auto;
+}
+
+.day-pass-modal-content {
+  background-color: white;
+  margin: 10% auto;
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 500px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.day-pass-close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #555;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.day-pass-close:hover {
+  color: #000;
+}
+
+.day-pass-modal h2 {
+  color: var(--jazz-primary);
+  margin-top: 0;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.day-pass-modal p {
+  margin-bottom: 25px;
+  text-align: center;
+  color: #555;
+}
+
+.day-options {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.day-option {
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s;
+}
+
+.day-option input[type="radio"] {
+  display: none;
+}
+
+.day-option label {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.day-option input[type="radio"]:checked + label {
+  border-color: var(--jazz-accent);
+  background-color: rgba(241, 162, 8, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.day-option:hover {
+  transform: translateY(-2px);
+}
+
+.day-name {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: var(--jazz-dark);
+}
+
+.day-date {
+  color: #666;
+}
+
+.day-pass-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.day-pass-actions button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-cancel {
+  background-color: #e0e0e0;
+  color: #555;
+}
+
+.btn-cancel:hover {
+  background-color: #d0d0d0;
+}
+
+.btn-confirm {
+  background-color: var(--jazz-accent);
+  color: white;
+}
+
+.btn-confirm:hover {
+  background-color: #e09400;
+}
+
+.btn-confirm:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .day-pass-modal-content {
+    margin: 15% auto;
+    width: 90%;
+    padding: 20px;
+  }
+
+  .day-option label {
+    padding: 12px;
+  }
+}

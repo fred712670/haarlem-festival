@@ -30,6 +30,19 @@ class Route
     return self::$routes;
   }
 
+  public static function get(string $uri, callable $callback)
+  {
+      self::add($uri, $callback, 'GET');
+  }
+
+  /**
+   * Alternative method for adding POST routes
+   */
+  public static function post(string $uri, callable $callback)
+  {
+      self::add($uri, $callback, 'POST');
+  }
+  
   public static function pathNotFound($function)
   {
     self::$pathNotFound = $function;

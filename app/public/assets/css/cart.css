@@ -1,0 +1,128 @@
+.personal-and-cart {
+    display: flex;
+    flex-direction: column;
+    grid-area: personal;
+}
+
+.cart-title {
+    font-size: 24px; /* Adjust the size as needed */
+    color: #333; /* Dark grey text color, adjust as needed */
+    font-weight: bold; /* Makes the text bold */
+    display: flex; /* Aligns the icon and text inline */
+    align-items: center; /* Centers the icon and text vertically */
+    gap: 10px; /* Spacing between the icon and text */
+}
+
+.cart-title i {
+    color: #555; /* You can adjust the color of the icon specifically if needed */
+}
+
+.form-section {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.cart-section {
+    margin-bottom: 20px;
+}
+
+.order-summary {
+    grid-area: summary;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-self: start;
+    height: 100%;
+}
+
+.form-section, .cart-section {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+
+.button-bar {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.header {
+    background-color: #f0f0f0;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.cart-items-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+}
+
+.ticket-container {
+    position: relative;
+    flex: 1 1 300px;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    max-width: calc(50% - 20px); 
+    font-family: 'Open Sans', Arial, sans-serif;
+}
+
+.quantity-controls button, .btn {
+    background-color: #2A3A4E;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.btn-pay{
+    background-color: green;
+}
+
+
+.quantity-controls button:hover, .btn:hover {
+    background-color: #FEC400;
+}
+
+.inp-quantity{
+    width: 40px;
+    text-align: center;
+}
+
+button.delete-item {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: transparent;
+    border: none;
+    color: #ff6347;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+button.delete-item:hover {
+    color: #ff0000;
+}
+
+p.eventName {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+p {
+    margin: 10px 0;
+}

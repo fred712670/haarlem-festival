@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Register Form</title>
+    <link rel="stylesheet" href="../../assets/css/registrationStyle.css"/>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="/assets/js/navigation.js"></script>
+</head>
+<body>
+    <div class="registration-container">
+        <h1>Create an Account</h1>
+        <!-- Display registration error message if exists -->
+        <?php
+        if (isset($_SESSION['register_error'])): ?>
+            <p style="color: red;"><?php echo $_SESSION['register_error']; ?></p>
+            <?php unset($_SESSION['register_error']); 
+        endif; ?>
+
+        <form action="/registration" method="post">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required/>
+            </div>
+            
+            <div class="form-group">
+            <div class="g-recaptcha" data-sitekey="6LevYe4qAAAAAB_HfwrKPBPqbajTiYpd2Vt7jfSU"></div>
+            </div>
+            <button type="submit">Register</button>
+        </form>
+
+        <div class="login-links">
+            <a href="/login">Already have an account? Login</a>
+        </div>
+    </div>
+</body>
+</html>
+
+
