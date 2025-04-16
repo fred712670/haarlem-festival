@@ -30,4 +30,31 @@ class HomeModel extends BaseModel
     $stmt->execute();
     return $stmt->fetchAll();
     }
+/**
+ * Get a track by ID
+ * 
+ * @param int $trackId Track ID
+ * @return array|null Track data
+ */
+public function getTrackById($trackId) {
+    try {
+        $query = "SELECT 
+                TrackId as id,
+                Title as title,
+                Description as description,
+                audio_file
+            FROM JazzTrack
+            WHERE TrackId = :trackId";
+            
+        $stmt = self::$pdo->prepare($query);
+        $stmt->bindParam(':trackId', $trackId, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        error_log("Error fetching track: " . $e->getMessage());
+        return null;
+    }
 }
+}
+
