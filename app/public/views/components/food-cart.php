@@ -9,6 +9,6 @@ function renderFoodCard($image, $title, $description) {
             <button class="expand-btn">+</button>
         </div>
     </div>
-<?php
-}
+<?php 
+} 
 ?>

@@ -85,5 +85,12 @@ class YummyModel extends BaseModel
 
         return $times;
     }
+
+    public function getAllFoodItems()
+    {
+        $stmt = self::$pdo->prepare("SELECT ImageName, Title, Content FROM Content WHERE Section = 'food'");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>

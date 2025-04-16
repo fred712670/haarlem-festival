@@ -7,8 +7,12 @@ class YummyController
     {
         $restaurantModel = new YummyModel();
         $restaurants = $restaurantModel->getAllRestaurants();
+        $foodItems = $restaurantModel->getAllFoodItems();
 
-        return $restaurants;
+        return [
+            'restaurants' => $restaurants,
+            'foodItems' => $foodItems
+        ];
     }
 }
 ?>

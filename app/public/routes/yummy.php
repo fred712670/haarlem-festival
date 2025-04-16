@@ -5,10 +5,13 @@ require_once __DIR__ . '/../controllers/YummyController.php';
 // Yummy Page Route
 Route::add('/yummy', function () {
     $controller = new YummyController();
-    $restaurants = $controller->index(); // Fetch restaurant data
+    $data = $controller->index();
+
+    $restaurants = $data['restaurants'];
+    $foodItems = $data['foodItems'];
 
     require_once __DIR__ . '/../views/pages/yummy.php';
-}, 'get');
+},'get');
 
 // Dynamic Restaurant Details Route
 Route::add('/restaurant/([0-9]+)', function ($id) {
