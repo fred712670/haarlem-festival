@@ -19,30 +19,71 @@ class YummyModel extends BaseModel
     }
     
     public function getRestaurantById($id)
-{
-    try {
-        $query = "SELECT * FROM Restaurant WHERE RestaurantId = :id";
-        $stmt = self::$pdo->prepare($query);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
-        $restaurant = $stmt->fetch(PDO::FETCH_ASSOC);
+    {
+        try {
+            $query = "SELECT * FROM Restaurant WHERE RestaurantId = :id";
+            $stmt = self::$pdo->prepare($query);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            $restaurant = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+            if (!$restaurant) {
+              return null;
+            }
 
-        if (!$restaurant) {
+            // Convert ImageGallery (comma-separated) to an array
+            if (!empty($restaurant['ImageGallery'])) {
+              $restaurant['ImageGallery'] = explode(',', $restaurant['ImageGallery']);
+            } else {
+              $restaurant['ImageGallery'] = !empty($restaurant['Image_url']) ? [$restaurant['Image_url']] : [];
+            }
+
+            return $restaurant;
+        } catch (Exception $e) {
+            error_log("Error fetching restaurant details: " . $e->getMessage());
             return null;
         }
+    }
 
-        // Convert ImageGallery (comma-separated) to an array
-        if (!empty($restaurant['ImageGallery'])) {
-            $restaurant['ImageGallery'] = explode(',', $restaurant['ImageGallery']);
-        } else {
-            $restaurant['ImageGallery'] = !empty($restaurant['Image_url']) ? [$restaurant['Image_url']] : [];
+    public function getMenuItemsByRestaurant($restaurantId)
+    {
+        $query = "
+        SELECT mi.Title, mi.Description, mi.Price
+        FROM MenuItem mi
+        JOIN Menu m ON mi.MenuId = m.MenuId
+        WHERE m.RestaurantId = :restaurantId";
+
+        $stmt = self::$pdo->prepare($query);
+        $stmt->bindParam(':restaurantId', $restaurantId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getSessionTimes($restaurantId)
+    {
+        $stmt = self::$pdo->prepare("SELECT FirstStart, Duration, SessionsAvailable FROM Restaurant WHERE RestaurantId = ?");
+        $stmt->execute([$restaurantId]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$row) {
+            return [];
         }
 
-        return $restaurant;
-    } catch (Exception $e) {
-        error_log("Error fetching restaurant details: " . $e->getMessage());
-        return null;
+        $firstStart = new DateTime($row['FirstStart']);
+        $duration = (int) $row['Duration'];
+        $sessionsAvailable = (int) $row['SessionsAvailable'];
+
+        $times = [];
+        for ($i = 0; $i < $sessionsAvailable; $i++) {
+            $start = clone $firstStart;
+            $start->modify("+" . ($i * $duration) . " hours");
+            $end = clone $start;
+            $end->modify("+{$duration} hours");
+            $times[] = $start->format('H:i') . ' - ' . $end->format('H:i');
+        }
+
+        return $times;
     }
-}
 }
 ?>

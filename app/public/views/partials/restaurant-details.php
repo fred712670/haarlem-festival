@@ -19,8 +19,8 @@ require_once __DIR__ . '/../components/restaurant-reservation.php';
         <?php 
         renderRestaurantHeader($restaurant);
         renderRestaurantLocation($restaurant);
-        renderRestaurantInfo($restaurant);
-        renderRestaurantReservation($restaurant);
+        renderRestaurantInfo($restaurant, $menuItems);
+        renderRestaurantReservation($restaurant, $menuItems);
         ?>
     </div>
     <script src="/assets/js/yummy.js"></script>

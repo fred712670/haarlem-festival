@@ -14,12 +14,14 @@ Route::add('/yummy', function () {
 Route::add('/restaurant/([0-9]+)', function ($id) {
     require_once __DIR__ . '/../controllers/YummyController.php';
     $controller = new RestaurantDetailsController();
-    $restaurant = $controller->show($id); // Fetch restaurant data
-
-    if (!$restaurant) {
+    $data = $controller->show($id); // ✅ FIXED
+    if (!$data || empty($data['restaurant'])) {
         die("Error: Restaurant not found.");
     }
-
+    
+    $restaurant = $data['restaurant'];
+$menuItems = $data['menuItems'];
+$sessionTimes = $data['sessionTimes'];
     require_once __DIR__ . '/../views/pages/restaurant-details.php';
 }, 'get');
 ?>

@@ -1,5 +1,5 @@
 <?php
-function renderRestaurantReservation($restaurant) {
+function renderRestaurantReservation($restaurant, $sessionTimes) {
 ?>
     <div class="reservation">
         <div class="contact-info">
@@ -16,18 +16,31 @@ function renderRestaurantReservation($restaurant) {
                 <input type="hidden" name="eventId" value="<?= htmlspecialchars($restaurant['EventId']) ?>">
                 <input type="hidden" name="name" value="<?= htmlspecialchars($restaurant['Name']) ?>">
                 <input type="hidden" name="address" value="<?= htmlspecialchars($restaurant['Address']) ?>">
+                <input type="hidden" name="price" value="10">
                 <input type="hidden" name="ticketType" value="Reservation">
 
                 <label for="guests">Number of guests:</label>
                 <input type="number" id="guests" name="guests" min="1" max="12"<?= $restaurant['Seats'] ?> value="2">
 
-                <label for="date">Select a date:</label>
-                <input type="date" id="date" name="date" min="<?php echo date('Y-m-d'); ?>" value="<?php echo date('Y-m-d'); ?>" required>
+                <?php
+                $festivalStart = '2025-07-24';
+                $festivalEnd = '2025-07-27';
+                $default = $festivalStart;
+                ?>
+                <label for="date">Select a date:</label> 
+                <input type="date"
+                id="date"
+                name="date"
+                min="<?php echo $festivalStart; ?>"
+                max="<?php echo $festivalEnd; ?>"      
+                value="<?php echo $default; ?>"
+                required>
 
                 <label for="time">Select time:</label>
-                <select id="time" name="time">
-                    <option value="12:00">12:00 - 14:30</option>
-                    <option value="18:30">18:30 - 21:00</option>
+                <select id="time" name="time" required>
+                <?php foreach ($sessionTimes as $time): ?>
+                    <option value="<?= explode(' - ', $time)[0] ?>"><?= $time ?></option>
+                <?php endforeach; ?>
                 </select>
 
                 <label for="requests">Special Requests:</label>
