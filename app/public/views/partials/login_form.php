@@ -19,7 +19,8 @@
         <button type="submit">Log In</button>
     </form>
     <p class="auth-links">
-        <a href="/forgot-password">Forgot Password?</a>
+        <a href="/forgot-password">Forgot Password?</a><br>
+        <a href="/registration">Don't have an account? Register</a>
     </p>
 </div>
 </body>

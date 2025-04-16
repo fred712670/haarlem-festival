@@ -1,5 +1,8 @@
 <?php
 function renderRestaurantReservation($restaurant, $sessionTimes) {
+    $festivalStart = '2025-07-24';
+    $festivalEnd = '2025-07-27';
+    $default = $festivalStart;
 ?>
     <div class="reservation">
         <div class="contact-info">
@@ -21,12 +24,6 @@ function renderRestaurantReservation($restaurant, $sessionTimes) {
 
                 <label for="guests">Number of guests:</label>
                 <input type="number" id="guests" name="guests" min="1" max="12"<?= $restaurant['Seats'] ?> value="2">
-
-                <?php
-                $festivalStart = '2025-07-24';
-                $festivalEnd = '2025-07-27';
-                $default = $festivalStart;
-                ?>
                 <label for="date">Select a date:</label> 
                 <input type="date"
                 id="date"
