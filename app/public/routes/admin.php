@@ -3,6 +3,7 @@
  * Routes for admin user management functionality
  */
 require_once(__DIR__ . "/../controllers/AdminUserController.php");
+require_once(__DIR__ . '/../controllers/EventManagementController.php');
 
 /**
  * Middleware to check if user is an administrator
@@ -204,3 +205,89 @@ Route::add('/admin/users/delete/([0-9]+)', function($userId) {
     header('Location: /admin/users');
     exit();
 }, 'post');
+
+// Homepage management
+// Load homepage content management view
+Route::add('/admin/homepage-management', function () {
+    // Ensure only admin can access
+    requireAdmin(); 
+    try {
+        $controller = new EventManagementController();
+        // Load the main page
+        $controller->manageHomepage(); 
+    } catch (Throwable $e) {
+        error_log("Homepage management error: " . $e->getMessage());
+    }
+});
+
+// Store new homepage slide 
+Route::add('/admin/homepage-management/store-slide', function () {
+    requireAdmin();
+    try {
+        $controller = new EventManagementController();
+        // Insert new slide into DB
+        $controller->storeSlide(); 
+    } catch (Throwable $e) {
+        error_log("Store slide error: " . $e->getMessage());
+    }
+}, 'post');
+
+// Update existing homepage slide 
+Route::add('/admin/homepage-management/update-slide', function () {
+    requireAdmin();
+    try {
+        $controller = new EventManagementController();
+        // Update slide data
+        $controller->updateSlide(); 
+    } catch (Throwable $e) {
+        error_log("Update slide error: " . $e->getMessage());
+    }
+}, 'post');
+
+// Delete a homepage slide
+Route::add('/admin/homepage-management/delete-slide', function () {
+    requireAdmin();
+    try {
+        $controller = new EventManagementController();
+        // Delete slide from DB + file
+        $controller->deleteSlide(); 
+    } catch (Throwable $e) {
+        error_log("Delete slide error: " . $e->getMessage());
+    }
+});
+
+// Update general homepage content
+Route::add('/admin/homepage-management/update-content', function () {
+    requireAdmin();
+    try {
+        $controller = new EventManagementController();
+        // Update content row
+        $controller->updateContent(); 
+    } catch (Throwable $e) {
+        error_log("Update content error: " . $e->getMessage());
+    }
+}, 'post');
+
+// Store new content (location/event card) (POST)
+Route::add('/admin/homepage-management/store-content', function () {
+    requireAdmin();
+    try {
+        $controller = new EventManagementController();
+        // Insert new row into Content table
+        $controller->storeContent(); 
+    } catch (Throwable $e) {
+        error_log("Store content error: " . $e->getMessage());
+    }
+}, 'post');
+
+// Delete a content row (location/event card)
+Route::add('/admin/homepage-management/delete-content', function () {
+    requireAdmin();
+    try {
+        $controller = new EventManagementController();
+        // Remove content from DB
+        $controller->deleteContent(); 
+    } catch (Throwable $e) {
+        error_log("Delete content error: " . $e->getMessage());
+    }
+});
