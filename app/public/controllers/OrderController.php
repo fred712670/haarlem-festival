@@ -2,12 +2,6 @@
 require_once 'models/OrderModel.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-use Dompdf\Dompdf;
-use BaconQrCode\Writer;
-use BaconQrCode\Renderer\ImageRenderer;
-use BaconQrCode\Renderer\Image\SvgImageBackEnd;
-use BaconQrCode\Renderer\RendererStyle\RendererStyle;
-
 class OrderController {
     public function createOrder() {
         if (empty($_SESSION['cart']) || empty($_SESSION['userId'])) {
