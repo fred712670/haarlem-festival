@@ -77,4 +77,9 @@ Route::add('/jazz', function () {
     
     // Include the page view
     require_once __DIR__ . '/../views/pages/jazz.php';
+}, 'get');// Add this to your jazz.php routes file
+Route::add('/api/jazz/track/([0-9]+)', function($trackId) {
+    header('Content-Type: application/json');
+    $controller = new JazzController();
+    echo json_encode($controller->getTrackDetails($trackId));
 }, 'get');

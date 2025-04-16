@@ -4,6 +4,7 @@
  */
 require_once(__DIR__ . "/../controllers/AdminUserController.php");
 require_once(__DIR__ . '/../controllers/EventManagementController.php');
+require_once(__DIR__ . "/../controllers/JazzManagementController.php");
 
 /**
  * Middleware to check if user is an administrator
@@ -207,87 +208,535 @@ Route::add('/admin/users/delete/([0-9]+)', function($userId) {
 }, 'post');
 
 // Homepage management
-// Load homepage content management view
 Route::add('/admin/homepage-management', function () {
-    // Ensure only admin can access
-    requireAdmin(); 
-    try {
-        $controller = new EventManagementController();
-        // Load the main page
-        $controller->manageHomepage(); 
-    } catch (Throwable $e) {
-        error_log("Homepage management error: " . $e->getMessage());
-    }
+    requireAdmin();
+    $controller = new EventManagementController();
+    $controller->manageHomepage();
 });
 
-// Store new homepage slide 
 Route::add('/admin/homepage-management/store-slide', function () {
     requireAdmin();
-    try {
-        $controller = new EventManagementController();
-        // Insert new slide into DB
-        $controller->storeSlide(); 
-    } catch (Throwable $e) {
-        error_log("Store slide error: " . $e->getMessage());
-    }
+    $controller = new EventManagementController();
+    $controller->storeSlide();
 }, 'post');
 
-// Update existing homepage slide 
 Route::add('/admin/homepage-management/update-slide', function () {
     requireAdmin();
-    try {
-        $controller = new EventManagementController();
-        // Update slide data
-        $controller->updateSlide(); 
-    } catch (Throwable $e) {
-        error_log("Update slide error: " . $e->getMessage());
-    }
+    $controller = new EventManagementController();
+    $controller->updateSlide();
 }, 'post');
 
-// Delete a homepage slide
 Route::add('/admin/homepage-management/delete-slide', function () {
     requireAdmin();
-    try {
-        $controller = new EventManagementController();
-        // Delete slide from DB + file
-        $controller->deleteSlide(); 
-    } catch (Throwable $e) {
-        error_log("Delete slide error: " . $e->getMessage());
-    }
+    $controller = new EventManagementController();
+    $controller->deleteSlide();
 });
 
-// Update general homepage content
 Route::add('/admin/homepage-management/update-content', function () {
     requireAdmin();
-    try {
-        $controller = new EventManagementController();
-        // Update content row
-        $controller->updateContent(); 
-    } catch (Throwable $e) {
-        error_log("Update content error: " . $e->getMessage());
-    }
+    $controller = new EventManagementController();
+    $controller->updateContent();
 }, 'post');
 
-// Store new content (location/event card) (POST)
 Route::add('/admin/homepage-management/store-content', function () {
     requireAdmin();
-    try {
-        $controller = new EventManagementController();
-        // Insert new row into Content table
-        $controller->storeContent(); 
-    } catch (Throwable $e) {
-        error_log("Store content error: " . $e->getMessage());
-    }
+    $controller = new EventManagementController();
+    $controller->storeContent();
 }, 'post');
 
-// Delete a content row (location/event card)
 Route::add('/admin/homepage-management/delete-content', function () {
     requireAdmin();
-    try {
-        $controller = new EventManagementController();
-        // Remove content from DB
-        $controller->deleteContent(); 
-    } catch (Throwable $e) {
-        error_log("Delete content error: " . $e->getMessage());
-    }
+    $controller = new EventManagementController();
+    $controller->deleteContent();
 });
+// Jazz Management Dashboard
+Route::add('/admin/jazz', function() {
+    requireAdmin();
+    
+    $controller = new JazzManagementController();
+    $viewData = $controller->dashboard();
+    
+    require_once(__DIR__ . "/../views/pages/admin_jazz.php");
+}, 'get');
+
+// Artist Management
+Route::add('/admin/jazz/artists', function() {
+    requireAdmin();
+    
+    $controller = new JazzManagementController();
+    $viewData = $controller->listArtists();
+    
+    require_once(__DIR__ . "/../views/pages/admin_jazz_artists.php");
+}, 'get');
+
+Route::add('/admin/jazz/artists/create', function() {
+    requireAdmin();
+    
+    $controller = new JazzManagementController();
+    
+    require_once(__DIR__ . "/../views/pages/admin_jazz_artist_form.php");
+}, 'get');
+
+Route::add('/admin/jazz/artists/create', function() {
+    requireAdmin();
+    
+    $controller = new JazzManagementController();
+    $result = $controller->createArtist($_POST, $_FILES);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+        header('Location: /admin/jazz/artists');
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+        $_SESSION['form_data'] = $_POST;
+        header('Location: /admin/jazz/artists/create');
+    }
+    exit();
+}, 'post');
+
+Route::add('/admin/jazz/artists/edit/([0-9]+)', function($artistId) {
+    requireAdmin();
+    
+    $controller = new JazzManagementController();
+    $artist = $controller->getArtist($artistId);
+    
+    if (!$artist) {
+        $_SESSION['error_message'] = 'Artist not found.';
+        header('Location: /admin/jazz/artists');
+        exit();
+    }
+    
+    require_once(__DIR__ . "/../views/pages/admin_jazz_artist_form.php");
+}, 'get');
+
+Route::add('/admin/jazz/artists/edit/([0-9]+)', function($artistId) {
+    requireAdmin();
+    
+    $controller = new JazzManagementController();
+    $result = $controller->updateArtist($artistId, $_POST, $_FILES);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+        header('Location: /admin/jazz/artists');
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+        header("Location: /admin/jazz/artists/edit/{$artistId}");
+    }
+    exit();
+}, 'post');
+
+Route::add('/admin/jazz/artists/delete/([0-9]+)', function($artistId) {
+    requireAdmin();
+    
+    $controller = new JazzManagementController();
+    $artist = $controller->getArtist($artistId);
+    
+    if (!$artist) {
+        $_SESSION['error_message'] = 'Artist not found.';
+        header('Location: /admin/jazz/artists');
+        exit();
+    }
+    
+    require_once(__DIR__ . "/../views/pages/admin_jazz_artist_delete.php");
+}, 'get');
+
+Route::add('/admin/jazz/artists/delete/([0-9]+)', function($artistId) {
+    requireAdmin();
+    
+    $controller = new JazzManagementController();
+    $result = $controller->deleteArtist($artistId);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+    }
+    
+    header('Location: /admin/jazz/artists');
+    exit();
+}, 'post');
+
+// Event/Performance Management
+Route::add('/admin/jazz/events', function() {
+    requireAdmin();
+    
+    $controller = new JazzManagementController();
+    $viewData = $controller->listEvents();
+    
+    require_once(__DIR__ . "/../views/pages/admin_jazz_events.php");
+}, 'get');
+
+Route::add('/admin/jazz/events/create', function() {
+    requireAdmin();
+    
+    $controller = new JazzManagementController();
+    $viewData = $controller->getEventFormData();
+    
+    require_once(__DIR__ . "/../views/pages/admin_jazz_event_form.php");
+}, 'get');
+
+Route::add('/admin/jazz/events/create', function() {
+    requireAdmin();
+    
+    $controller = new JazzManagementController();
+    $result = $controller->createEvent($_POST);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+        header('Location: /admin/jazz/events');
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+        $_SESSION['form_data'] = $_POST;
+        header('Location: /admin/jazz/events/create');
+    }
+    exit();
+}, 'post');
+
+Route::add('/admin/jazz/events/edit/([0-9]+)', function($eventId) {
+    requireAdmin();
+    
+    $controller = new JazzManagementController();
+    $viewData = $controller->getEvent($eventId);
+    
+    if (!$viewData['event']) {
+        $_SESSION['error_message'] = 'Event not found.';
+        header('Location: /admin/jazz/events');
+        exit();
+    }
+    
+    require_once(__DIR__ . "/../views/pages/admin_jazz_event_form.php");
+}, 'get');
+
+Route::add('/admin/jazz/events/edit/([0-9]+)', function($eventId) {
+    requireAdmin();
+    
+    $controller = new JazzManagementController();
+    $result = $controller->updateEvent($eventId, $_POST);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+        header('Location: /admin/jazz/events');
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+        header("Location: /admin/jazz/events/edit/{$eventId}");
+    }
+    exit();
+}, 'post');
+
+Route::add('/admin/jazz/events/delete/([0-9]+)', function($eventId) {
+    requireAdmin();
+    
+    $controller = new JazzManagementController();
+    $viewData = $controller->getEvent($eventId);
+    
+    if (!$viewData['event']) {
+        $_SESSION['error_message'] = 'Event not found.';
+        header('Location: /admin/jazz/events');
+        exit();
+    }
+    
+    require_once(__DIR__ . "/../views/pages/admin_jazz_event_delete.php");
+}, 'get');
+
+Route::add('/admin/jazz/events/delete/([0-9]+)', function($eventId) {
+    requireAdmin();
+    
+    $controller = new JazzManagementController();
+    $result = $controller->deleteEvent($eventId);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+    }
+    
+    header('Location: /admin/jazz/events');
+    exit();
+}, 'post');
+
+// Venue Management
+Route::add('/admin/jazz/venues', function() {
+    requireAdmin();
+    
+    $controller = new JazzManagementController();
+    $viewData = $controller->listVenues();
+    
+    require_once(__DIR__ . "/../views/pages/admin_jazz_venues.php");
+}, 'get');
+
+Route::add('/admin/jazz/venues/create', function() {
+    // Use the existing requireAdmin function
+    requireAdmin();
+    
+    $controller = new JazzManagementController();
+    
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $result = $controller->createVenue($_POST);
+        
+        if ($result['success']) {
+            $_SESSION['success_message'] = $result['message'];
+            header('Location: /admin/jazz/venues');
+            exit();
+        } else {
+            $_SESSION['error_message'] = $result['message'];
+            $viewData = $controller->getVenueFormData();
+            $viewData['formData'] = $_POST;
+            require __DIR__ . '/../views/pages/admin_jazz_venue_form.php';
+            exit();
+        }
+    }
+    
+    $viewData = $controller->getVenueFormData();
+    require __DIR__ . '/../views/pages/admin_jazz_venue_form.php';
+}, ['get', 'post']);
+
+Route::add('/admin/jazz/venues/edit/([0-9]+)', function($venueId) {
+    // Use the existing requireAdmin function
+    requireAdmin();
+    
+    $controller = new JazzManagementController();
+    
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $result = $controller->updateVenue($venueId, $_POST);
+        
+        if ($result['success']) {
+            $_SESSION['success_message'] = $result['message'];
+            header('Location: /admin/jazz/venues');
+            exit();
+        } else {
+            $_SESSION['error_message'] = $result['message'];
+        }
+    }
+    
+    $viewData = ['venue' => $controller->getVenue($venueId)];
+    require __DIR__ . '/../views/pages/admin_jazz_venue_form.php';
+}, ['get', 'post']);
+
+Route::add('/admin/jazz/venues/delete/([0-9]+)', function($venueId) {
+    // Use the existing requireAdmin function
+    requireAdmin();
+    
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $controller = new JazzManagementController();
+        $result = $controller->deleteVenue($venueId);
+        
+        if ($result['success']) {
+            $_SESSION['success_message'] = $result['message'];
+        } else {
+            $_SESSION['error_message'] = $result['message'];
+        }
+        
+        header('Location: /admin/jazz/venues');
+        exit();
+    }
+    
+    // If not POST, redirect back to venues page
+    header('Location: /admin/jazz/venues');
+    exit();
+}, ['post']);
+
+// Pass Management
+Route::add('/admin/jazz/passes', function() {
+    requireAdmin();
+    
+    $controller = new JazzManagementController();
+    $viewData = $controller->listPasses();
+    
+    require_once(__DIR__ . "/../views/pages/admin_jazz_passes.php");
+}, 'get');
+
+Route::add('/admin/jazz/passes/create', function() {
+    requireAdmin();
+    
+    $controller = new JazzManagementController();
+    
+    require_once(__DIR__ . "/../views/pages/admin_jazz_pass_form.php");
+}, 'get');
+
+Route::add('/admin/jazz/passes/create', function() {
+    requireAdmin();
+    
+    $controller = new JazzManagementController();
+    $result = $controller->createPass($_POST);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+        header('Location: /admin/jazz/passes');
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+        $_SESSION['form_data'] = $_POST;
+        header('Location: /admin/jazz/passes/create');
+    }
+    exit();
+}, 'post');
+
+Route::add('/admin/jazz/passes/edit/([0-9]+)', function($passId) {
+    requireAdmin();
+    
+    $controller = new JazzManagementController();
+    $pass = $controller->getPass($passId);
+    
+    if (!$pass) {
+        $_SESSION['error_message'] = 'Pass not found.';
+        header('Location: /admin/jazz/passes');
+        exit();
+    }
+    
+    require_once(__DIR__ . "/../views/pages/admin_jazz_pass_form.php");
+}, 'get');
+
+Route::add('/admin/jazz/passes/edit/([0-9]+)', function($passId) {
+    requireAdmin();
+    
+    $controller = new JazzManagementController();
+    $result = $controller->updatePass($passId, $_POST);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+        header('Location: /admin/jazz/passes');
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+        header("Location: /admin/jazz/passes/edit/{$passId}");
+    }
+    exit();
+}, 'post');
+
+Route::add('/admin/jazz/passes/delete/([0-9]+)', function($passId) {
+    requireAdmin();
+    
+    $controller = new JazzManagementController();
+    $pass = $controller->getPass($passId);
+    
+    if (!$pass) {
+        $_SESSION['error_message'] = 'Pass not found.';
+        header('Location: /admin/jazz/passes');
+        exit();
+    }
+    
+    require_once(__DIR__ . "/../views/pages/admin_jazz_pass_delete.php");
+}, 'get');
+
+Route::add('/admin/jazz/passes/delete/([0-9]+)', function($passId) {
+    requireAdmin();
+    
+    $controller = new JazzManagementController();
+    $result = $controller->deletePass($passId);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+    }
+    
+    header('Location: /admin/jazz/passes');
+    exit();
+}, 'post');
+
+// Order Management Dashboard
+Route::add('/admin/orders', function() {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/AdminOrderController.php");
+    $controller = new AdminOrderController();
+    
+    // Get filters, search, sort parameters from query string
+    $filters = [
+        'status' => $_GET['status'] ?? '',
+        'startDate' => $_GET['startDate'] ?? '',
+        'endDate' => $_GET['endDate'] ?? '',
+        'minAmount' => $_GET['minAmount'] ?? '',
+        'maxAmount' => $_GET['maxAmount'] ?? ''
+    ];
+    
+    $searchTerm = $_GET['search'] ?? '';
+    $sortBy = $_GET['sortBy'] ?? 'OrderDate';
+    $sortOrder = $_GET['sortOrder'] ?? 'desc';
+    $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+    
+    // Get data for the view
+    $viewData = $controller->index($filters, $searchTerm, $sortBy, $sortOrder, $page);
+    
+    // Add status options for the filter dropdown
+    $viewData['statusOptions'] = ['pending', 'paid', 'completed', 'cancelled', 'refunded'];
+    
+    require_once(__DIR__ . "/../views/pages/admin_orders.php");
+}, 'get');
+
+// View Order Details
+Route::add('/admin/orders/view/([0-9]+)', function($orderId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/AdminOrderController.php");
+    $controller = new AdminOrderController();
+    
+    $orderData = $controller->getOrder($orderId);
+    
+    if (!$orderData) {
+        $_SESSION['error_message'] = 'Order not found.';
+        header('Location: /admin/orders');
+        exit();
+    }
+    
+    // Add status options for the status update form
+    $statusOptions = ['pending', 'paid', 'completed', 'cancelled', 'refunded'];
+    
+    require_once(__DIR__ . "/../views/pages/admin_order_details.php");
+}, 'get');
+
+// Update Order Status
+Route::add('/admin/orders/update-status/([0-9]+)', function($orderId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/AdminOrderController.php");
+    $controller = new AdminOrderController();
+    
+    $status = $_POST['status'] ?? '';
+    
+    $result = $controller->updateOrderStatus($orderId, $status);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+    }
+    
+    header("Location: /admin/orders/view/{$orderId}");
+    exit();
+}, 'post');
+
+// Export Orders to Excel
+Route::add('/admin/orders/export', function() {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/AdminOrderController.php");
+    $controller = new AdminOrderController();
+    
+    // Get filters from query string
+    $filters = [
+        'status' => $_GET['status'] ?? '',
+        'startDate' => $_GET['startDate'] ?? '',
+        'endDate' => $_GET['endDate'] ?? '',
+        'minAmount' => $_GET['minAmount'] ?? '',
+        'maxAmount' => $_GET['maxAmount'] ?? ''
+    ];
+    
+    $searchTerm = $_GET['search'] ?? '';
+    
+    $result = $controller->exportOrders($filters, $searchTerm);
+    
+    if ($result['success']) {
+        // Send the file to the browser for download
+        $filename = basename($result['filepath']);
+        $fileUrl = '/assets/exports/' . $filename;
+        
+        $_SESSION['success_message'] = 'Orders exported successfully.';
+        
+        // Redirect to the file for download
+        header("Location: {$fileUrl}");
+        exit();
+    } else {
+        $_SESSION['error_message'] = 'Failed to export orders.';
+        header('Location: /admin/orders');
+        exit();
+    }
+}, 'get');

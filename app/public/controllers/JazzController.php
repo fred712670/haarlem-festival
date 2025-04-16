@@ -240,5 +240,14 @@ public function getJazzContent($section = null)
 public function getTicketInfo() {
     return $this->jazzModel->getTicketInfo();
 }
+/**
+ * Get track details for audio player
+ * 
+ * @param int $trackId Track ID
+ * @return array Track details including audio file path
+ */
+public function getTrackDetails($trackId) {
+    return $this->jazzModel->getTrackById($trackId);
+}
 }
 

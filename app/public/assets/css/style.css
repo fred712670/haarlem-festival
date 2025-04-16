@@ -434,29 +434,28 @@ p.eventName {
 
 /* Profile Styles */
 
-.card{
-    margin-top: 20px;
+.card {
+  margin-top: 20px;
 }
 .ticket-info {
-    padding: 10px;
-    background-color: #f8f9fa;
-    margin-bottom: 10px;
-    border-radius: 5px;
-  }
-  .card-header {
-    background-color: #e9ecef;
-  }
-  .form-section {
-    background: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    margin-bottom: 30px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+.card-header {
+  background-color: #e9ecef;
+}
+.form-section {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 30px;
 }
 
-a.btnDownload{
+a.btnDownload {
   float: right;
-  background-color: #2A3A4E;
+  background-color: #2a3a4e;
   border: none;
 }
-

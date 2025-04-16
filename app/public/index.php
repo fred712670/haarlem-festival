@@ -11,6 +11,8 @@ require_once(__DIR__ . "/lib/error_reporting.php"); // enables error reporting l
  */
 session_start();
 
+require_once __DIR__ . '/../vendor/autoload.php';
+
 /**
  * Require routing library
  *  allows handling request for different URL routes, i.e. /users, /products, etc.
@@ -36,6 +38,8 @@ require_once __DIR__ . '/routes/orderRoute.php';
 require_once(__DIR__ . "/routes/yummy.php");
 
 require_once(__DIR__ . "/routes/dance.php");
+require_once __DIR__ . '/routes/payment.php';
+
 
 // Start the router, enabling handling requests
 Route::run();

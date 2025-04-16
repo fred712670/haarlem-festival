@@ -146,7 +146,6 @@ class JazzModel extends BaseModel
                         ja.Name as artist_name,
                         v.Name as venue_name,
                         je.Price as price,
-                        je.EventId as EventId,
                         CASE 
                             WHEN je.Price = 0 THEN 'All Jazz events on this day are free.'
                             ELSE 'A day pass will cover all the Jazz events on this day.'
@@ -318,6 +317,35 @@ public function getJazzContent($section = null)
     } catch (Exception $e) {
         error_log("Error fetching jazz content: " . $e->getMessage());
         return $section !== null ? '' : [];
+    }
+}
+/**
+ * Get track details by ID
+ * 
+ * @param int $trackId Track ID
+ * @return array|null Track details or null if not found
+ */
+public function getTrackById($trackId)
+{
+    try {
+        $query = "SELECT 
+                    TrackId as id,
+                    Title as title,
+                    Credits as credits,
+                    Description as description,
+                    ReleaseYear as release_year,
+                    audio_file
+                FROM JazzTrack
+                WHERE TrackId = :trackId";
+        
+        $stmt = self::$pdo->prepare($query);
+        $stmt->bindParam(':trackId', $trackId, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        error_log("Error fetching track: " . $e->getMessage());
+        return null;
     }
 }
 }
