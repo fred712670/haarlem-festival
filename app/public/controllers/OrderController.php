@@ -482,6 +482,5 @@ public function generateOrderDocuments($orderId) {
     $this->generateInvoicePdf($orderResult);
 }
 
-
 }
 
