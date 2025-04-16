@@ -136,25 +136,27 @@ class JazzModel extends BaseModel
         try {
             
             $query = "SELECT 
-                        DATE(je.StartDateTime) as date,
-                        DAYNAME(je.StartDateTime) as day_name,
-                        DAY(je.StartDateTime) as day_number,
-                        MONTHNAME(je.StartDateTime) as month_name,
-                        TIME(je.StartDateTime) as start_time,
-                        ADDTIME(TIME(je.StartDateTime), SEC_TO_TIME(je.DurationByMinute * 60)) as end_time,
-                        ja.ArtistId as artist_id,
-                        ja.Name as artist_name,
-                        v.Name as venue_name,
-                        je.Price as price,
-                        CASE 
-                            WHEN je.Price = 0 THEN 'All Jazz events on this day are free.'
-                            ELSE 'A day pass will cover all the Jazz events on this day.'
-                        END as remarks
-                    FROM JazzEvent je
-                    JOIN Event e ON je.EventId = e.EventId
-                    JOIN JazzPerformance jp ON je.JazzEventId = jp.JazzEventId
-                    JOIN JazzArtist ja ON jp.ArtistId = ja.ArtistId
-                    JOIN Venue v ON je.Location = CAST(v.VenueId AS CHAR)";
+            DATE(je.StartDateTime) as date,
+            DAYNAME(je.StartDateTime) as day_name,
+            DAY(je.StartDateTime) as day_number,
+            MONTHNAME(je.StartDateTime) as month_name,
+            TIME(je.StartDateTime) as start_time,
+            ADDTIME(TIME(je.StartDateTime), SEC_TO_TIME(je.DurationByMinute * 60)) as end_time,
+            ja.ArtistId as artist_id,
+            ja.Name as artist_name,
+            v.Name as venue_name,
+            je.Price as price,
+            je.EventId as EventId,
+            je.JazzEventId as jazz_event_id,
+            CASE 
+                WHEN je.Price = 0 THEN 'All Jazz events on this day are free.'
+                ELSE 'A day pass will cover all the Jazz events on this day.'
+            END as remarks
+        FROM JazzEvent je
+        JOIN Event e ON je.EventId = e.EventId
+        JOIN JazzPerformance jp ON je.JazzEventId = jp.JazzEventId
+        JOIN JazzArtist ja ON jp.ArtistId = ja.ArtistId
+        JOIN Venue v ON je.Location = CAST(v.VenueId AS CHAR)";
             
             // If an artist ID is provided, filter the results
             if ($artistId !== null) {
