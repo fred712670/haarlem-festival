@@ -75,7 +75,7 @@
                                             <td>
                                                 <?php if ($event['price'] > 0): ?>
                                                     <form action="/reserve" method="post">
-                                                        <input type="hidden" name="eventId" value="<?= isset($event['jazz_event_id']) ? htmlspecialchars($event['jazz_event_id']) : '' ?>">
+                                                        <input type="hidden" name="eventId" value="<?= htmlspecialchars($event['EventId']) ?>">
                                                         <input type="hidden" name="name" value="Jazz Event: <?= htmlspecialchars($event['artist_name']) ?>">
                                                         <input type="hidden" name="address" value="<?= htmlspecialchars($event['venue_name']) ?>">
                                                         <input type="hidden" name="date" value="<?= htmlspecialchars($dateKey) ?>">

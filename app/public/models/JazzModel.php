@@ -146,6 +146,7 @@ class JazzModel extends BaseModel
                         ja.Name as artist_name,
                         v.Name as venue_name,
                         je.Price as price,
+                        je.EventId as EventId,
                         CASE 
                             WHEN je.Price = 0 THEN 'All Jazz events on this day are free.'
                             ELSE 'A day pass will cover all the Jazz events on this day.'
