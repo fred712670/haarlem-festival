@@ -48,7 +48,6 @@ class OrderController {
         $this->generateTicketPdfs($orderResult, $eventDetails);
 
         $this->generateInvoicePdf($orderResult);
-
     
         // Clear the shopping cart.
         unset($_SESSION['cart']);
@@ -56,6 +55,8 @@ class OrderController {
         // Redirect to the thank-you page.
         //header("Location: /thank-you?orderId=$orderId");
         //exit;
+
+         return $orderResult;
     }
     
 
@@ -459,7 +460,7 @@ public function downloadInvoice() {
 
 
 
-/* This is was put here for use with the Payment Functionality. */
+/* This is was put here for use with the Payment Functionality. Do not consider it as part of the original OrderController, but rather an addon (which may end up being redundant) */
 
 public function generateOrderDocuments($orderId) {
     $orderModel = new OrderModel();

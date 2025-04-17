@@ -1,23 +1,31 @@
 <?php
 
 require_once __DIR__ . '/../lib/Route.php';
-require_once __DIR__ . '/../controllers/PaymentController.php';
-require_once __DIR__ . '/../controllers/OrderController.php';
 
-// Create Stripe Checkout Session
-Route::add('/payment/create-checkout-session', function () {
-    $controller = new PaymentController();
-    $controller->createCheckoutSession();
+require_once __DIR__.'/../controllers/OrderPaymentCoordinator.php';
+
+Route::add('/payment/create-checkout-session', function(){
+    $co = new OrderPaymentCoordinator(
+        new OrderController(),
+        new PaymentController()
+    );
+    $co->beginCheckoutProcess();
 }, 'post');
 
-// Success Redirect
-Route::add('/payment/success', function () {
-    $controller = new PaymentController();
-    $controller->showSuccessPage(); // handles Stripe session validation + output
+Route::add('/payment/success', function(){
+    $co = new OrderPaymentCoordinator(
+        new OrderController(),
+        new PaymentController()
+    );
+    $co->handleSuccess();
 }, 'get');
 
-// Cancel Redirect
-Route::add('/payment/cancel', function () {
-    $controller = new PaymentController();
-    $controller->showCancelPage(); // shows limited-time hold message
+Route::add('/payment/cancel', function(){
+    $co = new OrderPaymentCoordinator(
+        new OrderController(),
+        new PaymentController()
+    );
+    $co->handleCancel();
 }, 'get');
+
+
