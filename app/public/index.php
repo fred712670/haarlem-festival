@@ -1,5 +1,9 @@
 <?php
+
 ob_start();
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
 /**
  * Set env variables and enable error reporting in local environment
  */
@@ -10,6 +14,7 @@ require_once(__DIR__ . "/lib/error_reporting.php"); // enables error reporting l
  * Start user session
  */
 session_start();
+
 
 /**
  * Require routing library
@@ -36,6 +41,8 @@ require_once __DIR__ . '/routes/orderRoute.php';
 require_once(__DIR__ . "/routes/yummy.php");
 
 require_once(__DIR__ . "/routes/dance.php");
+require_once __DIR__ . '/routes/payment.php';
+
 
 // Start the router, enabling handling requests
 Route::run();

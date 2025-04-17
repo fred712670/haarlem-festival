@@ -48,7 +48,6 @@ class OrderController {
         $this->generateTicketPdfs($orderResult, $eventDetails);
 
         $this->generateInvoicePdf($orderResult);
-
     
         // Clear the shopping cart.
         unset($_SESSION['cart']);
@@ -56,6 +55,8 @@ class OrderController {
         // Redirect to the thank-you page.
         //header("Location: /thank-you?orderId=$orderId");
         //exit;
+
+         return $orderResult;
     }
     
 
@@ -241,11 +242,6 @@ private function generateTicketPdfs($orderResult, $eventDetails) {
         } else {
             $generatedPdfs[] = $pdfPath;
         }
-    }
-
-    // Optionally, output the generated PDF paths.
-    foreach ($generatedPdfs as $pdf) {
-        echo "PDF generated: " . htmlspecialchars($pdf) . "<br>";
     }
 }
 
@@ -460,6 +456,33 @@ public function downloadInvoice() {
     readfile($invoiceFilePath);
     exit;
 }
+
+
+
+
+/* This is was put here for use with the Payment Functionality. Do not consider it as part of the original OrderController, but rather an addon (which may end up being redundant) */
+
+public function generateOrderDocuments($orderId) {
+    $orderModel = new OrderModel();
+    $order = $orderModel->getOrderById($orderId);
+    $tickets = $orderModel->getTicketsByOrderId($orderId);
+
+    // Reconstruct minimal $orderResult structure:
+    $orderResult = ['order' => $order, 'tickets' => $tickets];
+
+    // Derive event details from tickets
+    $eventDetails = [];
+    foreach ($tickets as $ticket) {
+        $eventDetails[$ticket['EventId']] = [
+            'name' => $ticket['EventName'] ?? $ticket['PassType'],
+            'dateTime' => null // you can enrich this if needed
+        ];
+    }
+
+    $this->generateTicketPdfs($orderResult, $eventDetails);
+    $this->generateInvoicePdf($orderResult);
+}
+
 
 }
 
