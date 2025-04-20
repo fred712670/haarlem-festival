@@ -1,29 +1,25 @@
-/* MAGIC TEYLERS  */
-.img-fluid {
-    width: 100%;
-    height: auto;
-    display: block;
+body {
+    background-color: #f8f1e3;
 }
 
-.text-section {
-    padding: 20px 15%; /* Adjust padding and set a percentage to keep text away from the edges */
-}
-
-.highlight {
-    background-color: #f8f9fa;
-    padding: 20px;
-    margin: 20px 15%; /* Increase margin for highlights to maintain consistency */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Optional: Adds subtle shadow for depth */
-}
-
-.btn-custom {
-    background-color: red;
-    color: white;
-    border: none;
-}
-
-#teylers-title-img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
+.card-title {
+    color: #003366;
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .lead {
+    font-size: 1.25rem;
+    color: #555;
+  }
+  
+  /* Custom Button */
+  .btn-custom {
+    background-color: #d90429;
+    color: #fff;
+  }
+  .btn-custom:hover,
+  .btn-custom:focus {
+    background-color: #a30320;
+    color: #fff;
+    box-shadow: 0 0 0.5rem rgba(167, 3, 32, 0.4);
+  }
