@@ -21,4 +21,8 @@ class HomeController
 
         require(__DIR__ . '/../views/pages/index.php');
     }
+
+    public function getLorentz(): array {
+        return $this->getLorentz();
+    }
 }

@@ -30,4 +30,13 @@ class HomeModel extends BaseModel
     $stmt->execute();
     return $stmt->fetchAll();
     }
+
+    public function getLorentz(): array {
+        $sql = "SELECT LorentzId, Description, StartDate, StartDateTime, EndDateTime
+                FROM Lorentz
+                ORDER BY LorentzId";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 }
