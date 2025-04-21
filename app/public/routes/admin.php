@@ -734,8 +734,6 @@ Route::add('/admin/orders/export', function() {
     // No need for redirects since exportOrders handles the download
     // and exits execution
 }, 'get');
-// Dance Management Routes - Add to admin.php
-
 // Dance Management Dashboard
 Route::add('/admin/dance', function() {
     requireAdmin();
@@ -955,113 +953,6 @@ Route::add('/admin/dance/events/delete/([0-9]+)', function($eventId) {
     header('Location: /admin/dance/events');
     exit();
 }, 'post');
-
-// Song Management
-Route::add('/admin/dance/songs', function() {
-    requireAdmin();
-    
-    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
-    $controller = new DanceManagementController();
-    $viewData = $controller->listSongs();
-    
-    require_once(__DIR__ . "/../views/pages/admin_dance_songs.php");
-}, 'get');
-
-Route::add('/admin/dance/songs/create', function() {
-    requireAdmin();
-    
-    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
-    $controller = new DanceManagementController();
-    $viewData = ['artists' => $controller->listArtists()['artists'], 'song' => null];
-    
-    require_once(__DIR__ . "/../views/pages/admin_dance_song_form.php");
-}, 'get');
-
-Route::add('/admin/dance/songs/create', function() {
-    requireAdmin();
-    
-    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
-    $controller = new DanceManagementController();
-    $result = $controller->createSong($_POST, $_FILES);
-    
-    if ($result['success']) {
-        $_SESSION['success_message'] = $result['message'];
-        header('Location: /admin/dance/songs');
-    } else {
-        $_SESSION['error_message'] = $result['message'];
-        $_SESSION['form_data'] = $_POST;
-        header('Location: /admin/dance/songs/create');
-    }
-    exit();
-}, 'post');
-
-Route::add('/admin/dance/songs/edit/([0-9]+)', function($songId) {
-    requireAdmin();
-    
-    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
-    $controller = new DanceManagementController();
-    $viewData = $controller->getSong($songId);
-    
-    if (!$viewData['song']) {
-        $_SESSION['error_message'] = 'Song not found.';
-        header('Location: /admin/dance/songs');
-        exit();
-    }
-    
-    require_once(__DIR__ . "/../views/pages/admin_dance_song_form.php");
-}, 'get');
-
-Route::add('/admin/dance/songs/edit/([0-9]+)', function($songId) {
-    requireAdmin();
-    
-    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
-    $controller = new DanceManagementController();
-    $result = $controller->updateSong($songId, $_POST, $_FILES);
-    
-    if ($result['success']) {
-        $_SESSION['success_message'] = $result['message'];
-        header('Location: /admin/dance/songs');
-    } else {
-        $_SESSION['error_message'] = $result['message'];
-        header("Location: /admin/dance/songs/edit/{$songId}");
-    }
-    exit();
-}, 'post');
-
-Route::add('/admin/dance/songs/delete/([0-9]+)', function($songId) {
-    requireAdmin();
-    
-    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
-    $controller = new DanceManagementController();
-    $viewData = $controller->getSong($songId);
-    
-    if (!$viewData['song']) {
-        $_SESSION['error_message'] = 'Song not found.';
-        header('Location: /admin/dance/songs');
-        exit();
-    }
-    
-    require_once(__DIR__ . "/../views/pages/admin_dance_song_delete.php");
-}, 'get');
-
-Route::add('/admin/dance/songs/delete/([0-9]+)', function($songId) {
-    requireAdmin();
-    
-    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
-    $controller = new DanceManagementController();
-    $result = $controller->deleteSong($songId);
-    
-    if ($result['success']) {
-        $_SESSION['success_message'] = $result['message'];
-    } else {
-        $_SESSION['error_message'] = $result['message'];
-    }
-    
-    header('Location: /admin/dance/songs');
-    exit();
-}, 'post');
-
-// Yummy Management Routes - Add to admin.php
 
 // Yummy Management Dashboard
 Route::add('/admin/yummy', function() {

@@ -20,12 +20,10 @@ class DanceManagementController
     {
         $artistCount = $this->danceModel->getArtistCount();
         $eventCount = $this->danceModel->getEventCount();
-        $songCount = $this->danceModel->getSongCount();
         
         return [
             'artistCount' => $artistCount,
-            'eventCount' => $eventCount,
-            'songCount' => $songCount
+            'eventCount' => $eventCount
         ];
     }
 
@@ -312,158 +310,6 @@ class DanceManagementController
     }
 
     /**
-     * List all songs
-     */
-    public function listSongs()
-    {
-        $songs = $this->danceModel->getAllSongs();
-        return ['songs' => $songs];
-    }
-
-    /**
-     * Get a specific song by ID
-     */
-    public function getSong($songId)
-    {
-        return [
-            'song' => $this->danceModel->getSongById($songId),
-            'artists' => $this->danceModel->getAllArtists()
-        ];
-    }
-
-    /**
-     * Create a new song
-     */
-    public function createSong($data, $files)
-    {
-        // Validate inputs
-        if (empty($data['title']) || empty($data['artistId'])) {
-            return ['success' => false, 'message' => 'Song title and artist are required.'];
-        }
-
-        // Handle song file upload
-        $songFileName = null;
-        if (!empty($files['songFile']['name'])) {
-            $songFileName = $this->processAudioUpload($files['songFile'], 'dance');
-            if (!$songFileName) {
-                return ['success' => false, 'message' => 'Failed to upload song file.'];
-            }
-        }
-
-        // Handle song image upload
-        $imageName = null;
-        if (!empty($files['songImage']['name'])) {
-            $imageName = $this->processImageUpload($files['songImage'], 'dance');
-            if (!$imageName) {
-                return ['success' => false, 'message' => 'Failed to upload song image.'];
-            }
-        }
-
-        // Create song
-        return $this->danceModel->createSong(
-            $data['artistId'],
-            $data['title'],
-            $data['releaseYear'] ?? null,
-            $data['credits'] ?? null,
-            $data['description'] ?? null,
-            $songFileName,
-            $imageName
-        );
-    }
-
-    /**
-     * Update an existing song
-     */
-    public function updateSong($songId, $data, $files)
-    {
-        // Validate inputs
-        if (empty($data['title']) || empty($data['artistId'])) {
-            return ['success' => false, 'message' => 'Song title and artist are required.'];
-        }
-
-        // Get current song data
-        $song = $this->danceModel->getSongById($songId);
-        if (!$song) {
-            return ['success' => false, 'message' => 'Song not found.'];
-        }
-
-        // Handle song file upload
-        $songFileName = $song['SongFileName']; // Default to existing file
-        if (!empty($files['songFile']['name'])) {
-            $newSongFileName = $this->processAudioUpload($files['songFile'], 'dance');
-            if ($newSongFileName) {
-                // Remove old file if successful
-                if ($songFileName) {
-                    $oldFilePath = __DIR__ . '/../../public/assets/audio/' . $songFileName;
-                    if (file_exists($oldFilePath)) {
-                        unlink($oldFilePath);
-                    }
-                }
-                $songFileName = $newSongFileName;
-            }
-        }
-
-        // Handle song image upload
-        $imageName = $song['ImageName']; // Default to existing image
-        if (!empty($files['songImage']['name'])) {
-            $newImageName = $this->processImageUpload($files['songImage'], 'dance');
-            if ($newImageName) {
-                // Remove old image if successful
-                if ($imageName) {
-                    $oldImagePath = __DIR__ . '/../../public/assets/img/dance/' . $imageName;
-                    if (file_exists($oldImagePath)) {
-                        unlink($oldImagePath);
-                    }
-                }
-                $imageName = $newImageName;
-            }
-        }
-
-        // Update song
-        return $this->danceModel->updateSong(
-            $songId,
-            $data['artistId'],
-            $data['title'],
-            $data['releaseYear'] ?? null,
-            $data['credits'] ?? null,
-            $data['description'] ?? null,
-            $songFileName,
-            $imageName
-        );
-    }
-
-    /**
-     * Delete a song
-     */
-    public function deleteSong($songId)
-    {
-        // Check if song exists
-        $song = $this->danceModel->getSongById($songId);
-        if (!$song) {
-            return ['success' => false, 'message' => 'Song not found.'];
-        }
-
-        // Delete song file if exists
-        if ($song['SongFileName']) {
-            $filePath = __DIR__ . '/../../public/assets/audio/' . $song['SongFileName'];
-            if (file_exists($filePath)) {
-                unlink($filePath);
-            }
-        }
-        
-        // Delete song image if exists
-        if ($song['ImageName']) {
-            $imagePath = __DIR__ . '/../../public/assets/img/dance/' . $song['ImageName'];
-            if (file_exists($imagePath)) {
-                unlink($imagePath);
-            }
-        }
-
-        // Delete song
-        return $this->danceModel->deleteSong($songId);
-    }
-
-    /**
      * Process image upload and return the filename
      */
     private function processImageUpload($file, $subdir)
@@ -485,44 +331,6 @@ class DanceManagementController
         
         // Make sure the destination directory exists
         $uploadDir = __DIR__ . '/../../public/assets/img/' . $subdir . '/';
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0755, true);
-        }
-        
-        // Move the uploaded file
-        if (move_uploaded_file($file['tmp_name'], $uploadDir . $filename)) {
-            return $filename;
-        }
-        
-        return false;
-    }
-
-    /**
-     * Process audio upload and return the filename
-     */
-    private function processAudioUpload($file, $subdir = '')
-    {
-        // Check if file upload is valid
-        if ($file['error'] !== UPLOAD_ERR_OK) {
-            return false;
-        }
-
-        // Validate file type
-        $allowedTypes = ['audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/ogg'];
-        if (!in_array($file['type'], $allowedTypes)) {
-            return false;
-        }
-
-        // Generate unique filename
-        $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
-        $filename = uniqid('audio_') . '.' . $extension;
-        
-        // Make sure the destination directory exists
-        $uploadDir = __DIR__ . '/../../public/assets/audio/';
-        if (!empty($subdir)) {
-            $uploadDir .= $subdir . '/';
-        }
-        
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0755, true);
         }
