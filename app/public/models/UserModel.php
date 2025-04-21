@@ -43,21 +43,27 @@ class UserModel extends BaseModel
     }
 
    
-   public function login($username): array
-{
-    try {
-        $stmt = self::$pdo->prepare("SELECT * FROM User WHERE FullName = :username");
-        $stmt->execute(['username' => $username]);
+    // Used within LoginController
+    public function login($username): array
+    {
+        try {
+            // Prepare SQL statement to fetch user by full name
+            $stmt = self::$pdo->prepare("SELECT * FROM User WHERE FullName = :username");
+            $stmt->execute(['username' => $username]);
 
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            // Fetch user as associative array
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        return $user ?: []; // Ensures an empty array is always returned
+            // Return user data if found, or empty array otherwise
+            return $user ?: [];
 
-    } catch (PDOException $e) {
-        error_log("Database error in login(): " . $e->getMessage()); // Displays error
-        return []; // Return an empty array
+        } catch (PDOException $e) {
+            // Log database error to server logs (not user-facing)
+            error_log("Database error in login(): " . $e->getMessage());
+            return [];
+        }
     }
-}
+
 
     public function get($id)
     {

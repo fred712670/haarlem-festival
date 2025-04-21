@@ -6,47 +6,49 @@ require_once __DIR__ . '/PaymentController.php';
 
 class OrderPaymentCoordinator
 {
-    private OrderController   $orders;
+    private OrderController $orders;
     private PaymentController $payment;
 
     public function __construct(
-        OrderController   $orders,
+        OrderController $orders,
         PaymentController $payment
     ) {
         $this->orders  = $orders;
         $this->payment = $payment;
     }
 
-    /* Begins Stripe process, no DB yet */
-
+    // Starts Stripe checkout session; no order/tickets are created yet
     public function beginCheckoutProcess(): void
     {
         $this->payment->createCheckoutSession();
     }
 
-    /**
-     * Stripe says “paid” → NOW insert into DB, generate docs, clear cart, render view.
-     */
+    // Called after Stripe confirms a successful payment
     public function handleSuccess(): void
     {
-        // 1) Create the real order (and tickets), _then_ PDF + invoice + cart clear:
+        // 1) Create order and tickets in DB (PDF + cart-clearing included inside createOrder)
         $orderResult = $this->orders->createOrder();
 
+        // 2) Fetch order ID and session ID from Stripe redirect query
         $orderId = $orderResult['order']['OrderId'] ?? null;
         $sessionId = $_GET['session_id'] ?? null;
 
-        // 2) Store the Stripe session ID on that newly minted order:
+        // 3) Save the Stripe session ID to the order
         $this->payment->storeStripeSessionId($orderId, $sessionId);
-        // 3) Mark it paid & store contact details (this will die if not paid, so we know it is)
+
+        // 4) Mark order as paid, store customer details, and render the success view
         $this->payment->showSuccessPage($this->orders);
 
-        // 4) Done — PDFs and cart‑clearing already happened in createOrder()
+        // 5) PDF and cart clearing were already handled in createOrder, nothing else needed
     }
 
+    // Called when user cancels from Stripe (or closes browser)
     public function handleCancel(): void
     {
+        // Create the order anyway so it's held (optional: may depend on business rules)
         $this->orders->createOrder();
 
+        // Render the cancellation view, messaging depends on order status
         $this->payment->showCancelPage($this->orders);
     }
 }
