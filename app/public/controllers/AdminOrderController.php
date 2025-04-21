@@ -8,19 +8,20 @@ class AdminOrderController {
         $this->orderModel = new OrderModel();
     }
 
-    // Lists all orders with filtering and pagination
+    // Lists all orders with simple pagination
     public function index($filters = [], $searchTerm = '', $sortBy = 'OrderDate', $sortOrder = 'desc', $page = 1) {
         $perPage = 10;
         
-        // Get orders with filtering, searching, sorting
-        $result = $this->orderModel->getOrders($filters, $searchTerm, $sortBy, $sortOrder, $page, $perPage);
+        // Get orders with simple pagination
+        $orders = $this->orderModel->getOrders(1000); // Get a reasonable number of orders
         
         // Get total count for pagination
-        $totalOrders = $this->orderModel->getTotalOrdersCount($filters, $searchTerm);
+        $totalOrders = $this->orderModel->getTotalOrdersCount();
         $totalPages = ceil($totalOrders / $perPage);
         
+        // Return the same structure as before to maintain compatibility
         return [
-            'orders' => $result,
+            'orders' => $orders,
             'total' => $totalOrders,
             'currentPage' => $page,
             'totalPages' => $totalPages,
@@ -50,19 +51,10 @@ class AdminOrderController {
         // Get tickets for this order
         $tickets = $this->orderModel->getTicketsByOrderId($orderId);
         
-        // Prepare detailed ticket info with event details
-        $ticketsWithDetails = [];
-        foreach ($tickets as $ticket) {
-            $eventDetails = $this->orderModel->getEventDetails($ticket['EventId']);
-            $ticketsWithDetails[] = array_merge($ticket, [
-                'EventDetails' => $eventDetails
-            ]);
-        }
-        
         return [
             'order' => $order,
             'user' => $user,
-            'tickets' => $ticketsWithDetails
+            'tickets' => $tickets
         ];
     }
 
@@ -77,26 +69,25 @@ class AdminOrderController {
         return $this->orderModel->updateOrderStatus($orderId, $status);
     }
 
-    // Export orders to CSV file
+    // Export orders to CSV file with direct download
     public function exportOrders($filters = [], $searchTerm = '') {
-        // Get all orders without pagination
-        $orders = $this->orderModel->getOrders($filters, $searchTerm, 'OrderDate', 'desc', 1, 1000000);
+        // Get orders
+        $orders = $this->orderModel->getOrders(1000);
         
-        // Prepare filename and path
+        // Set up filename
         $filename = 'orders_export_' . date('Y-m-d_H-i-s') . '.csv';
-        $filePath = __DIR__ . '/../../public/assets/exports/';
-        $fullPath = $filePath . $filename;
         
-        // Ensure the exports directory exists
-        if (!is_dir($filePath)) {
-            mkdir($filePath, 0755, true);
-        }
+        // Set headers for CSV download
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Pragma: no-cache');
+        header('Expires: 0');
         
-        // Open file for writing
-        $fp = fopen($fullPath, 'w');
+        // Open output stream
+        $output = fopen('php://output', 'w');
         
         // Add CSV header
-        fputcsv($fp, [
+        fputcsv($output, [
             'Order ID', 
             'Date', 
             'Customer Name',
@@ -109,45 +100,21 @@ class AdminOrderController {
         
         // Add data rows
         foreach ($orders as $order) {
-            // Get user info for this order
-            $userInfo = '';
-            $userEmail = '';
-            
-            if ($order['UserId']) {
-                require_once(__DIR__ . "/../models/AdminUserModel.php");
-                $userModel = new AdminUserModel();
-                $user = $userModel->getUserById($order['UserId']);
-                
-                if ($user) {
-                    $userInfo = $user['FullName'];
-                    $userEmail = $user['Email'];
-                }
-            }
-            
-            // Get count of tickets for this order
-            $tickets = $this->orderModel->getTicketsByOrderId($order['OrderId']);
-            $ticketCount = count($tickets);
-            
             // Write order data to CSV
-            fputcsv($fp, [
+            fputcsv($output, [
                 $order['OrderId'],
                 $order['OrderDate'],
-                $userInfo,
-                $userEmail,
+                $order['CustomerName'] ?? '',
+                $order['CustomerEmail'] ?? '',
                 $order['PhoneNumber'] ?? '',
                 $order['Status'] ?? 'pending',
                 $order['Amount'] ?? 'N/A',
-                $ticketCount
+                $order['TicketCount'] ?? 0
             ]);
         }
         
-        // Close the file
-        fclose($fp);
-        
-        return [
-            'success' => true,
-            'filename' => $filename,
-            'filepath' => $fullPath
-        ];
+        // Close the file and end execution
+        fclose($output);
+        exit();
     }
 }

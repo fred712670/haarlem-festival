@@ -80,8 +80,7 @@ return [
 
 }
 
-
-    /**
+/**
  * Retrieves detailed information for an event based on its EventId.
  * It first fetches the base event row from the Event table and then
  * performs an additional lookup based on EventType to fetch event-specific details.
@@ -104,35 +103,38 @@ public function getEventDetails($eventId) {
     // Depending on EventType, fetch event–specific details and alias location and datetime.
     switch ($event['EventType']) {
         case 'JazzEvent':
-            $specificQuery = "SELECT DateTime AS DateTime FROM JazzEvent WHERE EventId = :eventId LIMIT 1";
+            $specificQuery = "SELECT StartDateTime AS DateTime, Location FROM JazzEvent WHERE EventId = :eventId LIMIT 1";
             break;
         case 'DanceEvent':
-            $specificQuery = "SELECT StartDateTime AS DateTime FROM DanceEvent WHERE EventId = :eventId LIMIT 1";
+            $specificQuery = "SELECT StartDateTime AS DateTime, Location FROM DanceEvent WHERE EventId = :eventId LIMIT 1";
             break;
         case 'HistoryTourSchedule':
             $specificQuery = "SELECT TourDate AS DateTime FROM HistoryTourSchedule WHERE EventId = :eventId LIMIT 1";
             break;
         case 'Restaurant':
-            $specificQuery = "SELECT FirstStart AS DateTime FROM Restaurant WHERE EventId = :eventId LIMIT 1";
+            $specificQuery = "SELECT FirstStart AS DateTime, Name FROM Restaurant WHERE EventId = :eventId LIMIT 1";
             break;
         default:
             $specificQuery = "";
             break;
     }
     
-    $standardDetails = [];
+    $standardDetails = ['Name' => $event['EventType']]; // Default event name
+    
     if ($specificQuery != "") {
-        $stmtSpecific = self::$pdo->prepare($specificQuery);
-        $stmtSpecific->bindParam(':eventId', $eventId);
-        $stmtSpecific->execute();
-        $specificDetails = $stmtSpecific->fetch(PDO::FETCH_ASSOC);
-        if ($specificDetails) {
-            $standardDetails = $specificDetails;
+        try {
+            $stmtSpecific = self::$pdo->prepare($specificQuery);
+            $stmtSpecific->bindParam(':eventId', $eventId);
+            $stmtSpecific->execute();
+            $specificDetails = $stmtSpecific->fetch(PDO::FETCH_ASSOC);
+            if ($specificDetails) {
+                $standardDetails = array_merge($standardDetails, $specificDetails);
+            }
+        } catch (PDOException $e) {
+            // Log the error but continue with what we have
+            error_log("Error fetching event details: " . $e->getMessage());
         }
     }
-    // Merge a standardized event name.
-    // Here we assume the Event table has a 'Name' column.
-    $standardDetails['Name'] = $event['EventType'];
     
     return $standardDetails;
 }
@@ -271,5 +273,61 @@ public function grabContactDetails($orderId, $phone, $address) {
     return $stmt->execute();
 }
 
+/**
+ * get the list of orders
+ * 
+ * @return array List of orders
+ */
+public function getOrders($limit = 100) {
+    $query = "SELECT o.*, u.FullName AS CustomerName, u.Email AS CustomerEmail,
+              (SELECT COUNT(*) FROM Ticket WHERE OrderId = o.OrderId) AS TicketCount
+              FROM `Order` o
+              LEFT JOIN User u ON o.UserId = u.UserId
+              ORDER BY o.OrderDate DESC
+              LIMIT :limit";
+    
+    $stmt = self::$pdo->prepare($query);
+    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+    $stmt->execute();
+    
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
+/**
+ * Get total count of orders
+ * 
+ * @return int Total number of orders
+ */
+public function getTotalOrdersCount() {
+    $query = "SELECT COUNT(*) FROM `Order`";
+    $stmt = self::$pdo->query($query);
+    return $stmt->fetchColumn();
+}
+
+/**
+ * Update an order's status
+ *
+ * @param int $orderId Order ID
+ * @param string $status New status
+ * @return array Result of the operation
+ */
+public function updateOrderStatus($orderId, $status) {
+    $query = "UPDATE `Order` SET Status = :status WHERE OrderId = :orderId";
+    $stmt = self::$pdo->prepare($query);
+    $stmt->bindParam(':status', $status);
+    $stmt->bindParam(':orderId', $orderId);
+    
+    try {
+        $stmt->execute();
+        return [
+            'success' => true,
+            'message' => 'Order status updated successfully.'
+        ];
+    } catch (PDOException $e) {
+        return [
+            'success' => false,
+            'message' => 'Failed to update order status: ' . $e->getMessage()
+        ];
+    }
+}
 }

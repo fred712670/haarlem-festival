@@ -722,23 +722,11 @@ Route::add('/admin/orders/export', function() {
     
     $searchTerm = $_GET['search'] ?? '';
     
-    $result = $controller->exportOrders($filters, $searchTerm);
+    // This will directly output the CSV to the browser
+    $controller->exportOrders($filters, $searchTerm);
     
-    if ($result['success']) {
-        // Send the file to the browser for download
-        $filename = basename($result['filepath']);
-        $fileUrl = '/assets/exports/' . $filename;
-        
-        $_SESSION['success_message'] = 'Orders exported successfully.';
-        
-        // Redirect to the file for download
-        header("Location: {$fileUrl}");
-        exit();
-    } else {
-        $_SESSION['error_message'] = 'Failed to export orders.';
-        header('Location: /admin/orders');
-        exit();
-    }
+    // No need for redirects since exportOrders handles the download
+    // and exits execution
 }, 'get');
 // Dance Management Routes - Add to admin.php
 
