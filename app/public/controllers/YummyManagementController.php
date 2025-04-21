@@ -235,11 +235,7 @@ public function updateRestaurant($restaurantId, $data, $files)
             return ['success' => false, 'message' => 'Restaurant not found.'];
         }
 
-        // Check if restaurant has any reservations
-        $hasReservations = $this->yummyModel->restaurantHasReservations($restaurantId);
-        if ($hasReservations) {
-            return ['success' => false, 'message' => 'Cannot delete restaurant. There are reservations for this restaurant. Cancel the reservations first.'];
-        }
+       
 
         // Delete restaurant images if exist
         if ($restaurant['Image_url']) {

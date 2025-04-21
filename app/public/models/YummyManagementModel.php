@@ -286,38 +286,7 @@ class YummyManagementModel extends BaseModel
         }
     }
 
-    /**
-     * Check if restaurant has any reservations
-     */
-    public function restaurantHasReservations($restaurantId)
-    {
-        try {
-            // First, get the EventId from Restaurant
-            $restaurantQuery = "SELECT EventId FROM Restaurant WHERE RestaurantId = :restaurantId";
-            $restaurantStmt = self::$pdo->prepare($restaurantQuery);
-            $restaurantStmt->bindParam(':restaurantId', $restaurantId, PDO::PARAM_INT);
-            $restaurantStmt->execute();
-            $restaurantResult = $restaurantStmt->fetch(PDO::FETCH_ASSOC);
-            
-            if (!$restaurantResult) {
-                return false;
-            }
-            
-            $eventId = $restaurantResult['EventId'];
-            
-            // Now check if any tickets with type 'Reservation' are for this restaurant's event
-            $ticketQuery = "SELECT COUNT(*) as count FROM Ticket WHERE EventId = :eventId AND PassType = 'Reservation'";
-            $ticketStmt = self::$pdo->prepare($ticketQuery);
-            $ticketStmt->bindParam(':eventId', $eventId, PDO::PARAM_INT);
-            $ticketStmt->execute();
-            
-            $result = $ticketStmt->fetch(PDO::FETCH_ASSOC);
-            return $result['count'] > 0;
-        } catch (Exception $e) {
-            error_log("Error checking if restaurant has reservations: " . $e->getMessage());
-            return true; // Assume has reservations if query fails, to prevent accidental deletion
-        }
-    }
+   
 
     /**
      * Delete a restaurant
