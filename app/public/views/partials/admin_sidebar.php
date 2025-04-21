@@ -50,7 +50,12 @@
             <i class="admin-nav-icon fas fa-users"></i>
             <span class="admin-nav-text">Manage Users</span>
         </a>
-        
+        <div class="admin-nav-heading">Order Management</div>
+
+<a href="/admin/orders" class="admin-nav-link <?= strpos($_SERVER['REQUEST_URI'], '/admin/orders') === 0 ? 'active' : '' ?>">
+    <i class="admin-nav-icon fas fa-shopping-cart"></i>
+    <span class="admin-nav-text">Manage Orders</span>
+</a>
         <div class="admin-nav-divider"></div>
         
         <a href="/logout" class="admin-nav-link">

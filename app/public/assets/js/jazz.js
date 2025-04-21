@@ -207,14 +207,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const trackTitle = trackItem.querySelector(".track-title").textContent;
         const trackId = trackItem.getAttribute("data-track-id") || "";
-
-        // Create an audio filename based on artist and track name
         const artistName = document
           .getElementById("artist-name")
           .textContent.trim();
-        const audioFile = getAudioFileName(artistName, trackTitle, trackId);
-
-        console.log("Trying to play:", audioFile);
 
         // If we're clicking the same button that's currently playing, pause/resume
         if (currentPlayButton === this && currentAudio) {
@@ -257,10 +252,6 @@ document.addEventListener("DOMContentLoaded", function () {
           "border-3"
         );
 
-        // Create and play new audio
-        currentAudio = new Audio(audioFile);
-        currentPlayButton = this;
-
         // Show loading state
         updatePlayButtonState(this, "loading");
 
@@ -270,47 +261,70 @@ document.addEventListener("DOMContentLoaded", function () {
           currentTimeSpan.textContent = "0:00";
         }
 
-        // Add event listeners for audio
-        currentAudio.addEventListener("loadedmetadata", function () {
-          // Display duration once we have it
-          const duration = formatTime(currentAudio.duration);
-          trackItem.querySelector(".track-duration").textContent = duration;
-        });
+        // Fetch track information from API
+        fetch(`/api/jazz/track/${trackId}`)
+          .then((response) => {
+            if (!response.ok) throw new Error("Track not found");
+            return response.json();
+          })
+          .then((track) => {
+            // Get audio file path
+            let audioFile;
+            if (track && track.audio_file) {
+              audioFile = `/assets/audio/jazz/${track.audio_file}`;
+            } else {
+              audioFile = `/assets/audio/jazz/track${trackId}.mp3`;
+            }
 
-        currentAudio.addEventListener("canplay", function () {
-          this.play();
-          updatePlayButtonState(currentPlayButton, "playing");
-          startProgressUpdates();
-        });
+            console.log("Playing:", audioFile);
 
-        currentAudio.addEventListener("ended", function () {
-          updatePlayButtonState(currentPlayButton, "stopped");
-          stopProgressUpdates();
-          resetProgress();
-          currentAudio = null;
-          currentPlayButton = null;
-          currentTrackItem = null;
-        });
+            // Create and play audio
+            currentAudio = new Audio(audioFile);
+            currentPlayButton = this;
 
-        currentAudio.addEventListener("error", function (e) {
-          console.error("Error loading audio:", e);
+            // Add all event listeners
+            currentAudio.addEventListener("loadedmetadata", function () {
+              const duration = formatTime(currentAudio.duration);
+              trackItem.querySelector(".track-duration").textContent = duration;
+            });
 
-          // Show error and reset state
-          updatePlayButtonState(currentPlayButton, "error");
-          stopProgressUpdates();
-          showAudioErrorMessage(trackItem);
+            currentAudio.addEventListener("canplay", function () {
+              this.play();
+              updatePlayButtonState(currentPlayButton, "playing");
+              startProgressUpdates();
+            });
 
-          // Reset after a short delay
-          setTimeout(() => {
-            updatePlayButtonState(currentPlayButton, "stopped");
-            currentAudio = null;
-            currentPlayButton = null;
-            currentTrackItem = null;
-          }, 1500);
-        });
+            currentAudio.addEventListener("ended", function () {
+              updatePlayButtonState(currentPlayButton, "stopped");
+              stopProgressUpdates();
+              resetProgress();
+              currentAudio = null;
+              currentPlayButton = null;
+              currentTrackItem = null;
+            });
 
-        // Load the audio
-        currentAudio.load();
+            currentAudio.addEventListener("error", function (e) {
+              console.error("Error loading audio:", e);
+              updatePlayButtonState(currentPlayButton, "error");
+              stopProgressUpdates();
+              showAudioErrorMessage(trackItem);
+
+              setTimeout(() => {
+                updatePlayButtonState(currentPlayButton, "stopped");
+                currentAudio = null;
+                currentPlayButton = null;
+                currentTrackItem = null;
+              }, 1500);
+            });
+
+            // Load the audio
+            currentAudio.load();
+          })
+          .catch((error) => {
+            console.error("Error getting audio file:", error);
+            updatePlayButtonState(this, "error");
+            showAudioErrorMessage(trackItem);
+          });
       });
     });
   };
@@ -371,30 +385,6 @@ document.addEventListener("DOMContentLoaded", function () {
       currentTimeSpan.textContent = "0:00";
     }
   }
-
-  // Function to get an audio filename based on artist and track
-  const getAudioFileName = (artistName, trackTitle, trackId) => {
-    // Clean up artist name and track title to create valid filename
-    const cleanArtistName = artistName
-      .replace(/[^\w\s]/gi, "")
-      .replace(/\s+/g, "")
-      .toLowerCase();
-    const cleanTrackTitle = trackTitle
-      .replace(/[^\w\s]/gi, "")
-      .replace(/\s+/g, "")
-      .toLowerCase();
-
-    // Special case for known files
-    if (
-      cleanArtistName === "gumbokings" &&
-      cleanTrackTitle === "bourbonstreetparade"
-    ) {
-      return "/assets/audio/jazz/gumbokings.bourbonstreetparade.mp3.mp3";
-    }
-
-    // Try multiple possible paths
-    return `/assets/audio/jazz/${cleanArtistName}.${cleanTrackTitle}.mp3`;
-  };
 
   // Update play button state and icon
   const updatePlayButtonState = (button, state) => {
@@ -500,8 +490,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initialize the audio players when the DOM is loaded
   initializeAudioPlayers();
-
-  // Find the existing day pass modal code in jazz.js and replace it with this:
 
   // Day Pass Modal Functionality
   const modal = document.getElementById("dayPassModal");
