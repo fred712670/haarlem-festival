@@ -5,6 +5,8 @@ body {
   margin: 0;
   padding: 0;
   background: #f5eedc;
+  display: flex;
+  flex-direction: column;
 }
 
 section {
@@ -93,7 +95,7 @@ section {
   margin: 20px;
 }
 
-nav {
+.hero nav {
   margin-top: 20px;
   display: flex;
   gap: 30px;
