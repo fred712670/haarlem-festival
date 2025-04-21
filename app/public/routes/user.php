@@ -177,4 +177,12 @@ Route::add('/process-reset-password', function () {
         die("❌ Invalid request method.");
     }
 }, 'post');
+
+
+Route::add('/logout', function () {
+	$_SESSION = [];
+	session_destroy();
+	header("Location: /");
+	exit;
+}, 'post');
 ?>
