@@ -3,16 +3,16 @@ require_once __DIR__ . '/BaseModel.php';
 
 class DanceModel extends BaseModel
 {
+    // Fetch all dance artists with select public fields
     public function getAllArtists()
     {
         try {
             $query = "SELECT ArtistId, Name, Genre, ProfileImageName FROM DanceArtist";
             $stmt = self::$pdo->prepare($query);
             $stmt->execute();
+
             $artists = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // 🛠️ Debugging Output - Log fetched data
-            error_log("Fetched artists: " . print_r($artists, true));
             return $artists ?: [];
         } catch (Exception $e) {
             error_log("Error fetching artists: " . $e->getMessage());
@@ -20,27 +20,29 @@ class DanceModel extends BaseModel
         }
     }
 
+    // Fetch full details for a single artist by ID
     public function getArtist($id)
-    {   
+    {
         try {
             $query = "SELECT * FROM DanceArtist WHERE ArtistId = :id";
             $stmt = self::$pdo->prepare($query);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
+
             $artist = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if (!$artist) {
-            return null;
-        }
+            if (!$artist) {
+                return null;
+            }
 
-        return $artist;
-
+            return $artist;
         } catch (Exception $e) {
             error_log("Error fetching artist details: " . $e->getMessage());
             return null;
         }
     }
 
+    // Retrieve custom content based on event and section (e.g. About, Shows, Passes)
     public function getContentByEventAndSection($event, $section)
     {
         try {
@@ -49,70 +51,74 @@ class DanceModel extends BaseModel
             $stmt->bindParam(':event', $event);
             $stmt->bindParam(':section', $section);
             $stmt->execute();
-            return $stmt->fetchColumn(); // returns string
+
+            // Return content text as a string
+            return $stmt->fetchColumn();
         } catch (Exception $e) {
             error_log("Error fetching content: " . $e->getMessage());
             return '';
         }
     }
 
+    // Fetch all scheduled dance events ordered chronologically
     public function getDanceEvents()
     {
         try {
             $query = "SELECT * FROM DanceEvent ORDER BY StartDateTime ASC";
             $stmt = self::$pdo->prepare($query);
             $stmt->execute();
+
             $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            error_log("Fetched dance events: " . print_r($events, true));
+
             return $events ?: [];
-    } catch (Exception $e) {
-        error_log("Error fetching dance events: " . $e->getMessage());
-        return [];
+        } catch (Exception $e) {
+            error_log("Error fetching dance events: " . $e->getMessage());
+            return [];
+        }
     }
-}
 
+    // Fetch all songs tied to a specific dance artist
     public function getArtistSongs($artistId)
-{
-    try {
-        $query = "SELECT SongId, Title, ReleaseYear, Credits, Description, SongFileName, ImageName
-          FROM DanceSong
-          WHERE ArtistId = :artistId";
+    {
+        try {
+            $query = "SELECT SongId, Title, ReleaseYear, Credits, Description, SongFileName, ImageName
+                      FROM DanceSong
+                      WHERE ArtistId = :artistId";
 
+            $stmt = self::$pdo->prepare($query);
+            $stmt->bindParam(':artistId', $artistId, PDO::PARAM_INT);
+            $stmt->execute();
 
-        $stmt = self::$pdo->prepare($query);
-        $stmt->bindParam(':artistId', $artistId, PDO::PARAM_INT);
-        $stmt->execute();
-        $songs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $songs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        error_log("Fetched songs for artist ID $artistId: " . print_r($songs, true));
-        return $songs ?: [];
-    } catch (Exception $e) {
-        error_log("Error fetching songs for artist $artistId: " . $e->getMessage());
-        return [];
+            return $songs ?: [];
+        } catch (Exception $e) {
+            error_log("Error fetching songs for artist $artistId: " . $e->getMessage());
+            return [];
+        }
     }
-}
 
-public function getArtistPerformances($artistId)
-{
-    try {
-        $query = "SELECT de.DanceEventId, de.Description, de.Location, de.StartDateTime,
-                         de.TimeSlot, de.DurationByMinute, de.TicketsAvailable, de.Price
-                  FROM DancePerformance dp
-                  INNER JOIN DanceEvent de ON dp.DanceEventId = de.DanceEventId
-                  WHERE dp.DanceArtistId = :artistId
-                  ORDER BY de.StartDateTime ASC";
+    // Fetch all performances for a specific artist by joining with DanceEvent
+    public function getArtistPerformances($artistId)
+    {
+        try {
+            $query = "SELECT de.DanceEventId, de.Description, de.Location, de.StartDateTime,
+                             de.TimeSlot, de.DurationByMinute, de.TicketsAvailable, de.Price
+                      FROM DancePerformance dp
+                      INNER JOIN DanceEvent de ON dp.DanceEventId = de.DanceEventId
+                      WHERE dp.DanceArtistId = :artistId
+                      ORDER BY de.StartDateTime ASC";
 
-        $stmt = self::$pdo->prepare($query);
-        $stmt->bindParam(':artistId', $artistId, PDO::PARAM_INT);
-        $stmt->execute();
-        $performances = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = self::$pdo->prepare($query);
+            $stmt->bindParam(':artistId', $artistId, PDO::PARAM_INT);
+            $stmt->execute();
 
-        error_log("Fetched performances for artist ID $artistId: " . print_r($performances, true));
-        return $performances ?: [];
-    } catch (Exception $e) {
-        error_log("Error fetching performances for artist $artistId: " . $e->getMessage());
-        return [];
+            $performances = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $performances ?: [];
+        } catch (Exception $e) {
+            error_log("Error fetching performances for artist $artistId: " . $e->getMessage());
+            return [];
+        }
     }
-}
-
 }

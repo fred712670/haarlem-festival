@@ -8,72 +8,74 @@ class DanceController {
         $this->danceModel = new DanceModel();
     }
 
-    // Retrieve all artists.
+    // Retrieve all dance artists from the database
     public function getArtists() {
         return $this->danceModel->getAllArtists();
     }
 
-    // Retrieve a single artist by ID.
+    // Retrieve a single artist by ID
     public function getArtistById($id) {
         return $this->danceModel->getArtist($id);
     }
 
-    // Retrieve content for a particular event and section.
+    // Retrieve section content for a specific event (e.g., About, Shows, Passes)
     public function getContent($event, $section) {
         return $this->danceModel->getContentByEventAndSection($event, $section);
     }
 
-    // Retrieve all dance events.
+    // Retrieve all scheduled dance events
     public function getDanceEvents() {
         return $this->danceModel->getDanceEvents();
     }
 
-    // Retrieve songs by a specific artist.
+    // Retrieve all songs associated with a specific artist
     public function getSongsByArtistId($id) {
         return $this->danceModel->getArtistSongs($id);
     }
 
-    // Retrieve performances for an artist.
+    // Retrieve all dance performances linked to a given artist
     public function getArtistPerformances($id) {
         return $this->danceModel->getArtistPerformances($id);
     }
+
     
-    /**
-     * Group dance events by day.
-     * Returns an associative array with keys 'friday', 'saturday', and 'sunday'.
-     */
+    // Group dance events by weekday name ('friday', 'saturday', 'sunday').
+    // Dynamically derives the day from each event's StartDateTime
     public function groupDanceEventsByDay($danceEvents) {
-        $friday = [];
-        $saturday = [];
-        $sunday = [];
+        // Predefine the structure with only the relevant days
+        $grouped = [
+            'friday'   => [],
+            'saturday' => [],
+            'sunday'   => [],
+        ];
+
         foreach ($danceEvents as $event) {
-            // Ensure that StartDateTime is defined and valid.
-            $date = date('Y-m-d', strtotime($event['StartDateTime']));
-            if ($date === '2025-07-25') {
-                $friday[] = $event;
-            } elseif ($date === '2025-07-26') {
-                $saturday[] = $event;
-            } elseif ($date === '2025-07-27') {
-                $sunday[] = $event;
+            // Parse the StartDateTime into a lowercase weekday string (e.g., 'friday')
+            $dayName = strtolower(date('l', strtotime($event['StartDateTime'])));
+
+            // Only group events that fall on the expected festival days
+            if (isset($grouped[$dayName])) {
+                $grouped[$dayName][] = $event;
             }
         }
-        return [
-            'friday'   => $friday,
-            'saturday' => $saturday,
-            'sunday'   => $sunday,
-        ];
+
+        return $grouped;
     }
-    
-    /**
-     * Wraps paragraphs in a given text.
-     * Splits the text into lines and wraps non-empty lines in <p> tags.
-     */
+
+    // Format raw text into HTML paragraph tags.
+    // Splits by newlines and wraps each non-empty line in <p> tags,
     public function wrapParagraphs($text) {
         if (!is_string($text)) return '';
+
+        // Split text by line breaks into an array
         $lines = preg_split('/\r\n|\r|\n/', trim($text));
+
+        // Filter out empty lines
         $paragraphs = array_filter($lines, function ($line) {
             return trim($line) !== '';
         });
+
+        // Wrap each line in <p> tags and return the combined string
         return implode("\n", array_map(function ($line) {
             return "<p>" . htmlspecialchars($line) . "</p>";
         }, $paragraphs));
