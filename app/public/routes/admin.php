@@ -25,12 +25,18 @@ function requireAdmin() {
     }
 }
 
-// Admin Dashboard
-Route::add('/admin', function() {
-    requireAdmin();
-    header('Location: /admin/users');
+
+Route::add('/logout', function() {
+    // Clear all session data
+    $_SESSION = array();
+    
+    // Destroy the session
+    session_destroy();
+    
+    // Redirect to login page
+    header('Location: /login');
     exit();
-});
+}, 'get');
 
 // User Management Dashboard
 Route::add('/admin/users', function() {

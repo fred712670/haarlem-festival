@@ -18,7 +18,7 @@ class LoginController
             
             // Redirect based on role
             if (strtolower($_SESSION['role']) === 'admin') {
-                header('Location: /admin/users');
+                header('Location: /admin/dashboard');
             } else {
                 header('Location: /');
             }
