@@ -1393,3 +1393,16 @@ Route::add('/admin/yummy/menu-items/delete/([0-9]+)', function($menuItemId) {
     header('Location: /admin/yummy/menu-items');
     exit();
 }, 'post');
+
+// Admin Dashboard
+Route::add('/admin', function() {
+    requireAdmin();
+    header('Location: /admin/dashboard');
+    exit();
+});
+
+// Admin Dashboard Page
+Route::add('/admin/dashboard', function() {
+    requireAdmin();
+    require_once(__DIR__ . "/../views/pages/admin_dashboard.php");
+}, 'get');
