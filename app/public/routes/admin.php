@@ -740,3 +740,656 @@ Route::add('/admin/orders/export', function() {
         exit();
     }
 }, 'get');
+// Dance Management Routes - Add to admin.php
+
+// Dance Management Dashboard
+Route::add('/admin/dance', function() {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
+    $controller = new DanceManagementController();
+    $viewData = $controller->dashboard();
+    
+    require_once(__DIR__ . "/../views/pages/admin_dance.php");
+}, 'get');
+
+// Artist Management
+Route::add('/admin/dance/artists', function() {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
+    $controller = new DanceManagementController();
+    $viewData = $controller->listArtists();
+    
+    require_once(__DIR__ . "/../views/pages/admin_dance_artists.php");
+}, 'get');
+
+Route::add('/admin/dance/artists/create', function() {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
+    $controller = new DanceManagementController();
+    
+    require_once(__DIR__ . "/../views/pages/admin_dance_artist_form.php");
+}, 'get');
+
+Route::add('/admin/dance/artists/create', function() {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
+    $controller = new DanceManagementController();
+    $result = $controller->createArtist($_POST, $_FILES);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+        header('Location: /admin/dance/artists');
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+        $_SESSION['form_data'] = $_POST;
+        header('Location: /admin/dance/artists/create');
+    }
+    exit();
+}, 'post');
+
+Route::add('/admin/dance/artists/edit/([0-9]+)', function($artistId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
+    $controller = new DanceManagementController();
+    $artist = $controller->getArtist($artistId);
+    
+    if (!$artist) {
+        $_SESSION['error_message'] = 'Artist not found.';
+        header('Location: /admin/dance/artists');
+        exit();
+    }
+    
+    require_once(__DIR__ . "/../views/pages/admin_dance_artist_form.php");
+}, 'get');
+
+Route::add('/admin/dance/artists/edit/([0-9]+)', function($artistId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
+    $controller = new DanceManagementController();
+    $result = $controller->updateArtist($artistId, $_POST, $_FILES);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+        header('Location: /admin/dance/artists');
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+        header("Location: /admin/dance/artists/edit/{$artistId}");
+    }
+    exit();
+}, 'post');
+
+Route::add('/admin/dance/artists/delete/([0-9]+)', function($artistId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
+    $controller = new DanceManagementController();
+    $artist = $controller->getArtist($artistId);
+    
+    if (!$artist) {
+        $_SESSION['error_message'] = 'Artist not found.';
+        header('Location: /admin/dance/artists');
+        exit();
+    }
+    
+    require_once(__DIR__ . "/../views/pages/admin_dance_artist_delete.php");
+}, 'get');
+
+Route::add('/admin/dance/artists/delete/([0-9]+)', function($artistId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
+    $controller = new DanceManagementController();
+    $result = $controller->deleteArtist($artistId);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+    }
+    
+    header('Location: /admin/dance/artists');
+    exit();
+}, 'post');
+
+// Event Management
+Route::add('/admin/dance/events', function() {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
+    $controller = new DanceManagementController();
+    $viewData = $controller->listEvents();
+    
+    require_once(__DIR__ . "/../views/pages/admin_dance_events.php");
+}, 'get');
+
+Route::add('/admin/dance/events/create', function() {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
+    $controller = new DanceManagementController();
+    $viewData = $controller->getEventFormData();
+    
+    require_once(__DIR__ . "/../views/pages/admin_dance_event_form.php");
+}, 'get');
+
+Route::add('/admin/dance/events/create', function() {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
+    $controller = new DanceManagementController();
+    $result = $controller->createEvent($_POST);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+        header('Location: /admin/dance/events');
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+        $_SESSION['form_data'] = $_POST;
+        header('Location: /admin/dance/events/create');
+    }
+    exit();
+}, 'post');
+
+Route::add('/admin/dance/events/edit/([0-9]+)', function($eventId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
+    $controller = new DanceManagementController();
+    $viewData = $controller->getEvent($eventId);
+    
+    if (!$viewData['event']) {
+        $_SESSION['error_message'] = 'Event not found.';
+        header('Location: /admin/dance/events');
+        exit();
+    }
+    
+    require_once(__DIR__ . "/../views/pages/admin_dance_event_form.php");
+}, 'get');
+
+Route::add('/admin/dance/events/edit/([0-9]+)', function($eventId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
+    $controller = new DanceManagementController();
+    $result = $controller->updateEvent($eventId, $_POST);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+        header('Location: /admin/dance/events');
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+        header("Location: /admin/dance/events/edit/{$eventId}");
+    }
+    exit();
+}, 'post');
+
+Route::add('/admin/dance/events/delete/([0-9]+)', function($eventId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
+    $controller = new DanceManagementController();
+    $viewData = $controller->getEvent($eventId);
+    
+    if (!$viewData['event']) {
+        $_SESSION['error_message'] = 'Event not found.';
+        header('Location: /admin/dance/events');
+        exit();
+    }
+    
+    require_once(__DIR__ . "/../views/pages/admin_dance_event_delete.php");
+}, 'get');
+
+Route::add('/admin/dance/events/delete/([0-9]+)', function($eventId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
+    $controller = new DanceManagementController();
+    $result = $controller->deleteEvent($eventId);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+    }
+    
+    header('Location: /admin/dance/events');
+    exit();
+}, 'post');
+
+// Song Management
+Route::add('/admin/dance/songs', function() {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
+    $controller = new DanceManagementController();
+    $viewData = $controller->listSongs();
+    
+    require_once(__DIR__ . "/../views/pages/admin_dance_songs.php");
+}, 'get');
+
+Route::add('/admin/dance/songs/create', function() {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
+    $controller = new DanceManagementController();
+    $viewData = ['artists' => $controller->listArtists()['artists'], 'song' => null];
+    
+    require_once(__DIR__ . "/../views/pages/admin_dance_song_form.php");
+}, 'get');
+
+Route::add('/admin/dance/songs/create', function() {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
+    $controller = new DanceManagementController();
+    $result = $controller->createSong($_POST, $_FILES);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+        header('Location: /admin/dance/songs');
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+        $_SESSION['form_data'] = $_POST;
+        header('Location: /admin/dance/songs/create');
+    }
+    exit();
+}, 'post');
+
+Route::add('/admin/dance/songs/edit/([0-9]+)', function($songId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
+    $controller = new DanceManagementController();
+    $viewData = $controller->getSong($songId);
+    
+    if (!$viewData['song']) {
+        $_SESSION['error_message'] = 'Song not found.';
+        header('Location: /admin/dance/songs');
+        exit();
+    }
+    
+    require_once(__DIR__ . "/../views/pages/admin_dance_song_form.php");
+}, 'get');
+
+Route::add('/admin/dance/songs/edit/([0-9]+)', function($songId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
+    $controller = new DanceManagementController();
+    $result = $controller->updateSong($songId, $_POST, $_FILES);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+        header('Location: /admin/dance/songs');
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+        header("Location: /admin/dance/songs/edit/{$songId}");
+    }
+    exit();
+}, 'post');
+
+Route::add('/admin/dance/songs/delete/([0-9]+)', function($songId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
+    $controller = new DanceManagementController();
+    $viewData = $controller->getSong($songId);
+    
+    if (!$viewData['song']) {
+        $_SESSION['error_message'] = 'Song not found.';
+        header('Location: /admin/dance/songs');
+        exit();
+    }
+    
+    require_once(__DIR__ . "/../views/pages/admin_dance_song_delete.php");
+}, 'get');
+
+Route::add('/admin/dance/songs/delete/([0-9]+)', function($songId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/DanceManagementController.php");
+    $controller = new DanceManagementController();
+    $result = $controller->deleteSong($songId);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+    }
+    
+    header('Location: /admin/dance/songs');
+    exit();
+}, 'post');
+
+// Yummy Management Routes - Add to admin.php
+
+// Yummy Management Dashboard
+Route::add('/admin/yummy', function() {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/YummyManagementController.php");
+    $controller = new YummyManagementController();
+    $viewData = $controller->dashboard();
+    
+    require_once(__DIR__ . "/../views/pages/admin_yummy.php");
+}, 'get');
+
+// Restaurant Management
+Route::add('/admin/yummy/restaurants', function() {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/YummyManagementController.php");
+    $controller = new YummyManagementController();
+    $viewData = $controller->listRestaurants();
+    
+    require_once(__DIR__ . "/../views/pages/admin_yummy_restaurants.php");
+}, 'get');
+
+Route::add('/admin/yummy/restaurants/create', function() {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/YummyManagementController.php");
+    $controller = new YummyManagementController();
+    
+    require_once(__DIR__ . "/../views/pages/admin_yummy_restaurant_form.php");
+}, 'get');
+
+Route::add('/admin/yummy/restaurants/create', function() {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/YummyManagementController.php");
+    $controller = new YummyManagementController();
+    $result = $controller->createRestaurant($_POST, $_FILES);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+        header('Location: /admin/yummy/restaurants');
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+        $_SESSION['form_data'] = $_POST;
+        header('Location: /admin/yummy/restaurants/create');
+    }
+    exit();
+}, 'post');
+
+Route::add('/admin/yummy/restaurants/edit/([0-9]+)', function($restaurantId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/YummyManagementController.php");
+    $controller = new YummyManagementController();
+    $restaurant = $controller->getRestaurant($restaurantId);
+    
+    if (!$restaurant) {
+        $_SESSION['error_message'] = 'Restaurant not found.';
+        header('Location: /admin/yummy/restaurants');
+        exit();
+    }
+    
+    require_once(__DIR__ . "/../views/pages/admin_yummy_restaurant_form.php");
+}, 'get');
+
+Route::add('/admin/yummy/restaurants/edit/([0-9]+)', function($restaurantId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/YummyManagementController.php");
+    $controller = new YummyManagementController();
+    $result = $controller->updateRestaurant($restaurantId, $_POST, $_FILES);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+        header('Location: /admin/yummy/restaurants');
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+        header("Location: /admin/yummy/restaurants/edit/{$restaurantId}");
+    }
+    exit();
+}, 'post');
+
+Route::add('/admin/yummy/restaurants/delete/([0-9]+)', function($restaurantId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/YummyManagementController.php");
+    $controller = new YummyManagementController();
+    $restaurant = $controller->getRestaurant($restaurantId);
+    
+    if (!$restaurant) {
+        $_SESSION['error_message'] = 'Restaurant not found.';
+        header('Location: /admin/yummy/restaurants');
+        exit();
+    }
+    
+    require_once(__DIR__ . "/../views/pages/admin_yummy_restaurant_delete.php");
+}, 'get');
+
+Route::add('/admin/yummy/restaurants/delete/([0-9]+)', function($restaurantId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/YummyManagementController.php");
+    $controller = new YummyManagementController();
+    $result = $controller->deleteRestaurant($restaurantId);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+    }
+    
+    header('Location: /admin/yummy/restaurants');
+    exit();
+}, 'post');
+
+// Menu Management
+Route::add('/admin/yummy/menus', function() {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/YummyManagementController.php");
+    $controller = new YummyManagementController();
+    $viewData = $controller->listMenus();
+    
+    require_once(__DIR__ . "/../views/pages/admin_yummy_menus.php");
+}, 'get');
+
+Route::add('/admin/yummy/menus/create', function() {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/YummyManagementController.php");
+    $controller = new YummyManagementController();
+    $viewData = $controller->getMenuFormData();
+    
+    require_once(__DIR__ . "/../views/pages/admin_yummy_menu_form.php");
+}, 'get');
+
+Route::add('/admin/yummy/menus/create', function() {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/YummyManagementController.php");
+    $controller = new YummyManagementController();
+    $result = $controller->createMenu($_POST);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+        header('Location: /admin/yummy/menus');
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+        $_SESSION['form_data'] = $_POST;
+        header('Location: /admin/yummy/menus/create');
+    }
+    exit();
+}, 'post');
+
+Route::add('/admin/yummy/menus/edit/([0-9]+)', function($menuId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/YummyManagementController.php");
+    $controller = new YummyManagementController();
+    $viewData = $controller->getMenu($menuId);
+    
+    if (!$viewData['menu']) {
+        $_SESSION['error_message'] = 'Menu not found.';
+        header('Location: /admin/yummy/menus');
+        exit();
+    }
+    
+    require_once(__DIR__ . "/../views/pages/admin_yummy_menu_form.php");
+}, 'get');
+
+Route::add('/admin/yummy/menus/edit/([0-9]+)', function($menuId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/YummyManagementController.php");
+    $controller = new YummyManagementController();
+    $result = $controller->updateMenu($menuId, $_POST);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+        header('Location: /admin/yummy/menus');
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+        header("Location: /admin/yummy/menus/edit/{$menuId}");
+    }
+    exit();
+}, 'post');
+
+Route::add('/admin/yummy/menus/delete/([0-9]+)', function($menuId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/YummyManagementController.php");
+    $controller = new YummyManagementController();
+    $menu = $controller->getMenu($menuId);
+    
+    if (!$menu['menu']) {
+        $_SESSION['error_message'] = 'Menu not found.';
+        header('Location: /admin/yummy/menus');
+        exit();
+    }
+    
+    require_once(__DIR__ . "/../views/pages/admin_yummy_menu_delete.php");
+}, 'get');
+
+Route::add('/admin/yummy/menus/delete/([0-9]+)', function($menuId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/YummyManagementController.php");
+    $controller = new YummyManagementController();
+    $result = $controller->deleteMenu($menuId);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+    }
+    
+    header('Location: /admin/yummy/menus');
+    exit();
+}, 'post');
+
+// Menu Item Management
+Route::add('/admin/yummy/menu-items', function() {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/YummyManagementController.php");
+    $controller = new YummyManagementController();
+    $viewData = $controller->listMenuItems();
+    
+    require_once(__DIR__ . "/../views/pages/admin_yummy_menu_items.php");
+}, 'get');
+
+Route::add('/admin/yummy/menu-items/create', function() {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/YummyManagementController.php");
+    $controller = new YummyManagementController();
+    $viewData = $controller->getMenuItemFormData();
+    
+    require_once(__DIR__ . "/../views/pages/admin_yummy_menu_item_form.php");
+}, 'get');
+
+Route::add('/admin/yummy/menu-items/create', function() {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/YummyManagementController.php");
+    $controller = new YummyManagementController();
+    $result = $controller->createMenuItem($_POST);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+        header('Location: /admin/yummy/menu-items');
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+        $_SESSION['form_data'] = $_POST;
+        header('Location: /admin/yummy/menu-items/create');
+    }
+    exit();
+}, 'post');
+
+Route::add('/admin/yummy/menu-items/edit/([0-9]+)', function($menuItemId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/YummyManagementController.php");
+    $controller = new YummyManagementController();
+    $viewData = $controller->getMenuItem($menuItemId);
+    
+    if (!$viewData['menuItem']) {
+        $_SESSION['error_message'] = 'Menu item not found.';
+        header('Location: /admin/yummy/menu-items');
+        exit();
+    }
+    
+    require_once(__DIR__ . "/../views/pages/admin_yummy_menu_item_form.php");
+}, 'get');
+
+Route::add('/admin/yummy/menu-items/edit/([0-9]+)', function($menuItemId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/YummyManagementController.php");
+    $controller = new YummyManagementController();
+    $result = $controller->updateMenuItem($menuItemId, $_POST);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+        header('Location: /admin/yummy/menu-items');
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+        header("Location: /admin/yummy/menu-items/edit/{$menuItemId}");
+    }
+    exit();
+}, 'post');
+
+Route::add('/admin/yummy/menu-items/delete/([0-9]+)', function($menuItemId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/YummyManagementController.php");
+    $controller = new YummyManagementController();
+    $menuItem = $controller->getMenuItem($menuItemId);
+    
+    if (!$menuItem['menuItem']) {
+        $_SESSION['error_message'] = 'Menu item not found.';
+        header('Location: /admin/yummy/menu-items');
+        exit();
+    }
+    
+    require_once(__DIR__ . "/../views/pages/admin_yummy_menu_item_delete.php");
+}, 'get');
+
+Route::add('/admin/yummy/menu-items/delete/([0-9]+)', function($menuItemId) {
+    requireAdmin();
+    
+    require_once(__DIR__ . "/../controllers/YummyManagementController.php");
+    $controller = new YummyManagementController();
+    $result = $controller->deleteMenuItem($menuItemId);
+    
+    if ($result['success']) {
+        $_SESSION['success_message'] = $result['message'];
+    } else {
+        $_SESSION['error_message'] = $result['message'];
+    }
+    
+    header('Location: /admin/yummy/menu-items');
+    exit();
+}, 'post');
