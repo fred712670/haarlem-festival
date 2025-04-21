@@ -42,7 +42,7 @@
                     </label>
                 </div>
                 
-                <!-- Sunday option removed since it's a free day -->
+               
                 
             </div>
             

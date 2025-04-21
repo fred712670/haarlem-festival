@@ -7,14 +7,14 @@ require_once __DIR__ . '/../controllers/ReservationController.php';
 Route::add('/jazz', function () {
     $controller = new JazzController();
     // Call the index method to retrieve all necessary jazz festival data
-    $data = $controller->index(); // Fetch all jazz data like artists, schedule, venues, etc.
+    $data = $controller->index(); // Fetch all jazz data 
 
     // Extract each part of the data array into individual variables
-    $artists = $data['artists'];       // List of jazz artists
-    $schedule = $data['schedule'];     // Festival schedule
-    $venues = $data['venues'];         // Locations where performances happen
-    $ticketInfo = $data['ticketInfo']; // Ticket pricing and availability
-    $content = $data['content'];       // Additional page content (e.g., intro, banners)
+    $artists = $data['artists'];       
+    $schedule = $data['schedule'];     
+    $venues = $data['venues'];         
+    $ticketInfo = $data['ticketInfo']; 
+    $content = $data['content'];      
 
     // Set this flag to false because this is the main overview page, not an individual artist page
     $isArtistPage = false;
