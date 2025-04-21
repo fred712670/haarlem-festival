@@ -1,6 +1,6 @@
 <?php
 // Include header
-require(__DIR__ . "/../partials/header.php");
+require(__DIR__ . "/../partials/admin_Sidebar.php");
 
 // Include reset password form
 require(__DIR__ . "/../partials/reset_password.php");

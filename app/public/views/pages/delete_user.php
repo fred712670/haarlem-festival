@@ -1,6 +1,6 @@
 <?php
 // Include header
-require(__DIR__ . "/../partials/header.php");
+require(__DIR__ . "/../partials/admin_sidebar.php");
 
 // Include delete confirmation
 require(__DIR__ . "/../partials/delete.php");
