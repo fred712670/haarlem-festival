@@ -437,38 +437,38 @@ class DanceManagementModel extends BaseModel
         }
     }
 
-    /**
-     * Check if tickets have been sold for an event
-     */
-    public function eventHasSoldTickets($eventId)
-    {
-        try {
-            // First, get the EventId from DanceEvent
-            $eventQuery = "SELECT EventId FROM DanceEvent WHERE DanceEventId = :danceEventId";
-            $eventStmt = self::$pdo->prepare($eventQuery);
-            $eventStmt->bindParam(':danceEventId', $eventId, PDO::PARAM_INT);
-            $eventStmt->execute();
-            $eventResult = $eventStmt->fetch(PDO::FETCH_ASSOC);
+    // /**
+    //  * Check if tickets have been sold for an event
+    //  */
+    // public function eventHasSoldTickets($eventId)
+    // {
+    //     try {
+    //         // First, get the EventId from DanceEvent
+    //         $eventQuery = "SELECT EventId FROM DanceEvent WHERE DanceEventId = :danceEventId";
+    //         $eventStmt = self::$pdo->prepare($eventQuery);
+    //         $eventStmt->bindParam(':danceEventId', $eventId, PDO::PARAM_INT);
+    //         $eventStmt->execute();
+    //         $eventResult = $eventStmt->fetch(PDO::FETCH_ASSOC);
             
-            if (!$eventResult) {
-                return false;
-            }
+    //         if (!$eventResult) {
+    //             return false;
+    //         }
             
-            $mainEventId = $eventResult['EventId'];
+    //         $mainEventId = $eventResult['EventId'];
             
-            // Now check if any tickets are sold for this event
-            $ticketQuery = "SELECT COUNT(*) as count FROM Ticket WHERE EventId = :eventId";
-            $ticketStmt = self::$pdo->prepare($ticketQuery);
-            $ticketStmt->bindParam(':eventId', $mainEventId, PDO::PARAM_INT);
-            $ticketStmt->execute();
+    //         // Now check if any tickets are sold for this event
+    //         $ticketQuery = "SELECT COUNT(*) as count FROM Ticket WHERE EventId = :eventId";
+    //         $ticketStmt = self::$pdo->prepare($ticketQuery);
+    //         $ticketStmt->bindParam(':eventId', $mainEventId, PDO::PARAM_INT);
+    //         $ticketStmt->execute();
             
-            $result = $ticketStmt->fetch(PDO::FETCH_ASSOC);
-            return $result['count'] > 0;
-        } catch (Exception $e) {
-            error_log("Error checking if event has sold tickets: " . $e->getMessage());
-            return true; // Assume has tickets if query fails, to prevent accidental deletion
-        }
-    }
+    //         $result = $ticketStmt->fetch(PDO::FETCH_ASSOC);
+    //         return $result['count'] > 0;
+    //     } catch (Exception $e) {
+    //         error_log("Error checking if event has sold tickets: " . $e->getMessage());
+    //         return true; // Assume has tickets if query fails, to prevent accidental deletion
+    //     }
+    // }
 
     /**
      * Delete an event

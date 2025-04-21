@@ -836,22 +836,7 @@ public function deleteVenue($venueId)
         }
     }
 
-    /**
-     * Check if tickets have been sold with a pass type
-     */
-    public function passHasSoldTickets($passId)
-    {
-        try {
-            // This would require a more complex check with the real tickets system
-            // For now, just check if passId = 1 (free) or passId = 4 (featured)
-            // as example of a system constraint
-            return $passId == 1 || $passId == 4;
-        } catch (Exception $e) {
-            error_log("Error checking if pass has sold tickets: " . $e->getMessage());
-            return true; // Assume has tickets if query fails, to prevent accidental deletion
-        }
-    }
-
+   
     /**
      * Delete a pass
      */
