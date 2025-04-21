@@ -36,10 +36,6 @@ foreach ($danceEvents as $event) {
 </head>
 
 <body>
-
-
-
-
     <section class="hero">
         <div class="overlay">
             <h1 class="hero-title">
