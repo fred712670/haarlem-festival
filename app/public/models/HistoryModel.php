@@ -62,12 +62,13 @@ class HistoryModel extends BaseModel {
     public function createBooking($scheduleId, $language, $ticketType, $seats, $totalPrice) {
         self::$pdo->beginTransaction();
         try {
+            // Insert into booking table
             $stmt = self::$pdo->prepare("INSERT INTO HistoryTourBooking 
                 (ScheduleId, Language, TicketType, Seats, Price) 
                 VALUES (?, ?, ?, ?, ?)");
             $stmt->execute([$scheduleId, $language, $ticketType, $seats, $totalPrice]);
             $bookingId = self::$pdo->lastInsertId();
-
+            // Decrease tickets available
             $stmt = self::$pdo->prepare("UPDATE HistoryTourSchedule 
                 SET TicketsAvailable = TicketsAvailable - ? 
                 WHERE EventId = ?");
@@ -81,7 +82,7 @@ class HistoryModel extends BaseModel {
         }
     }
 
-    // Get guide info for a schedule
+    // Get guide full name and profile image for a schedule
     public function getGuideInfo($scheduleId) {
         $query = "SELECT tg.FullName, tg.ProfileImage 
                   FROM HistoryTourSchedule hts
@@ -92,7 +93,7 @@ class HistoryModel extends BaseModel {
         return $stmt->fetch();
     }
 
-    // Get schedule ID for booking
+    // Get one schedule ID matching date/time/language, with tickets left
     public function getScheduleId($date, $time, $language) {
         $query = "SELECT EventId 
                   FROM HistoryTourSchedule 
@@ -106,7 +107,7 @@ class HistoryModel extends BaseModel {
         return $result ? $result['EventId'] : null;
     }
 
-    // Get history content
+    // Get content HTML for history page sections
     public function getHistoryContent($section) {
         $query = "SELECT Content FROM Content 
                   WHERE EventType = 'history' AND Section = ?";
@@ -116,7 +117,7 @@ class HistoryModel extends BaseModel {
         return $result ? $result['Content'] : '';
     }
 
-    // Get all locations
+    // Get all history tour locations 
     public function getHistoryLocations() {
         $query = "SELECT LocationId, LocationName, Description, Address, ImageGenera, ImageGallery 
                   FROM HistoryTour 
@@ -126,7 +127,7 @@ class HistoryModel extends BaseModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Get guide list
+     // Get list of all tour guides
     public function getTourGuides() {
         $query = "SELECT GuideId, FullName, ProfileImage, LanguagesSpoken 
                   FROM TourGuide 
@@ -136,7 +137,7 @@ class HistoryModel extends BaseModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Get full schedule
+    // Get formatted schedule summary for overview page
     public function getTourSchedule() {
         $query = "SELECT 
                     DATE_FORMAT(TourDate, '%d %M') as FormattedDate,
@@ -165,13 +166,13 @@ class HistoryModel extends BaseModel {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // Get details of a specific location
+    // Get one location’s data by ID and build image array
     public function getTourLocationById($locationId) {
         $query = "SELECT * FROM HistoryTour WHERE LocationId = ?";
         $stmt = self::$pdo->prepare($query);
         $stmt->execute([$locationId]);
         $location = $stmt->fetch(PDO::FETCH_ASSOC);
-
+        // Build gallery array from comma list
         if ($location) {
             $location['ImageGalleryArray'] = !empty($location['ImageGallery'])
                 ? explode(',', $location['ImageGallery'])
@@ -180,6 +181,7 @@ class HistoryModel extends BaseModel {
 
         return $location;
     }
+    // Alternate method for EventId lookup 
     public function getHistoryTourEventId($date, $time, $language) {
         $query = "SELECT EventId FROM HistoryTourSchedule 
                 WHERE TourDate = :date 

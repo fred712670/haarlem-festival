@@ -9,12 +9,13 @@ class EventManagementController
     {
         $this->model = new EventManagementModel();
     }
-
+    // Render the homepage management interface
     public function manageHomepage()
     {
+        // all slides and other content
         $slides = $this->model->getSlides();
         $contents = $this->model->getContent();
-    
+        // Extract specific content sections for convenience
         $welcome = $this->extractSection($contents, 'welcome');
         $about = $this->extractSection($contents, 'about');
     
@@ -23,7 +24,7 @@ class EventManagementController
     
         require(__DIR__ . '/../views/pages/homepage_management.php');
     }
-
+     // Helper to find one content entry by its section key
     private function extractSection(array $contents, string $sectionKey): ?array
     {
     foreach ($contents as $content) {
@@ -33,26 +34,28 @@ class EventManagementController
     }
     return null;
     }   
-    // Store new slide
+    // Handle storage of a new slide (file upload + DB insert)
     public function storeSlide()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Gather form inputs
             $title = $_POST['title'] ?? '';
             $eventType = $_POST['eventType'] ?? '';
             $imageName = null;
-
+            // If a new image file was uploaded, move it to assets
             if (!empty($_FILES['imageFile']['name'])) {
                 $imageName = basename($_FILES['imageFile']['name']);
                 $uploadDir = __DIR__ . '/../../public/assets/img/home/';
                 $targetPath = $uploadDir . $imageName;
 
                 if (!is_dir($uploadDir)) {
+                    // create dir if needed
                     mkdir($uploadDir, 0755, true);
                 }
 
                 move_uploaded_file($_FILES['imageFile']['tmp_name'], $targetPath);
             }
-
+            // save DB record
             $this->model->storeSlide($title, $eventType, $imageName);
         }
 
@@ -63,11 +66,13 @@ class EventManagementController
     public function updateSlide()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Gather form inputs, including existing image fallback
             $id = $_POST['id'] ?? null;
             $title = $_POST['title'] ?? '';
             $eventType = $_POST['eventType'] ?? '';
             $imageName = $_POST['existingImage'] ?? null;
 
+            // If a new image file was uploaded, replace the old one
             if (!empty($_FILES['imageFile']['name'])) {
                 $imageName = basename($_FILES['imageFile']['name']);
                 $uploadDir = __DIR__ . '/../../public/assets/img/home/';
@@ -86,7 +91,7 @@ class EventManagementController
         header('Location: /admin/homepage-management');
     }
 
-    // Delete slide
+    // Handle deletion of a slide (remove file + DB)
     public function deleteSlide()
     {
     if (isset($_GET['id'])) {
@@ -123,7 +128,7 @@ public function storeContent()
         $eventType = $_POST['eventType'] ?? '';
         $content = $_POST['content'] ?? '';
         $imageName = null;
-
+        // If an image file was uploaded, save it
         if (!empty($_FILES['imageFile']['name'])) {
             $imageName = basename($_FILES['imageFile']['name']);
             $uploadDir = __DIR__ . '/../../public/assets/img/home/';
@@ -135,7 +140,7 @@ public function storeContent()
 
             move_uploaded_file($_FILES['imageFile']['tmp_name'], $targetPath);
         }
-
+        // insert DB
         $this->model->storeContent($title, $section, $eventType, $content, $imageName);
     }
 
@@ -153,6 +158,7 @@ public function updateContent()
         $content = $_POST['content'] ?? '';
         $imageName = $_POST['existingImage'] ?? null;
 
+        // If a new image file was uploaded, replace the old one
         if (!empty($_FILES['imageFile']['name'])) {
             $imageName = basename($_FILES['imageFile']['name']);
             $uploadDir = __DIR__ . '/../../public/assets/img/home/';
@@ -164,7 +170,7 @@ public function updateContent()
 
             move_uploaded_file($_FILES['imageFile']['tmp_name'], $targetPath);
         }
-
+        // update DB
         $this->model->updateContent($id, $title, $section, $eventType, $content, $imageName);
     }
 

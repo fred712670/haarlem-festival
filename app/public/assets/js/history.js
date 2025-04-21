@@ -1,6 +1,6 @@
 //history overview
 document.addEventListener('DOMContentLoaded', function() {
-    // Handle location thumbnail hover effects
+    // Select all tour location thumbnails and the display areas for title/description
     const thumbnails = document.querySelectorAll('.location-thumbnail');
     const locationTitle = document.getElementById('location-title');
     const locationText = document.getElementById('location-text');
@@ -10,16 +10,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const firstThumb = thumbnails[0];
         locationTitle.textContent = firstThumb.getAttribute('data-location');
         locationText.textContent = firstThumb.getAttribute('data-description');
+        // highlight initial thumbnail
         firstThumb.classList.add('active');
     }
-    
+    // On hover over any thumbnail, update the main display
     thumbnails.forEach(function(thumbnail) {
         thumbnail.addEventListener('mouseenter', function() {
-            // Get location data from data attributes
+            // Read location name/description from data attributes
             const locationName = this.getAttribute('data-location');
             const locationDesc = this.getAttribute('data-description');
             
-            // Update description
+            // Update description and title
             locationTitle.textContent = locationName;
             locationText.textContent = locationDesc;
             
@@ -36,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 //reservation form
 document.addEventListener('DOMContentLoaded', function() {
-    // Get form elements (using the same IDs as before)
+    // Grab references to all form controls by their IDs
     const dateSelect = document.getElementById('date');
     const timeSelect = document.getElementById('time');
     const languageSelect = document.getElementById('language');
@@ -53,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const regularPrice = 17.50;
     const familyPrice = 60.00;
     
-    // Check URL for error parameters
+    // If the server returned an error via the URL, display it
     const urlParams = new URLSearchParams(window.location.search);
     const errorParam = urlParams.get('error');
     
@@ -63,19 +64,20 @@ document.addEventListener('DOMContentLoaded', function() {
         errorMessage.style.display = 'block';
     }
     
-    // Event listeners
+    // Listen for changes to toggle between ticket types
     regularRadio.addEventListener('change', toggleSeats);
     familyRadio.addEventListener('change', toggleSeats);
+    // Listen for clicks to adjust seat count
     decreaseBtn.addEventListener('click', decreaseSeats);
     increaseBtn.addEventListener('click', increaseSeats);
     
-    // Add listeners for select changes to update price
+    // Update price whenever relevant fields change
     dateSelect.addEventListener('change', updatePrice);
     timeSelect.addEventListener('change', updatePrice);
     languageSelect.addEventListener('change', updatePrice);
     seatsInput.addEventListener('change', updatePrice);
     
-    // Functions
+    // Show or hide the seat count input based on ticket type
     function toggleSeats() {
         const seatsContainer = document.getElementById('seats-container');
         seatsContainer.style.display = familyRadio.checked ? 'none' : 'block';
@@ -87,27 +89,27 @@ document.addEventListener('DOMContentLoaded', function() {
         
         updatePrice();
     }
-    
+    // Decrease seat count, ensuring it doesn’t go below 1
     function decreaseSeats() {
         if (parseInt(seatsInput.value) > 1) {
             seatsInput.value = parseInt(seatsInput.value) - 1;
             updatePrice();
         }
     }
-    
+    // Increase seat count, ensuring it doesn’t exceed 12
     function increaseSeats() {
         if (parseInt(seatsInput.value) < 12) {
             seatsInput.value = parseInt(seatsInput.value) + 1;
             updatePrice();
         }
     }
-    
+    // Calculate and display the current total price
     function updatePrice() {
         if (!dateSelect.value || !timeSelect.value || !languageSelect.value) {
             totalPrice.textContent = '0';
             return;
         }
-        
+        // For family package, use flat rate; otherwise multiply by seats
         if (familyRadio.checked) {
             totalPrice.textContent = familyPrice.toFixed(2);
         } else {
@@ -116,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Initialize form state
+    // Initialize form state on page load
     toggleSeats();
     updatePrice();
 });
