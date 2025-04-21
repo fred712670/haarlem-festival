@@ -1,6 +1,7 @@
 <?php
-// Include header
-require(__DIR__ . "/../partials/header.php");
+// Include admin sidebar
+require(__DIR__ . "/../partials/admin_sidebar.php");
+
 
 // Include create user form
 require(__DIR__ . "/../partials/create.php");

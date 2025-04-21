@@ -33,7 +33,7 @@
     <ul class="nav-links">
     <li>
     <?php if(isset($_SESSION['role']) && strtolower($_SESSION['role']) == 'admin'): ?>
-    <a href="/admin"><i class="fas fa-user-shield"></i> <span class="link-text">Admin</span></a>
+    <a href="/admin/dashboard"><i class="fas fa-user-shield"></i> <span class="link-text">Admin</span></a>
 <?php else: ?>
     <a href="/profile"><i class="fas fa-user"></i> <span class="link-text">Profile</span></a>
 <?php endif; ?>
