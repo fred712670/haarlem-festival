@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DANCE! - The Haarlem Festival</title>
-    <link rel="stylesheet" href="/assets/css/dance.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-</head>
-<body>
+
     <section class="hero">
         <div class="overlay">
             <h1 class="hero-title">
@@ -59,14 +50,15 @@
                             <form action="/reserve" method="POST">
                                 <!-- Hidden inputs -->
                                 <input type="hidden" name="eventId" value="<?= htmlspecialchars($event['EventId']) ?>">
-                                <input type="hidden" name="name" value="Dance Event">
-                                <input type="hidden" name="ticketType" value="SingleUse">
+                                <input type="hidden" name="name" value="<?= htmlspecialchars($artist['Name']) ?> - <?= htmlspecialchars($performance['Location']) ?>">
+                                <input type="hidden" name="name" value="<?= htmlspecialchars($event['Description']) ?> - <?= htmlspecialchars($event['Location']) ?>">
                                 <input type="hidden" name="guests" value="1">
                                 <input type="hidden" name="date" value="<?= htmlspecialchars($event['StartDateTime']) ?>">
                                 <input type="hidden" name="address" value="<?= htmlspecialchars($event['Location']) ?>">
                                 <input type="hidden" name="artists" value="<?= htmlspecialchars($event['Description']) ?>">
                                 <input type="hidden" name="price" value="<?= htmlspecialchars($event['Price']) ?>">
                                 <input type="hidden" name="ticketsLeft" value="<?= htmlspecialchars($event['TicketsAvailable']) ?>">
+                                <input type="hidden" name="ticketType" value="SingleUse">
                                 
                                 <!-- Visible tags -->
                                 <p><strong>Date:</strong> <?= date('l, F j, Y', strtotime($event['StartDateTime'])) ?></p>
@@ -150,9 +142,3 @@
                 </form>
             </div>
         </section>
-
-    <?php require_once __DIR__ . '/../partials/danceBooker.php'; ?>
-
-    <script src="/assets/js/dance.js"></script>
-</body>
-</html>

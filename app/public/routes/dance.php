@@ -40,6 +40,6 @@ Route::get('/dance/artist', function () {
         die("Artist not found.");
     }
     
-    require_once __DIR__ . '/../views/partials/danceDetail.php';
+    require_once __DIR__ . '/../views/pages/danceDetail.php';
 });
 ?>

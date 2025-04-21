@@ -34,19 +34,22 @@ class PaymentController
     }
 
     // Convert your cart into Stripe line_items
-    $lineItems = array_map(function(array $item) {
-        return [
-            'price_data' => [
-                'currency'     => 'eur',
-                'product_data' => [
-                    // adjust these keys to match your cart structure
-                    'name' => $item['description'] . ' – ' . $item['ticketType'],
-                ],
-                'unit_amount'  => (int)($item['price'] * 100),  // must be > 0
+   $lineItems = array_map(function(array $item) {
+    return [
+        'price_data' => [
+            'currency'     => 'eur',
+            'product_data' => [
+                'name' => $item['description'] . ' – ' . $item['ticketType'],  // The 'ticketType' was here
             ],
-            'quantity' => $item['quantity'],                  // use actual quantity
-        ];
-    }, $cart);
+            'unit_amount'  => (int)($item['price'] * 100),  // Convert price to cents
+            'tax_behavior' => 'exclusive',
+        ],
+        'quantity' => $item['quantity'],
+    ];
+}, $cart);
+
+
+
 
     // If you somehow ended up with no valid items, bail out early
     if (empty($lineItems)) {
@@ -59,6 +62,7 @@ class PaymentController
         'payment_method_types'       => ['card'],
         'line_items'                 => $lineItems,
         'mode'                       => 'payment',
+        'automatic_tax'              => ['enabled' => true],
         'success_url'                => "http://localhost/payment/success?session_id={CHECKOUT_SESSION_ID}",
         'cancel_url'                 => "http://localhost/payment/cancel",
         'metadata'                   => ['user_id' => $userId],

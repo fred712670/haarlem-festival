@@ -1,15 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Afrojack - Haarlem Festival</title>
-    <link rel="stylesheet" href="/assets/css/dance.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-</head>
-
-<body>
-   
     <section class="artist-info">
         <h1 class="artist-name"><?= strtoupper(htmlspecialchars($artist['Name'])) ?></h1>
             <div class="artist-detail">
@@ -66,24 +54,31 @@
 
 
 
-        <section id="tickets" class="shows">
+    <section id="tickets" class="shows">
     <h2><?= strtoupper(htmlspecialchars($artist['Name'])) ?>’S APPEARANCES</h2>
     <div class="shows-grid">
         <?php foreach ($performances as $performance): ?>
-            <div class="show">
-                <h3>
-                    <?= strtoupper(date('l', strtotime($performance['StartDateTime']))) ?>
-                </h3>
+            <form class="show" action="/reserve" method="POST">
+                <input type="hidden" name="eventId" value="<?= htmlspecialchars($performance['DanceEventId']) ?>">
+                <input type="hidden" name="name" value="<?= htmlspecialchars($artist['Name']) ?> - <?= htmlspecialchars($performance['Location']) ?>">
+                <input type="hidden" name="ticketType" value="SingleUse">
+                <input type="hidden" name="guests" value="1">
+                <input type="hidden" name="date" value="<?= htmlspecialchars($performance['StartDateTime']) ?>">
+                <input type="hidden" name="address" value="<?= htmlspecialchars($performance['Location']) ?>">
+                <input type="hidden" name="artists" value="<?= htmlspecialchars($performance['Description']) ?>">
+                <input type="hidden" name="price" value="<?= htmlspecialchars($performance['Price']) ?>">
+                <input type="hidden" name="ticketsLeft" value="<?= htmlspecialchars($performance['TicketsAvailable']) ?>">
+                <input type="hidden" name="ticketType" value="SingleUse">   
+
+                <h3><?= strtoupper(date('l', strtotime($performance['StartDateTime']))) ?></h3>
                 <p><strong>Time:</strong> <?= date('H:i', strtotime($performance['StartDateTime'])) ?></p>
                 <p><strong>Venue:</strong> <?= htmlspecialchars($performance['Location']) ?></p>
                 <p><strong>Event:</strong> <?= htmlspecialchars($performance['Description']) ?></p>
                 <p><strong>Price:</strong> €<?= number_format($performance['Price'], 2) ?></p>
                 <p><strong>Duration:</strong> <?= (int) $performance['DurationByMinute'] ?> minutes</p>
-                <button class="small-button">Book This Show</button>
-            </div>
+                <button type="submit" class="small-button">Book This Show</button>
+            </form>
         <?php endforeach; ?>
     </div>
 </section>
 
-    </body>
-</html>

@@ -1,5 +1,7 @@
 <?php
 
+$page = 'dance';
+
 require(__DIR__ . "/../partials/header.php");
 
 require(__DIR__ . "/../partials/danceDetail.php");
