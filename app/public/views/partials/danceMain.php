@@ -58,6 +58,7 @@
                                 <input type="hidden" name="artists" value="<?= htmlspecialchars($event['Description']) ?>">
                                 <input type="hidden" name="price" value="<?= htmlspecialchars($event['Price']) ?>">
                                 <input type="hidden" name="ticketsLeft" value="<?= htmlspecialchars($event['TicketsAvailable']) ?>">
+                                <input type="hidden" name="ticketType" value="SingleUse">
                                 
                                 <!-- Visible tags -->
                                 <p><strong>Date:</strong> <?= date('l, F j, Y', strtotime($event['StartDateTime'])) ?></p>

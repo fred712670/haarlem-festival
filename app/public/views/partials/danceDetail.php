@@ -68,6 +68,7 @@
                 <input type="hidden" name="artists" value="<?= htmlspecialchars($performance['Description']) ?>">
                 <input type="hidden" name="price" value="<?= htmlspecialchars($performance['Price']) ?>">
                 <input type="hidden" name="ticketsLeft" value="<?= htmlspecialchars($performance['TicketsAvailable']) ?>">
+                <input type="hidden" name="ticketType" value="SingleUse">   
 
                 <h3><?= strtoupper(date('l', strtotime($performance['StartDateTime']))) ?></h3>
                 <p><strong>Time:</strong> <?= date('H:i', strtotime($performance['StartDateTime'])) ?></p>
