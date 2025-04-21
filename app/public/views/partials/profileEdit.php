@@ -19,6 +19,12 @@
 									<h4><?php echo $user['FullName']; ?></h4>
 									<p class="text-muted font-size-sm">Role: <?php echo $user['Role']; ?></p>
 								</div>
+
+								<div class="text-center mt-3">
+							<form action="/logout" method="post">
+								<button type="submit" class="btn btn-outline-danger">Log Out</button>
+							</form>
+						</div>
 							</div>
 						</div>
 					</div>
