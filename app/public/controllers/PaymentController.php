@@ -57,7 +57,7 @@ class PaymentController
             'mode'                       => 'payment',
             'automatic_tax'              => ['enabled' => true],
             'success_url'                => "http://localhost/payment/success?session_id={CHECKOUT_SESSION_ID}",
-            'cancel_url'                 => "http://localhost/payment/cancel",
+            'cancel_url'                 => "http://localhost/payment/cancel?session_id={CHECKOUT_SESSION_ID}",
             'metadata'                   => ['user_id' => $userId],
             'phone_number_collection'    => ['enabled' => true],
             'billing_address_collection' => 'required',
@@ -99,13 +99,6 @@ class PaymentController
         $orderId = $this->orderModel->getOrderIdBySessionId($sessionId);
         $this->orderModel->markOrderAsPaid($orderId);
 
-        // Store Stripe customer phone and address for contact purposes
-        $cust = $session->customer_details;
-        $address = $cust->address
-            ? "{$cust->address->line1}, {$cust->address->postal_code}, {$cust->address->city}, {$cust->address->country}"
-            : null;
-        $this->orderModel->grabContactDetails($orderId, $cust->phone, $address);
-
         // Show success message (PDF handling done via coordinator)
         $view    = 'payment_success';
         $status  = 'success';
@@ -114,16 +107,13 @@ class PaymentController
     }
 
     // Handle Stripe's cancel redirect.
-    // Shows a cancellation message, and optionally keeps reservation if still pending.
     public function showCancelPage(OrderController $orders): void
     {
-        $orderId = $_GET['order_id'] ?? null;
+        $orderId = $_GET['order_id'];
         $order   = $orderId ? $this->orderModel->getOrderById($orderId) : null;
 
-        $status  = ($order && $order['Status'] === 'pending') ? 'notice' : 'error';
-        $message = $status === 'notice'
-            ? 'Payment cancelled—your reservation is still held.'
-            : 'Your payment was cancelled.';
+        $status = 'error';
+        $message = 'Your payment was cancelled. It will be reserved for 24 hours.';
 
         $view = 'payment_cancel';
         require __DIR__ . '/../views/pages/payment.php';
@@ -133,5 +123,5 @@ class PaymentController
     public function storeStripeSessionId(int $orderId, string $sessionId): void
     {
         $this->orderModel->setStripeSessionId($orderId, $sessionId);
-    }
+    }    
 }

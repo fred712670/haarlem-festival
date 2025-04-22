@@ -4,6 +4,9 @@
 require_once __DIR__ . '/OrderController.php';
 require_once __DIR__ . '/PaymentController.php';
 
+use Stripe\Stripe;
+use Stripe\Checkout\Session;
+
 class OrderPaymentCoordinator
 {
     private OrderController $orders;
@@ -26,20 +29,41 @@ class OrderPaymentCoordinator
     // Called after Stripe confirms a successful payment
     public function handleSuccess(): void
     {
-        // 1) Create order and tickets in DB (PDF + cart-clearing included inside createOrder)
+        // 1) Get Stripe session and customer details
+        $sessionId = $_GET['session_id'] ?? null;
+        if (!$sessionId) {
+            die("Missing session ID from Stripe.");
+        }
+
+        try {
+            Stripe::setApiKey($_ENV['STRIPE_SECRET_KEY']);
+            $session = Session::retrieve($sessionId, ['expand' => ['customer_details']]);
+        } catch (\Exception $e) {
+            die("Failed to retrieve Stripe session: " . $e->getMessage());
+        }
+
+        if ($session->payment_status !== 'paid') {
+            die("Payment not completed.");
+        }
+
+        // 2) Extract phone and address
+        $cust = $session->customer_details;
+        $phone = $cust->phone ?? null;
+        $address = $cust->address
+            ? "{$cust->address->line1}, {$cust->address->postal_code}, {$cust->address->city}, {$cust->address->country}"
+            : null;
+
+        // 3) Create order in DB (PDF + cart-clear included inside)
+        $_POST['phone'] = $phone;
+        $_POST['address'] = $address;
         $orderResult = $this->orders->createOrder();
 
-        // 2) Fetch order ID and session ID from Stripe redirect query
+        // 4) Save Stripe session ID to DB
         $orderId = $orderResult['order']['OrderId'] ?? null;
-        $sessionId = $_GET['session_id'] ?? null;
-
-        // 3) Save the Stripe session ID to the order
         $this->payment->storeStripeSessionId($orderId, $sessionId);
 
-        // 4) Mark order as paid, store customer details, and render the success view
+        // 5) Show success page
         $this->payment->showSuccessPage($this->orders);
-
-        // 5) PDF and cart clearing were already handled in createOrder, nothing else needed
     }
 
     // Called when user cancels from Stripe (or closes browser)
@@ -48,7 +72,7 @@ class OrderPaymentCoordinator
         // Create the order anyway so it's held (optional: may depend on business rules)
         $this->orders->createOrder();
 
-        // Render the cancellation view, messaging depends on order status
+        // Render the cancellation view
         $this->payment->showCancelPage($this->orders);
     }
 }
