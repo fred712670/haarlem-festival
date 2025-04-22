@@ -90,7 +90,7 @@ class UserModel extends BaseModel
         }
     }
 
-    public function updateName($username, $newFullName): bool {
+    public function updateName($userId, $newFullName): bool {
         $pdo = self::$pdo; 
 
         if (empty($newFullName) || strlen($newFullName) < 5 || strlen($newFullName) > 20) {
@@ -98,12 +98,12 @@ class UserModel extends BaseModel
         }
 
         // Prepare the SQL statement using PDO
-        $stmt = $pdo->prepare("UPDATE User SET FullName = ? WHERE FullName = ?");
+        $stmt = $pdo->prepare("UPDATE User SET FullName = :newFullName WHERE UserId = :userId");
 
         // Bind parameters to the prepared statement using PDO's bindParam
-        $stmt->bindParam(1, $newFullName); 
-        $stmt->bindParam(2, $username); 
-
+        $stmt->bindParam(':newFullName', $newFullName, PDO::PARAM_STR);
+        $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+    
         // Execute the statement and return true on success
         return $stmt->execute();
     }
@@ -128,12 +128,6 @@ class UserModel extends BaseModel
         return $stmt->execute();
     }
     
-    /*public function updatePassword(string $username, string $newPasword) 
-    {
-        $stmt = self::$pdo->prepare("UPDATE User SET password = :new_password WHERE FullName = :username");
-        $stmt->execute(['username' => $username, 'new_password' => $newPasword]);
-    }*/
-
     public function updatePassword($userId, $currentPswd, $newPswd, $repeatNewPswd): bool {
         $pdo = self::$pdo;
     
@@ -152,7 +146,7 @@ class UserModel extends BaseModel
         $stmt->execute();
     
         if ($stmt->rowCount() == 0) {
-            return false; // No user found
+            return false;
         }
     
         $hashedCurrentPswd = $stmt->fetchColumn();

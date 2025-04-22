@@ -21,17 +21,16 @@ class UserController
     public function get($id){
        return $this->userModel->get($id);
     }
-    // Handle user registration
    
-    public function updateName($username, $newName) {
-        return $this->userModel->updateName($username, $newName);
+    public function updateName($userId, $newName) {
+        return $this->userModel->updateName($userId, $newName);
     }
     public function updateEmail($userId, $newEmail) {
         return $this->userModel->updateEmail($userId, $newEmail);
     }
 
-    public function changePassword($username, $currentPswd, $newPswd, $repeatNewPsw ) {
-        return $this->userModel->updatePassword($username, $currentPswd, $newPswd, $repeatNewPsw);
+    public function changePassword($userId, $currentPswd, $newPswd, $repeatNewPsw ) {
+        return $this->userModel->updatePassword($userId, $currentPswd, $newPswd, $repeatNewPsw);
     }
 
     public static function sendResetLink($email) {
