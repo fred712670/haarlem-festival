@@ -60,17 +60,15 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <ul>
-                        <li>Friday 27 July 2025, 12:30 - 13:20</li>
-                        <li>Friday 27 July 2025, 14:00 - 14:50</li>
-                        <li>Friday 27 July 2025, 15:00 - 15:50</li>
-                        <li>Saturday 28 July 2025, 12:30 - 13:20</li>
-                        <li>Saturday 28 July 2025, 14:00 - 14:50</li>
-                        <li>Saturday 28 July 2025, 15:00 - 15:50</li>
-                        <li>Sunday 29 July 2025, 12:30 - 13:20</li>
-                        <li>Sunday 29 July 2025, 14:00 - 14:50</li>
-                        <li>Sunday 29 July 2025, 15:00 - 15:50</li>
-                    </ul>
+                <?php foreach($lorentzSchedule as $row): 
+                    $start = new DateTime($row['StartDateTime']);
+                    $end   = new DateTime($row['EndDateTime']);
+                    ?>
+                    <li class="list-group-item border-0 py-1">
+                    <?= $start->format('l j F Y') ?>, 
+                    <?= $start->format('H:i') ?> &ndash; <?= $end->format('H:i') ?>
+                    </li>
+                    <?php endforeach; ?>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
