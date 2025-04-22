@@ -3,86 +3,101 @@ require_once __DIR__ . '/../lib/Route.php';
 require_once __DIR__ . '/../controllers/JazzController.php';
 require_once __DIR__ . '/../controllers/ReservationController.php';
 
-// Route for the main jazz page
+/**
+ * Jazz Festival Routes
+ * This file defines all routes related to the Jazz Festival section of the website
+ */
+
+// Main jazz festival page
 Route::add('/jazz', function () {
     $controller = new JazzController();
-    // Call the index method to retrieve all necessary jazz festival data
-    $data = $controller->index(); // Fetch all jazz data 
-
-    // Extract each part of the data array into individual variables
-    $artists = $data['artists'];       
-    $schedule = $data['schedule'];     
-    $venues = $data['venues'];         
-    $ticketInfo = $data['ticketInfo']; 
-    $content = $data['content'];      
-
-    // Set this flag to false because this is the main overview page, not an individual artist page
+    $data = $controller->index();
+    
+    // Extract data for the view
+    extract($data);
+    
+    // Flag to determine rendering variations
     $isArtistPage = false;
-
-    // Load the main jazz page view
+    
+    // Load view
     require_once __DIR__ . '/../views/pages/jazz.php';
 }, 'get');
 
-// Route for the artist detail page with ID and name in the URL
-Route::add('/jazz/artist/([0-9]+)/([a-zA-Z0-9-]+)', function ($id, $name) {
+// Artist detail page with SEO-friendly URL (ID and name slug)
+Route::add('/jazz/artist/([0-9]+)/([a-zA-Z0-9-]+)', function ($id, $nameSlug) {
     $controller = new JazzController();
-
-    // Get artist data by ID
+    
+    // Validate ID is numeric
+    if (!is_numeric($id)) {
+        header("Location: /jazz");
+        exit();
+    }
+    
+    // Get artist details
     $artist = $controller->showArtist($id);
-
-    // If artist is not found, redirect to the main jazz page
+    
+    // Handle artist not found
     if (!$artist) {
         header("Location: /jazz");
         exit();
     }
-
-    // Fetch all venues (even if not artist-specific, for sidebar or footer)
+    
+    // Get additional data needed for the view
     $venues = $controller->getVenues();
-
-    // Fetch the schedule specifically for this artist
     $schedule = $controller->getSchedule($id);
-
-    // Fetch ticket information (may be the same across all artists)
     $ticketInfo = $controller->getTicketInfo();
-
-    // Store the artist's name to use in the schedule heading
+    
+    // Additional variables for view
     $artistName = $artist['name'];
-
-    // Set this flag to true because this is an individual artist detail page
     $isArtistPage = true;
-
-    // Load the view that shows the artist's details
+    
+    // Load artist detail view
     require_once __DIR__ . '/../views/partials/jazz-artist.php';
 }, 'get');
 
-// Legacy route kept for backward compatibility (only artist ID in URL)
+// Legacy route for backward compatibility - redirects to SEO-friendly URL
 Route::add('/jazz/artist/([0-9]+)', function ($id) {
     $controller = new JazzController();
-
-    // Get the artist details by ID
+    
+    // Validate ID format
+    if (!is_numeric($id)) {
+        header("Location: /jazz");
+        exit();
+    }
+    
+    // Get artist to generate name slug
     $artist = $controller->showArtist($id);
-
-    // If the artist does not exist, redirect to the main page
+    
     if (!$artist) {
         header("Location: /jazz");
         exit();
     }
-
-    // Generate a slug from the artist name (remove special characters and replace spaces with dashes)
+    
+    // Generate SEO-friendly slug from artist name
     $nameSlug = strtolower(str_replace(' ', '-', preg_replace('/[^a-zA-Z0-9\s]/', '', $artist['name'])));
-
-    // Redirect the old route to the new route with ID and slug
+    
+    // Redirect to canonical URL format
     header("Location: /jazz/artist/$id/$nameSlug");
     exit();
 }, 'get');
 
-// API endpoint to get track details in JSON format
+// API endpoint for track data (returns JSON)
 Route::add('/api/jazz/track/([0-9]+)', function($trackId) {
-    // Set the response header to JSON
     header('Content-Type: application/json');
-
+    
+    // Validate track ID
+    if (!is_numeric($trackId)) {
+        echo json_encode(['error' => 'Invalid track ID']);
+        return;
+    }
+    
     $controller = new JazzController();
-
-    // Output the track details as JSON
-    echo json_encode($controller->getTrackDetails($trackId));
+    $trackDetails = $controller->getTrackDetails($trackId);
+    
+    if (!$trackDetails) {
+        echo json_encode(['error' => 'Track not found']);
+        return;
+    }
+    
+    echo json_encode($trackDetails);
 }, 'get');

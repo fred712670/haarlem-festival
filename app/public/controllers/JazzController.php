@@ -9,29 +9,30 @@ class JazzController {
     }
     
     /**
- * Index page for Jazz Festival
- * 
- * @return array Data for the jazz main page
- */
-public function index() {
-    // Get all required data for the main page
-    $artists = $this->jazzModel->getAllArtists();
-    $schedule = $this->jazzModel->getSchedule();
-    $ticketInfo = $this->jazzModel->getTicketInfo();
-    $venues = $this->jazzModel->getVenueDetails();
+     * Index page for Jazz Festival
+     * 
+     * @return array Data for the jazz main page
+     */
+    public function index() {
+        // Get all required data for the main page
+        $artists = $this->jazzModel->getAllArtists();
+        $schedule = $this->jazzModel->getSchedule();
+        $ticketInfo = $this->jazzModel->getTicketInfo();
+        $venues = $this->jazzModel->getVenueDetails();
+        
+        // Get content
+        $content = $this->jazzModel->getJazzContent();
+        
+        // Return data needed for the view
+        return [
+            'artists' => $artists,
+            'schedule' => $schedule,
+            'ticketInfo' => $ticketInfo,
+            'venues' => $venues,
+            'content' => $content
+        ];
+    }
     
-    // Get content from database instead of hardcoding
-    $content = $this->jazzModel->getJazzContent();
-    
-    // Return data needed for the view
-    return [
-        'artists' => $artists,
-        'schedule' => $schedule,
-        'ticketInfo' => $ticketInfo,
-        'venues' => $venues,
-        'content' => $content
-    ];
-}
     /**
      * Show details for a specific artist
      * 
@@ -83,7 +84,7 @@ public function index() {
         foreach ($requiredSections as $section) {
             if (empty($artist[$section])) {
                 // If any required section is missing, provide a default
-                $artist[$section] = $this->getDefaultSectionContent($section, $artist['name']);
+                $artist[$section] = '';
             }
         }
         
@@ -94,14 +95,6 @@ public function index() {
         
         return $artist;
     }
-    
-    /**
-     * Get default content for missing artist sections
-     * 
-     * @param string $section Section name
-     * @param string $artistName Artist name
-     * @return string Default content
-     */
     
     /**
      * Get venue details
@@ -123,8 +116,11 @@ public function index() {
         
         // If requesting a specific artist's schedule but no data found
         if ($artistId !== null && empty($scheduleData)) {
+            // Get all festival dates from the database
+            $allSchedule = $this->jazzModel->getSchedule();
+            
             // Return an empty structure with days but no events
-            return $this->createEmptySchedule();
+            return $this->createEmptySchedule($allSchedule);
         }
         
         return $scheduleData;
@@ -133,25 +129,19 @@ public function index() {
     /**
      * Create an empty schedule structure with festival days
      * 
+     * @param array $fullSchedule The complete schedule data
      * @return array Empty schedule structure
      */
-    private function createEmptySchedule() {
-        // we still need to add a table to database for the days of festival and the events
-        $festivalDates = [
-            ['date' => '2025-07-24', 'day_name' => 'Thursday', 'day_number' => '24', 'month_name' => 'July'],
-            ['date' => '2025-07-25', 'day_name' => 'Friday', 'day_number' => '25', 'month_name' => 'July'],
-            ['date' => '2025-07-26', 'day_name' => 'Saturday', 'day_number' => '26', 'month_name' => 'July'],
-            ['date' => '2025-07-27', 'day_name' => 'Sunday', 'day_number' => '27', 'month_name' => 'July']
-        ];
-        
+    private function createEmptySchedule($fullSchedule) {
         $emptySchedule = [];
-        foreach ($festivalDates as $day) {
-            $dateKey = $day['date'];
+        
+        // Use the existing schedule data to create empty days structure
+        foreach ($fullSchedule as $dateKey => $dayInfo) {
             $emptySchedule[$dateKey] = [
-                'date' => $day['date'],
-                'day_name' => $day['day_name'],
-                'day_number' => $day['day_number'],
-                'month_name' => $day['month_name'],
+                'date' => $dayInfo['date'],
+                'day_name' => $dayInfo['day_name'],
+                'day_number' => $dayInfo['day_number'],
+                'month_name' => $dayInfo['month_name'],
                 'events' => []
             ];
         }
@@ -180,74 +170,21 @@ public function index() {
         return array_slice($allArtists, 0, $limit);
     }
 
-/**
- * Get content for Jazz Festival
- * 
- * @param string|null $section Specific section to retrieve (optional)
- * @return array|string Content data or string for specific section
- */
-public function getJazzContent($section = null)
-{
-    try {
-        $query = "SELECT 
-                    ContentId as id,
-                    Section as section,
-                    Content as content
-                FROM Content
-                WHERE EventType = 'jazz'";
-        
-        // If a specific section is requested, add WHERE clause
-        if ($section !== null) {
-            $query .= " AND Section = :section";
-        }
-        
-        $stmt = self::$pdo->prepare($query);
-        
-        // Bind the section parameter if needed
-        if ($section !== null) {
-            $stmt->bindParam(':section', $section, PDO::PARAM_STR);
-        }
-        
-        $stmt->execute();
-        
-        // If a specific section was requested, return just the content
-        if ($section !== null) {
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            return $result ? $result['content'] : '';
-        }
-        
-        // Otherwise return all content items indexed by section
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $contentBySection = [];
-        
-        foreach ($results as $row) {
-            $contentBySection[$row['section']] = $row['content'];
-        }
-        
-        return $contentBySection;
-    } catch (Exception $e) {
-        error_log("Error fetching jazz content: " . $e->getMessage());
-        return $section !== null ? '' : [];
+    /**
+     * Get ticket information for the festival
+     * 
+     * @return array Ticket types and pricing
+     */
+    public function getTicketInfo() {
+        return $this->jazzModel->getTicketInfo();
     }
-}
-
-
-/**
- * Get ticket information for the festival
- * 
- * @return array Ticket types and pricing
- */
-public function getTicketInfo() {
-    return $this->jazzModel->getTicketInfo();
-}
-/**
- * Get track details for audio player
- * 
- * @param int $trackId Track ID
- * @return array Track details including audio file path
- */
-public function getTrackDetails($trackId) {
-    return $this->jazzModel->getTrackById($trackId);
-}
-}
-
+    
+    /**
+     * Get track details for audio player
+     * 
+     * @param int $trackId Track ID
+     * @return array Track details including audio file path
+     */
+    public function getTrackDetails($trackId) {
+        return $this->jazzModel->getTrackById($trackId);
+    }}
