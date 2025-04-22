@@ -1,66 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Puzzles and Science at Teylers Museum</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../assets/css/magicTeylers.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Puzzles and Science at Teylers Museum</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+    rel="stylesheet">
+  <link href="../../assets/css/magicTeylers.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container-fluid p-0"> <!-- Changed to container-fluid and padding zero for full width -->
-        <div class="row">
-            <div class="col-12 p-0"> <!-- Ensure no padding is applied to the column for the image -->
-            <img src="../../assets/img/magicTeylers/magicPicEdit.png" alt="Title Image" class="img-fluid">
-            </div>
+
+    <!-- Banner Image (exactly as before) -->
+    <div class="container-fluid p-0">
+    <img
+      src="../../assets/img/magicTeylers/magicPicEdit.png"
+      alt="Title Image"
+      class="img-fluid w-100">
+  </div>
+
+  <main class="container py-5">
+    <p class="text-center mb-5">
+      Join us for a thrilling day of exploration and learning at Teylers Museum!
+    </p>
+
+    <div class="row g-4">
+      <!-- Mobile@Teylers -->
+      <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h2 class="card-title">Mobile@Teylers</h2>
+            <p class="card-text">
+              Discover the secrets of Professor Teyler and embark on a journey filled with fun and education.
+            </p>
+            <ul class="list-unstyled">
+              <li>• Six unique science challenges</li>
+              <li>• Interactive riddles to solve mysteries</li>
+              <li>• Hands-on experiments for all ages</li>
+            </ul>
+          </div>
         </div>
+      </div>
 
-        <!-- Adding a container to control padding and margins for the text -->
-        <div class="container my-5"> <!-- Margin for spacing around the container -->
-            <div class="row text-section">
-                <div class="col-12 mt-3">
-                    <h1 class="h1-teylers">Puzzles and Science at Teylers Museum</h1>
-                    <p>Join us for a thrilling day of exploration and learning at Teylers Museum!</p>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6 highlight">
-                    <h2 class="h2-teylers">Mobile@Teylers</h2>
-                    <p>Discover the secrets of Professor Teyler and embark on a journey filled with fun and education.</p>
-                    <ul>
-                        <li>Six unique science challenges</li>
-                        <li>Interactive riddles to solve mysteries</li>
-                        <li>Hands-on experiments for all ages</li>
-                    </ul>
-                </div>
-                <div class="col-md-6 highlight">
-                    <h2>The Lorentz Formula</h2>
-                    <p>Explore the magic with fun hands-on activities! Perfect for families, this exhibit makes learning easy to understand.</p>
-                    <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#datesModal">View available dates</button>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12 highlight">
-                    <h2>Demonstration Game</h2>
-                    <p>Light the bulb by fixing the broken cables!</p>
-                    <button class="btn btn-custom">Download Mobile App</button>
-                </div>
-            </div>
+      <!-- Lorentz Formula -->
+      <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h2 class="card-title">The Lorentz Formula</h2>
+            <p class="card-text">
+              Explore the magic with fun hands-on activities! Perfect for families, this exhibit makes learning easy to understand.
+            </p>
+            <button
+              class="btn btn-custom"
+              data-bs-toggle="modal"
+              data-bs-target="#datesModal">
+              View available dates
+            </button>
+          </div>
         </div>
+      </div>
+
+      <!-- Demonstration Game -->
+      <div class="col-12">
+        <div class="card shadow-sm">
+          <div class="card-body d-md-flex justify-content-between align-items-center">
+            <div>
+              <h2 class="card-title">Download our Mobile Game</h2>
+              <p class="card-text mb-0">Explore Teyler's secrets trough your phone  </p>
+            </div>
+            <a href="#" class="btn btn-custom mt-3 mt-md-0">Download Mobile App</a>
+          </div>
+        </div>
+      </div>
     </div>
+  </main>
 
-    <!-- Modal -->
-    <div class="modal fade" id="datesModal" tabindex="-1" aria-labelledby="datesModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="datesModalLabel">Available Dates for The Lorentz Formula</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                <?php foreach($lorentzSchedule as $row): 
+  <!-- Dates Modal -->
+  <div
+    class="modal fade"
+    id="datesModal"
+    tabindex="-1"
+    aria-labelledby="datesModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="datesModalLabel">
+            Available Dates for The Lorentz Formula
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close">
+          </button>
+        </div>
+        <div class="modal-body">
+          <?php foreach($lorentzSchedule as $row): 
                     $start = new DateTime($row['StartDateTime']);
                     $end   = new DateTime($row['EndDateTime']);
                     ?>
@@ -68,16 +104,15 @@
                     <?= $start->format('l j F Y') ?>, 
                     <?= $start->format('H:i') ?> &ndash; <?= $end->format('H:i') ?>
                     </li>
-                    <?php endforeach; ?>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
+            <?php endforeach; ?>
         </div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js">
+  </script>
 </body>
 </html>
-
