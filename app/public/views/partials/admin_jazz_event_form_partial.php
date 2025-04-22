@@ -1,5 +1,4 @@
 <?php
-
 $isEdit = isset($viewData['event']) && !empty($viewData['event']);
 $pageTitle = $isEdit ? "Edit Jazz Event" : "Add New Jazz Event";
 
@@ -15,6 +14,8 @@ if ($isEdit && isset($viewData['selectedArtists'])) {
     }
 }
 ?>
+<link rel="stylesheet" href="/assets/css/admin.css">
+
 <div class="admin-container">
     <div class="admin-main">
         <div class="admin-header">
@@ -61,8 +62,7 @@ if ($isEdit && isset($viewData['selectedArtists'])) {
                                         <option value="">-- Select Venue --</option>
                                         <?php foreach ($viewData['venues'] as $venue): ?>
                                             <option value="<?= $venue['id'] ?>" 
-                                                    <?= (isset($formData['venue_id']) && $formData['venue_id'] == $venue['id']) || 
-                                                        (isset($formData['venue_id']) && $formData['venue_id'] == $venue['id']) ? 'selected' : '' ?>>
+                                                    <?= (isset($formData['venue_id']) && $formData['venue_id'] == $venue['id']) ? 'selected' : '' ?>>
                                                 <?= htmlspecialchars($venue['name']) ?> (Capacity: <?= $venue['capacity'] ?>)
                                             </option>
                                         <?php endforeach; ?>
@@ -70,40 +70,37 @@ if ($isEdit && isset($viewData['selectedArtists'])) {
                                 </div>
                                 
                                 <div class="admin-form-group">
-            <label for="startDate" class="admin-form-label">Start Date <span class="text-danger">*</span></label>
-            <input type="date" class="admin-form-control" id="startDate" name="startDate" 
-                   value="<?= isset($formData['start_datetime']) ? date('Y-m-d', strtotime($formData['start_datetime'])) : '' ?>" required>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="admin-form-group">
-            <label for="startTime" class="admin-form-label">Start Time <span class="text-danger">*</span></label>
-            <select class="admin-form-control" id="startTime" name="startTime" required>
-                <?php
-                // Generate time options in 30-minute increments
-                $startTime = strtotime('00:00');
-                $endTime = strtotime('23:30');
-                $selectedTime = isset($formData['start_datetime']) ? date('H:i', strtotime($formData['start_datetime'])) : '';
-                
-                while ($startTime <= $endTime) {
-                    $timeOption = date('H:i', $startTime);
-                    echo '<option value="' . $timeOption . '"';
-                    if ($timeOption == $selectedTime) echo ' selected';
-                    echo '>' . $timeOption . '</option>';
-                    $startTime = strtotime('+30 minutes', $startTime);
-                }
-                ?>
-            </select>
-        </div>
-    </div>
-</div>
+                                    <label for="startDate" class="admin-form-label">Start Date <span class="text-danger">*</span></label>
+                                    <input type="date" class="admin-form-control" id="startDate" name="startDate" 
+                                           value="<?= isset($formData['start_datetime']) ? date('Y-m-d', strtotime($formData['start_datetime'])) : '' ?>" required>
+                                </div>
+                                
+                                <div class="admin-form-group">
+                                    <label for="startTime" class="admin-form-label">Start Time <span class="text-danger">*</span></label>
+                                    <select class="admin-form-control" id="startTime" name="startTime" required>
+                                        <?php
+                                        // Generate time options in 30-minute increments
+                                        $startTime = strtotime('00:00');
+                                        $endTime = strtotime('23:30');
+                                        $selectedTime = isset($formData['start_datetime']) ? date('H:i', strtotime($formData['start_datetime'])) : '';
+                                        
+                                        while ($startTime <= $endTime) {
+                                            $timeOption = date('H:i', $startTime);
+                                            echo '<option value="' . $timeOption . '"';
+                                            if ($timeOption == $selectedTime) echo ' selected';
+                                            echo '>' . $timeOption . '</option>';
+                                            $startTime = strtotime('+30 minutes', $startTime);
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
                                 
                                 <div class="admin-form-group">
                                     <label for="timeSlot" class="admin-form-label">Time Slot (Display Format)</label>
                                     <input type="text" class="admin-form-control" id="timeSlot" name="timeSlot" 
                                            value="<?= htmlspecialchars($formData['time_slot'] ?? '') ?>" 
                                            placeholder="e.g., 20:00 - 22:00">
-                                    <small class="form-text text-muted">Format to display on schedule (if different from actual time)</small>
+                                    <small class="form-text text-muted">Format to display on schedule</small>
                                 </div>
                             </div>
                             
@@ -148,7 +145,7 @@ if ($isEdit && isset($viewData['selectedArtists'])) {
                             <small class="form-text text-muted">Select at least one artist for this event</small>
                         </div>
                         
-                        <div class="text-end mt-4">
+                        <div class="mb-3 d-flex justify-content-between mt-4">
                             <a href="/admin/jazz/events" class="btn btn-secondary">Cancel</a>
                             <button type="submit" class="btn btn-primary">
                                 <?= $isEdit ? 'Update Event' : 'Create Event' ?>
@@ -160,3 +157,5 @@ if ($isEdit && isset($viewData['selectedArtists'])) {
         </div>
     </div>
 </div>
+
+<script src="/assets/js/admin.js"></script>

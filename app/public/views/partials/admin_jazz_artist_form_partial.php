@@ -6,11 +6,7 @@ $pageTitle = $isEdit ? "Edit Jazz Artist" : "Add New Jazz Artist";
 $formData = $_SESSION['form_data'] ?? ($isEdit ? $artist : []);
 unset($_SESSION['form_data']);
 ?>
-
-
 <div class="admin-container">
-    
-
     <div class="admin-main">
         <div class="admin-header">
             <button class="toggle-sidebar">
@@ -54,7 +50,7 @@ unset($_SESSION['form_data']);
                                     <label for="short_description" class="admin-form-label">Short Description <span class="text-danger">*</span></label>
                                     <textarea class="admin-form-control" id="short_description" name="short_description" 
                                               rows="3" required><?= htmlspecialchars($formData['short_description'] ?? '') ?></textarea>
-                                    <small class="form-text text-muted">Brief description (100-150 characters) used in artist cards</small>
+                                    <small class="form-text text-muted">Brief description used in artist cards</small>
                                 </div>
                                 
                                 <div class="admin-form-group">
@@ -63,11 +59,10 @@ unset($_SESSION['form_data']);
                                     <?php if ($isEdit && !empty($artist['image'])): ?>
                                         <div class="mt-2">
                                             <img src="/assets/img/jazz/<?= htmlspecialchars($artist['image']) ?>" 
-                                                 alt="Current profile image" style="max-width: 100px; max-height: 100px;">
-                                            <small class="d-block">Current image: <?= htmlspecialchars($artist['image']) ?></small>
+                                                 alt="Current profile image" class="img-thumbnail" style="max-height: 100px;">
+                                            <small class="d-block text-muted">Current image. Upload a new one to replace.</small>
                                         </div>
                                     <?php endif; ?>
-                                    <small class="form-text text-muted">Recommended size: 400x400 pixels</small>
                                 </div>
                             </div>
                             
@@ -111,7 +106,6 @@ unset($_SESSION['form_data']);
                                     <label for="description" class="admin-form-label">Full Description</label>
                                     <textarea class="admin-form-control" id="description" name="description" 
                                               rows="6"><?= htmlspecialchars($formData['description'] ?? '') ?></textarea>
-                                    <small class="form-text text-muted">Detailed artist description for their profile page</small>
                                 </div>
                             </div>
                             
@@ -132,7 +126,7 @@ unset($_SESSION['form_data']);
                             </div>
                         </div>
                         
-                        <div class="text-end mt-4">
+                        <div class="mb-3 d-flex justify-content-between mt-4">
                             <a href="/admin/jazz/artists" class="btn btn-secondary">Cancel</a>
                             <button type="submit" class="btn btn-primary">
                                 <?= $isEdit ? 'Update Artist' : 'Create Artist' ?>
@@ -145,7 +139,4 @@ unset($_SESSION['form_data']);
     </div>
 </div>
 
-
-
-
-
+<script src="/assets/js/admin.js"></script>

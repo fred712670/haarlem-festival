@@ -527,3 +527,321 @@
 .card:hover .fa-2x {
   transform: scale(1.1);
 }
+/* Jazz Forms Enhanced Styling */
+
+/* Form Section Headers */
+.form-section {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.form-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.form-section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--primary-color);
+  display: inline-block;
+}
+
+/* Enhanced Admin Form Groups */
+.admin-form-group {
+  margin-bottom: 1.5rem;
+}
+
+.admin-form-label {
+  margin-bottom: 0.625rem;
+  font-weight: 600;
+  color: #344767;
+  font-size: 0.95rem;
+  display: block;
+}
+
+.admin-form-label .text-danger {
+  margin-left: 0.25rem;
+}
+
+.admin-form-control {
+  border-radius: 0.5rem;
+  border: 1px solid #d2d6da;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  background-color: #fff;
+}
+
+.admin-form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(44, 110, 142, 0.15);
+  outline: none;
+}
+
+/* File Upload Styling */
+.file-upload-wrapper {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.file-upload-input {
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
+  height: 45px;
+}
+
+.file-upload-input::file-selector-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  margin-right: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.file-upload-input::file-selector-button:hover {
+  background-color: var(--primary-dark);
+}
+
+/* Gallery Image Grid */
+.gallery-images-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.gallery-image-item {
+  position: relative;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+  background-color: #f8f9fa;
+}
+
+.gallery-image-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.gallery-image-item img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  display: block;
+}
+
+.remove-gallery-image {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: rgba(220, 53, 69, 0.9);
+  color: white;
+  border: none;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0;
+}
+
+.remove-gallery-image:hover {
+  background-color: #dc3545;
+  transform: scale(1.1);
+}
+
+/* Current Image Preview */
+.current-image-preview {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background-color: #f8f9fa;
+  border-radius: 0.5rem;
+  border: 1px solid #e9ecef;
+}
+
+.current-image-preview img {
+  max-height: 120px;
+  border-radius: 0.375rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.current-image-preview small {
+  display: block;
+  margin-top: 0.5rem;
+  color: #6c757d;
+}
+
+/* Artist Selection Checkboxes */
+.artist-selection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 0.5rem;
+  border: 1px solid #e9ecef;
+}
+
+.artist-checkbox-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  background-color: white;
+  border-radius: 0.375rem;
+  border: 1px solid #e9ecef;
+  transition: all 0.2s;
+}
+
+.artist-checkbox-item:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.artist-checkbox-item input[type="checkbox"] {
+  margin-right: 0.75rem;
+}
+
+.artist-checkbox-item label {
+  margin-bottom: 0;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* Enhanced Form Actions */
+.form-actions {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e9ecef;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* Help Text Styling */
+.form-text {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin-top: 0.375rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .gallery-images-grid {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  }
+
+  .artist-selection-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Jazz-specific Form Enhancements */
+.jazz-form-wrapper {
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+  padding: 2rem;
+}
+
+.jazz-form-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.jazz-form-header h2 {
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.jazz-form-header p {
+  color: #6c757d;
+  margin-bottom: 0;
+}
+
+/* Time Slot Input Enhancement */
+.time-slot-input {
+  position: relative;
+}
+
+.time-slot-input::before {
+  content: "\f017";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+}
+
+.time-slot-input input {
+  padding-left: 2.5rem;
+}
+
+/* Enhanced Select Dropdowns */
+select.admin-form-control {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236c757d'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
+  padding-right: 2.5rem;
+}
+
+/* Form Field Icons */
+.form-icon-wrapper {
+  position: relative;
+}
+
+.form-icon-wrapper .form-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+}
+
+.form-icon-wrapper input,
+.form-icon-wrapper select {
+  padding-left: 2.5rem;
+}
+
+/* Success State */
+.admin-form-control.is-valid {
+  border-color: #28a745;
+}
+
+.admin-form-control.is-valid:focus {
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+/* Error State */
+.admin-form-control.is-invalid {
+  border-color: #dc3545;
+}
+
+.admin-form-control.is-invalid:focus {
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.invalid-feedback {
+  font-size: 0.875rem;
+  color: #dc3545;
+  margin-top: 0.25rem;
+}

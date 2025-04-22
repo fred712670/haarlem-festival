@@ -1,5 +1,4 @@
 <?php
-
 $isEdit = isset($pass) && !empty($pass);
 $pageTitle = $isEdit ? "Edit Jazz Pass" : "Add New Jazz Pass";
 
@@ -7,10 +6,9 @@ $pageTitle = $isEdit ? "Edit Jazz Pass" : "Add New Jazz Pass";
 $formData = $_SESSION['form_data'] ?? ($isEdit ? $pass : []);
 unset($_SESSION['form_data']);
 ?>
+<link rel="stylesheet" href="/assets/css/admin.css">
 
 <div class="admin-container">
-  
-
     <div class="admin-main">
         <div class="admin-header">
             <button class="toggle-sidebar">
@@ -104,7 +102,7 @@ unset($_SESSION['form_data']);
                             </div>
                         </div>
                         
-                        <div class="text-end mt-4">
+                        <div class="mb-3 d-flex justify-content-between mt-4">
                             <a href="/admin/jazz/passes" class="btn btn-secondary">Cancel</a>
                             <button type="submit" class="btn btn-primary">
                                 <?= $isEdit ? 'Update Pass' : 'Create Pass' ?>
@@ -116,3 +114,5 @@ unset($_SESSION['form_data']);
         </div>
     </div>
 </div>
+
+<script src="/assets/js/admin.js"></script>
