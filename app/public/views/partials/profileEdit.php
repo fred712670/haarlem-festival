@@ -7,14 +7,8 @@
 						<div class="card-body">
 							<div class="d-flex flex-column align-items-center text-center">
 								<div id="profile-container">
-									<!--<img src=<?php echo "/assets/img/userPictures/profile_{$_SESSION['profilePicture']}.jpeg" ?> alt="Profile Image" class="rounded-circle p-1 bg-primary" id="profileImage" width="110">-->
 									<img src="../../assets/img/profileEdit/defaultProfilePic.jpg" alt="Profile Image" class="rounded-circle p-1 bg-primary" id="profileImage" width="110">
-									<!--<label for="profile_photo" class="form-label">Profile Image</label>
-                					<input type="file" class="form-control" id="profile_photo" name="profile_photo" accept="image/*">-->
 								</div>
-								<!--<button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#profilePictureModal">
-									Change Profile Picture
-								</button>-->
 								<div class="mt-3">
 									<h4><?php echo $user['FullName']; ?></h4>
 									<p class="text-muted font-size-sm">Role: <?php echo $user['Role']; ?></p>
@@ -82,7 +76,7 @@
 											<h6 class="mb-0">Current Email</h6>
 										</div>
 										<div class="col-sm-9 text-secondary">
-											<input type="email" class="form-control editForm" id="currentEmail" name="currentEmail" value="<?php echo $user['Email'];?>" required>
+											<input type="email" class="form-control editForm" id="currentEmail" name="currentEmail" value="<?php echo $user['Email'];?>" required disabled>
 										</div>
 									</div>
 									<div class="row mb-3">
@@ -132,8 +126,6 @@
 							</form>
 						</div>
 					</div>
-
-
 					<div class="col-lg-8">
                         <div class="card">
 							<form action="/profile/update/password" method="post">
@@ -200,7 +192,6 @@
 							</form>
                         </div>
 					</div>
-
 			</div>
 			<!-- Modal for profile picture selection -->
 			<div class="modal fade" id="profilePictureModal" tabindex="-1" aria-labelledby="profilePictureModalLabel" aria-hidden="true">
